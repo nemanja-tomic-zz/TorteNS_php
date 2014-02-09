@@ -1,0 +1,317 @@
+body {
+	background-image:url(../Assets/background.jpg);
+	background-position:center;
+	background-repeat:repeat;
+	font-family:"Comic Sans MS", cursive;
+	margin:0px;
+	}
+
+.wrapper {
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:5px;
+	padding-top:0px;
+	width:1600px;
+	height:900px;
+	border-radius:10px;
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+	background-color:white;
+}
+
+.meniwrapper {
+	height:70px;
+	width:inherit;
+	}
+
+.meni ul {
+	list-style-type:none;
+	height:80px;
+	margin:auto;
+	}
+.meni ul li{
+	float:left;
+	margin-left:20px;
+	}
+.meni ul li a {
+	text-decoration:none;
+	color:black;
+	}
+
+.contentwrapper{
+	}
+	
+input[disabled='disabled']{
+  background:transparent;
+  cursor:default; 
+}
+
+.unosForma {
+	width:900px;
+	margin-left:40px; 
+	margin-right:40px; 
+	border-radius:8px;
+	background-color:#FFE8FD;
+	}
+.tabelaUnos{
+	margin-left:20px;
+	padding-top:20px;
+	}
+.tabelaUnos input{
+	width:200px;
+	margin-left:10px;
+	}	
+	
+.unosForma textarea {
+	margin-left:20px;}
+	
+.insertCat{
+	position:absolute;
+	left:500px;
+	float:right;
+	width:150px;
+}
+
+.uspeh {
+	font-size:14px;
+	color:green;
+	font-weight:bold;}
+.neuspeh{
+	font-size:14px;
+	color:red;
+	font-weight:bold;
+	}
+.btnporudzbine {
+	-moz-box-shadow:inset 0px 3px 5px 0px #efdcfb;
+	-webkit-box-shadow:inset 0px 3px 5px 0px #efdcfb;
+	box-shadow:inset 0px 3px 5px 0px #efdcfb;
+	background-color:#dfbdfa;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #c584f3;
+	display:inline-block;
+	color:#ffffff;
+	font-family:Comic Sans MS;
+	font-size:12px;
+	font-weight:bold;
+	padding:3px 22px;
+	text-decoration:none;
+	text-shadow:1px 1px 7px #9752cc;
+}.btnporudzbine:hover {
+	background-color:#bc80ea;
+	cursor:pointer;
+}.btnporudzbine:active {
+	position:relative;
+	top:1px;
+}
+
+.btnNext {
+	margin-top:12%;
+	margin-left:77%;
+	-moz-box-shadow:inset 0px 3px 5px 0px #dcecfb;
+	-webkit-box-shadow:inset 0px 3px 5px 0px #dcecfb;
+	box-shadow:inset 0px 3px 5px 0px #dcecfb;
+	background-color:#bddbfa;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	color:#ffffff;
+	font-family:Comic Sans MS;
+	font-size:15px;
+	font-weight:bold;
+	padding:3px 22px;
+	text-decoration:none;
+	text-shadow:1px -2px 13px #528ecc;
+}.btnNext:hover {
+	background-color:#80b5ea;
+}.btnNext:active {
+	position:relative;
+	top:1px;
+}
+
+.image {
+	position:absolute;
+	right:270px;
+	top:120px;
+	float:right;
+	width:150px;
+	}
+.indexSlika {
+width:60px;
+
+}
+
+.indexTabela {
+	margin-left:0px;
+	margin-right:10px;
+	width:1380px;
+	background:#F9F9F9;
+	font-size:16px;
+	}
+
+.indexTabela th {
+	background:#FC6;
+	}
+
+.indexIme{
+width:180px;
+border:2px solid white;
+}
+
+.indexPrezime{
+border:2px solid white;
+}
+.indexNapomena{
+border:2px solid white;
+}
+.indexZaDatum{
+	border:2px solid white;
+	text-align:center;
+}
+.indexProizvod{
+	border:2px solid white;
+}
+.indexCena {
+width:80px;
+border:2px solid white;
+}
+.indexTelefon {
+	width:80px;
+	border:2px solid white;
+	}
+.indexSlikaTd{
+border:2px solid white;
+text-align:center;
+}
+
+
+.flycat{
+	position:absolute;
+	right:10%;
+	top:15%;
+	}
+.flufy{
+	position:absolute;
+	right:1%;
+	bottom:2%;
+	}
+.schedule{
+	width:100%;
+	padding:0px;
+	margin:0px;
+	}
+	
+.schedule th {
+	background:#f5f8ff;
+	color:#1f3d73;
+	font-weight:normal;
+	
+	}
+.scheduleImeH{
+	border-right:1px solid #ccd7ed;
+	border-bottom:2px solid #ccd7ed;
+	}
+.scheduleIme{
+	width:80px;
+	border-bottom:1px solid #ccd7ed;
+	color:#757575;
+	font-weight:normal;
+	font-family:Arial, Helvetica, sans-serif;
+	}
+.schedulePrezimeH{
+	border-right:1px solid #ccd7ed;
+	border-bottom:2px solid #ccd7ed;
+	}
+.schedulePrezime{
+	width:80px;
+	border-bottom:1px solid #ccd7ed;
+	color:#757575;
+	font-weight:normal;
+	font-family:Arial, Helvetica, sans-serif;
+	}
+.scheduleNapomenaH{
+	border-right:1px solid #ccd7ed;
+	border-bottom:2px solid #ccd7ed;
+	}
+.scheduleNapomena{
+	border-bottom:1px solid #ccd7ed;
+	color:#757575;
+	font-weight:normal;
+	font-family:Arial, Helvetica, sans-serif;
+	}
+.scheduleProizvodH{
+	border-right:1px solid #ccd7ed;
+	border-bottom:2px solid #ccd7ed;
+}
+.scheduleProizvod{
+	border-bottom:1px solid #ccd7ed;
+	color:#757575;
+	font-weight:normal;
+	font-family:Arial, Helvetica, sans-serif;
+	width:120px;
+	}
+.scheduleCenaH{
+	border-bottom:2px solid #ccd7ed;
+	border-right:1px solid #ccd7ed;
+	}
+.scheduleCena {
+	width:30px;
+	border-bottom:1px solid #ccd7ed;
+	color:#757575;
+	font-weight:normal;
+	font-family:Arial, Helvetica, sans-serif;
+	}
+.kurchevPre {
+	
+	font-family:Verdana, Geneva, sans-serif;
+	width:450px;
+	white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	
+	
+	}
+	
+.pizda{
+	margin-bottom:10px;
+	margin-top:10px;
+	color:#1f3d73;
+	font-family:Arial, Helvetica, sans-serif;
+	}
+	
+.porudzbineIme{
+	width:100px;
+	color:red;
+	}
+.porudzbineNaziv{
+	width:150px;
+	}
+.porudzbineCena{
+	width:50px;
+	}
+.porudzbineDatum{
+	width:83px;}
+.porudzbineDelete{
+	width:25px;
+	}
+.porudzbineNapomena{
+	width:450px;
+	}
+
+
+
+.homeLinija {
+	background-color:lightblue;
+	height:1px;
+	}
+.indexSlikaTd a:hover {cursor:pointer;}
+
+.radio {
+	float:left;
+	margin-left:5px;}

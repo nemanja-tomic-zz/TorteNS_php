@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Unos Klijenata</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<!-- slajder css 	<link type="text/css" href="public/css/jquery-ui-1.8.23.custom.css" rel="stylesheet" /> -->
+	<link rel="stylesheet" type="text/css" href="public/css/style.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="public/css/menu-css.css" />
+	<link rel="stylesheet" type="text/css" href="public/css/autocomplete.css" />
+	 
+	<!--script type="text/javascript" src="public/js/jquery-1.8.1.min.js" ></script-->
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="public/js/autocomplete.js"></script>
+	<script type="text/javascript" src="public/js/functions.js" ></script>
+	
+	
+</head>
+
+<body>
+	<div class="wrapper">
+    	<div class="meniwrapper">
+	        <div id='cssmenu'>
+				<ul>
+				   <li><a href='index.html'><span>Home</span></a></li>
+				   <li class='has-sub '><a><span>Klijenti</span></a>
+		        		<ul>
+		         		<li><a href='unosKlijenta.html'><span>Unos Klijenata</span></a>
+	        		   	</li>
+    	   				<li ><a href='pregledKlijenata.html'><span>Pregled klijenata</span></a>
+        	    		</li>
+		    			</ul>
+				   </li>
+				   <li class='has-sub'><a><span>Porudžbine</span></a>
+						<ul>
+						<li><a href='unosPorudzbine.html'><span>Unos Porudžbine</span></a></li>
+						<li><a href='pregledPorudzbina.html'><span>Pregled Porudžbina</span></a></li>
+                        <li><a href='starePorudzbine.html'><span>Stare Porudžbine</span></a></li>
+						</ul>
+				   </li>
+				  <li class='has-sub '><a><span>Proizvodi</span></a>
+		      			<ul>
+        					<li><a href='unosProizvoda.html'><span>Unos Proizvoda</span></a>
+                            </li>
+   					        <li ><a href='pregledProizvoda.html'><span>Pregled Proizvoda</span></a>
+			       			</li>
+      					</ul>
+				   </li>
+				</ul>
+	</div>
+        </div>
+        
+        <div class="contentwrapper">
+        
+       
+<div class="unosForma">
+
+		
+		<form>
+        <table class="tabelaUnos">
+        	<tr>
+		        <td><label for="ime">Ime* :</label></td>
+				<td><input type="text" id="ime"/><br /></td>
+			</tr>
+	        <tr>
+    		    <td><label for="prezime">Prezime:</label></td>
+				<td><input type="text" id="prezime" /><br /></td>
+	        </tr>
+      		<tr>
+		        <td><label for="adresa">Adresa:</label></td>
+				<td><input type="text" id="adresa" /><br /></td>
+	        </tr>
+     	    <tr>
+				<td><label for="telefon">Telefon:</label></td>
+				<td><input type="text" id="telefon" /><br /></td>
+        	</tr>
+	        <tr>
+    		    <td><label for="telefon2">Telefon 2:</label></td>
+		        <td><input type="text" id="telefon2" /><br /></td>
+	        </tr>
+    	    <tr>
+				<td><label for="email">E-Mail:</label></td>
+				<td><input type="text" id="email" /><br /></td>
+	        </tr>
+       		<tr>
+		        <td><label for="fblink">Facebook Link:</label></td>
+				<td><input type="text" id="fblink" /><br /></td>
+				<td><span class="fbIma" id="daLiFejsbuk"></span></td>
+        	</tr>
+			
+        </table>
+        <span class="demo" style="width:200px; margin-left:50px;">
+        </span><br>
+		<textarea id="napomena" placeholder="Napomena..."></textarea>
+	
+<div class="demo" style="width:550px; " >
+
+		<p class="radio" style="color:gray;"><input  type="radio" name='status' id="neocenjen" value="0"/>Neocenjen</p>
+		<p class="radio" style="color:red"><input class="radio" type="radio" name='status' id="nikako" value="1"/>Nikako</p>
+		<p class="radio" style="color:orange"><input class="radio" type="radio" name='status' id="izbegavati" value="2"/>Izbegavati</p>
+		<p class="radio" style="color:green"><input class="radio" type="radio" name='status' id="ok" value="3"/>OK</p>
+		<p class="radio" style="color:blue"><input class="radio" type="radio" name='status' id="super" value="4"/>Super</p><br><br><br>
+		
+
+	<img class="insertCat" src="public/Assets/img/insertCat.png" alt="cat" title="cat" />
+</div>	
+<!-- SLAJDERCHINA 
+<div class="demo" style="width:200px; margin-left:50px;" >
+
+	<p style="font-size:30px">
+		<label for="rating">Ocena:</label>
+		<input type="text" disabled="disabled" id="rating" style="width:70px;border:0; color:#f6931f; font-weight:bold;font-size:40px "/>
+    </p>
+
+	<div id="slider-range-min">
+		<img class="insertCat" src="public/Assets/img/insertCat.png" alt="cat"/>
+	</div>
+	<br><br>
+</div>
+
+ -->
+<div>
+	<input style="margin-left:20px;" type="button" id="submit" value="Unesi" />
+	<input style="margin-left:20px" type="reset" id="reset" value="Reset" />
+      
+    <br><br>
+	<span id="dada"></span>
+    
+  </div>
+	</form>
+   
+
+</div>
+</div>
+</div>
+</body>
+</html>

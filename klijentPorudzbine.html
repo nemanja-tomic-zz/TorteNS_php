@@ -1,0 +1,128 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="public/css/style.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="public/css/pager.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="public/fancybox/jquery.fancybox.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="public/css/menu-css.css" />
+    <link rel="stylesheet" type="text/css" href="public/css/popup.css" />
+    <link rel="stylesheet" type="text/css" href="public/css/jquery-ui-1.8.23.custom.css" />
+    <link rel="stylesheet" type="text/css" href="public/css/datepicker.css" />
+    <script type="text/javascript" src="public/js/jquery-1.8.1.min.js" ></script>
+	<script type="text/javascript" src="public/js/jquery.form.js" ></script>
+	<script type="text/javascript" src="public/js/KOK.js" ></script>
+	<script type="text/javascript" src="public/js/jquery.tablesorter.pager.js" ></script>
+	<script type="text/javascript" src="public/js/jquery.tablesorter.min.js" ></script>
+    <script type="text/javascript" src="public/js/popup.js" ></script>
+	<script type="text/javascript" src="public/js/jquery-ui-1.8.23.custom.min.js"></script>
+	<script type="text/javascript" src="public/fancybox/jquery.fancybox.js" ></script>
+	<script type="text/javascript" src="public/js/klijentPorudzbine.js" ></script>
+    <script type="text/javascript" src="public/js/datepicker.js" ></script>
+    <style type="text/css">
+  .ui-datepicker td.holiday a, .ui-datepicker td.holiday a:hover {
+     background: none lightgray;
+     border: 1px solid gray;
+   }
+ </style>
+   
+
+	<title>Torte NS - Pregled Porudzbina</title>
+	
+</head>
+<body>
+	<div class="wrapper"  >
+    	<div class="meniwrapper">
+	       <div id='cssmenu'>
+				<ul>
+				   <li><a href='index.html'><span>Home</span></a></li>
+				   <li class='has-sub '><a><span>Klijenti</span></a>
+		        		<ul>
+		         		<li><a href='unosKlijenta.html'><span>Unos Klijenata</span></a>
+	        		   	</li>
+    	   				<li ><a href='pregledKlijenata.html'><span>Pregled klijenata</span></a>
+        	    		</li>
+		    			</ul>
+				   </li>
+				   <li class='has-sub'><a><span>Porudžbine</span></a>
+						<ul>
+						<li><a href='unosPorudzbine.html'><span>Unos Porud�bine</span></a></li>
+						<li><a href='pregledPorudzbina.html'><span>Pregled Porud�bina</span></a></li>
+                        <li><a href='starePorudzbine.html'><span>Stare Porud�bine</span></a></li>
+						</ul>
+				   </li>
+				  <li class='has-sub '><a><span>Proizvodi</span></a>
+		      			<ul>
+        					<li><a href='unosProizvoda.html'><span>Unos Proizvoda</span></a>
+                            </li>
+   					        <li ><a href='pregledProizvoda.html'><span>Pregled Proizvoda</span></a>
+			       			</li>
+      					</ul>
+				   </li>
+				</ul>
+	</div>
+        </div>
+        
+        <div class="contentwrapper">
+
+<!-- TORTE DIV -->
+<div id='porudzbineMain'>
+	
+		<table id="tabelaPorudzbine" class="tablesorter">
+		</table>
+        <br />
+<div id="pager" class="pager">
+	<form>
+		<img src="public/assets/img/first.png" class="first"/>
+		<img src="public/assets/img/prev.png" class="prev"/>
+		<input type="text" class="pagedisplay"/>
+		<img src="public/assets/img/next.png" class="next"/>
+		<img src="public/assets/img/last.png" class="last"/>
+		<select class="pagesize">
+			<option selected="selected"  value="10">10</option>
+			<option value="20">20</option>
+		</select>
+	</form>
+</div>
+<p id='response'></p>
+</div>
+<!-- ////////////////////////// -->
+
+
+<!-- DIALOG POPUP BOXEZZSSZSZZSZS -->
+
+<div class="demo">
+<div id="dialog-form" title="Izmena podataka porudzbine">
+	<p class="validateTips"></p>
+
+	<fieldset class="fieldset">
+     <div class="forma1">
+     <table>
+   		 <tr><td>Klijent :</td><td><span id="klijent"></span></td></tr>
+	     <tr><td>Proizvod :</td><td><span id="proizvod"></span></td></tr>
+         
+	     <tr><td>Napomena:</td><td><textarea cols="34" rows="5" id="opis"></textarea></td></tr>
+         <tr><td>Datum :</td><td><input id="datepicker" type="text"></td></tr>
+         <tr>
+		 <form id="uploadImg" method="post" enctype="multipart/form-data" action='includes/unosSlike.php'>
+		 <td><input type="hidden" name='idProizvodaHidden' />
+		 <input type="file" id="imgFile" name="imgFile" />
+         <input type="hidden" name="tipHidden" /></td>
+		 <td><input type="button" value="Unesi Sliku" id="imgSubmit" /></td></form></tr>
+     </table>
+	 
+     <div id='sveSlike'>
+	 </div><br>
+     <div id="preview"></div>
+   
+    </div>
+
+		
+	</fieldset>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+/* tables */
+table.tablesorter {
+	font-family:arial;
+	background-color:#eae8e8;
+	margin:10px auto;
+	font-size: 16px;
+	width: 1480px;
+	text-align: left;
+}
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+	background-color: pink;
+	border:1px solid #FFF;
+	font-size: 8pt;
+	padding: 4px;
+}
+table.tablesorter thead tr .header {
+	background-image: url(../assets/img/bg.gif);
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+table.tablesorter tbody td {
+	color: Black;
+	padding: 4px;
+	background-color: #FFF;
+	vertical-align: top;
+}
+table.tablesorter tbody tr.odd td {
+	background-color:#F0F0F6;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(../assets/img/asc.gif);
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(../assets/img/desc.gif);
+}
+table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
+background-color: #8dbdd8;
+}
+
+.klijentiIme {
+	width:100px;
+	}
+.klijentiPrezime {
+	width:140px;
+	
+	}
+.klijentiAdresa {
+	width:210px;
+	}
+.klijentiTelefon{
+	width:150px;
+}
+.klijentiEmail{
+	width:70px;
+	}
+.klijentiFB{
+	width:25px;
+	}
+.klijentiDetails{
+	width:25px;
+	}
+.klijentiDelete{
+	width:25px;
+	}
+.klijentiNapomene{
+	width:100px;
+	
+	}
+	
+.pager{
+	margin-left:400px;
+}
+
+.proizvodiNaziv{
+	width:170px;
+	}
+.proizvodiTezina {
+	width:55px;
+	}
+.proizvodiKolicina {
+	width:55px;
+	}
+.proizvodiCena {
+	width:55px;
+	}
+.proizvodiDelete{
+	width:25px;
+	}
+.proizvodiIzmena{
+	width:25px;
+	}
+.proizvodiSlikaTd{
+border:2px solid white;
+text-align:center;
+width:60px;
+}
+.proizvodiSlika {
+width:60px;
+}
+.proizvodiSlikaTd a:hover {cursor:pointer;}
+
+
+
+
+.filter {
+	margin-left:15px;
+	margin-top:8px;
+	}
+#products {
+	margin-left:10px;
+	
+	}
+
+table.tablesorter tbody tr .redBoja  {
+	background: lightgray;
+	
+	}

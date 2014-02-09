@@ -1,0 +1,126 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="public/css/style.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="public/css/pager.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="public/fancybox/jquery.fancybox.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="public/css/menu-css.css" />
+    <link rel="stylesheet" type="text/css" href="public/css/popup.css" />
+    <link rel="stylesheet" type="text/css" href="public/css/jquery-ui-1.8.23.custom.css" />
+	<script type="text/javascript" src="public/js/jquery-1.8.1.min.js" ></script>
+	<script type="text/javascript" src="public/js/jquery.form.js" ></script>
+	<script type="text/javascript" src="public/js/KOK.js" ></script>
+	<script type="text/javascript" src="public/js/getProizvod.js" ></script>
+	<script type="text/javascript" src="public/js/jquery.tablesorter.pager.js" ></script>
+	<script type="text/javascript" src="public/js/jquery.tablesorter.min.js" ></script>
+    <script type="text/javascript" src="public/js/popup.js" ></script>
+	<script type="text/javascript" src="public/js/jquery-ui-1.8.23.custom.min.js"></script>
+	<script type="text/javascript" src="public/fancybox/jquery.fancybox.js" ></script>
+
+	<title>Torte NS - Pregled Proizvoda</title>
+</head>
+<body>
+	<div class="wrapper">
+    	<div class="meniwrapper">
+	       <div id='cssmenu'>
+				<ul>
+				   <li><a href='index.html'><span>Home</span></a></li>
+				   <li class='has-sub '><a><span>Klijenti</span></a>
+		        		<ul>
+		         		<li><a href='unosKlijenta.html'><span>Unos Klijenata</span></a>
+	        		   	</li>
+    	   				<li ><a href='pregledKlijenata.html'><span>Pregled klijenata</span></a>
+        	    		</li>
+		    			</ul>
+				   </li>
+				   <li class='has-sub'><a><span>Porudžbine</span></a>
+						<ul>
+						<li><a href='unosPorudzbine.html'><span>Unos Porudžbine</span></a></li>
+						<li><a href='pregledPorudzbina.html'><span>Pregled Porudžbina</span></a></li>
+                        <li><a href='starePorudzbine.html'><span>Stare Porudžbine</span></a></li>
+						</ul>
+				   </li>
+				  <li class='has-sub '><a><span>Proizvodi</span></a>
+		      			<ul>
+        					<li><a href='unosProizvoda.html'><span>Unos Proizvoda</span></a>
+                            </li>
+   					        <li ><a href='pregledProizvoda.html'><span>Pregled Proizvoda</span></a>
+			       			</li>
+      					</ul>
+				   </li>
+				</ul>
+	</div>
+        </div>
+        
+        <div class="contentwrapper">
+		<div id="products">
+			        <button id="torteBtn">Torte</button>
+                    <button id="cupsBtn">Cupcakes</button>
+                    <button id="figuriceBtn">Figurice</button>
+                    <button id="miscBtn">Ostali proizvodi</button>
+			</div>
+			
+<!-- TORTE DIV -->
+<div id='torteMain'>
+	<div class='filter'>
+		Naziv:<input type="text" id="naziv" />
+		Cena:<input type="text" id="cena" />
+        Opis:<input type="text" id="opis" /><br />
+	</div>
+		<table id="tabelaProizvodi" class="tablesorter">
+		</table>
+        <br>
+<div id="pager" class="pager">
+	<form>
+		<img src="public/assets/img/first.png" class="first"/>
+		<img src="public/assets/img/prev.png" class="prev"/>
+		<input type="text" class="pagedisplay"/>
+		<img src="public/assets/img/next.png" class="next"/>
+		<img src="public/assets/img/last.png" class="last"/>
+		<select class="pagesize">
+			<option selected="selected"  value="10">10</option>
+			<option value="20">20</option>
+		</select>
+	</form>
+</div>
+<p id='response'></p>
+</div>
+<!-- ////////////////////////// -->
+
+
+<!-- DIALOG POPUP BOXEZZSSZSZZSZS -->
+
+<div class="demo">
+<div id="dialog-form" title="Izmena podataka proizvoda">
+	<p class="validateTips"></p>
+
+	<fieldset class="fieldset">
+     <div class="forma1">
+     <table>
+   		 <tr><td>Naziv</td><td><input type="text" id="naziv1"/></td></tr>
+	     <tr><td id='tdKolicina'>Kolicina</td><td><input type="text" id="kolicina1"/></td></tr>
+	     <tr><td id='tdTezina'>Tezina</td><td><input type="text" id="tezina1"/></td></tr>
+	     <tr><td>Cena</td><td><input type="text" id="cena1"/></td></tr>
+         <tr><td>Opis</td><td><textarea id="opis1"></textarea></td></tr>
+         <tr>
+		 <form id="uploadImg" method="post" enctype="multipart/form-data" action='includes/unosSlike.php'>
+		 <td><input type="hidden" name='idProizvodaHidden' />
+		 <input type="hidden" name='tipHidden' /><input type="file" id="imgFile" name="imgFile" /></td>
+		 <td><input type="button" value="Unesi Sliku" id="imgSubmit" /></td></form></tr>
+     </table>
+	 <a id="poruci"><img src="public/assets/img/velkaplava.png" /></a>
+     <div id="sveSlike">
+	 </div>
+     <div id="preview"></div>
+    </div>
+
+		
+	</fieldset>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

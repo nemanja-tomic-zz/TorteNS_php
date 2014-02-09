@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+ 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<link type="text/css" href="public/css/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="public/css/style.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="public/css/tabs.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="public/css/menu-css.css" />
+	<script type="text/javascript" src="public/js/jquery-1.8.1.min.js" ></script>
+	<script type="text/javascript" src="public/js/jquery.form.js" ></script>
+	<script type="text/javascript" src="public/js/proizvodi.js" ></script>
+	<script type="text/javascript" src="public/js/tabs.js" ></script>
+	
+	<title>Torte NS - Unos Proizvoda</title>
+	
+</head>
+<body>
+	<div class="wrapper">
+    	<div class="meniwrapper">
+	        <div id='cssmenu'>
+				<ul>
+				   <li><a href='index.html'><span>Home</span></a></li>
+				   <li class='has-sub '><a><span>Klijenti</span></a>
+		        		<ul>
+		         		<li><a href='unosKlijenta.html'><span>Unos Klijenata</span></a>
+	        		   	</li>
+    	   				<li ><a href='pregledKlijenata.html'><span>Pregled klijenata</span></a>
+        	    		</li>
+		    			</ul>
+				   </li>
+				   <li class='has-sub'><a><span>Porudžbine</span></a>
+						<ul>
+						<li><a href='unosPorudzbine.html'><span>Unos Porudžbine</span></a></li>
+						<li><a href='pregledPorudzbina.html'><span>Pregled Porudžbina</span></a></li>
+                        <li><a href='starePorudzbine.html'><span>Stare Porudžbine</span></a></li>
+						</ul>
+				   </li>
+				  <li class='has-sub '><a><span>Proizvodi</span></a>
+		      			<ul>
+        					<li><a href='unosProizvoda.html'><span>Unos Proizvoda</span></a>
+                            </li>
+   					        <li ><a href='pregledProizvoda.html'><span>Pregled Proizvoda</span></a>
+			       			</li>
+      					</ul>
+				   </li>
+				</ul>
+	</div>
+        </div>
+        
+        <div class="contentwrapper">
+		
+        
+<div id="tabs">
+	<ul id="tabItems">
+		<li><a href="#tabs-1">Torte</a></li>
+		<li><a href="#tabs-2">Cupcakes</a></li>
+		<li><a href="#tabs-3">Figurice</a></li>
+		<li><a href="#tabs-4">Ostali Proizvodi</a></li>
+	</ul>
+	<div id="tabs-1">
+        <table class="tabelaUnos">
+        <form id="formTorte" method="post" enctype="multipart/form-data" action='includes/ajaximage.php'>
+		<tr>
+        <td><label for="naziv">Naziv* :</label></td>
+		<td><input type="text" name="naziv" id="naziv"/><br /></td>
+		</tr>
+        <tr>
+        <td><label for="tezina">Tezina:</label></td>
+		<td><input type="text" name="tezina" id="tezina" /><br /></td>
+        </tr>
+        <tr>
+        <td><label for="cena">Cena:</label></td>
+		<td><input type="text" name="cena" id="cena" /><br /></td>
+        </tr>
+		<tr>
+        <td><label for="slika">Slika:</label></td>
+		<td><input type="file" name="slika" id="slika" name="slika"/><br /></td>
+        </tr>
+        </table>
+		<img class='slika' src="public/assets/img/insertTorta.png" />
+        <span class="demo" style="width:200px; margin-left:50px;">
+        </span><br>
+		<textarea id="opis" name="opis" placeholder="Opis torte..."></textarea>
+		<input type="hidden" id="tip" name="tip" value="Torte" />
+<div>
+	<input style="margin-left:20px;" type="button" id="submitTorte" value="Unesi" />
+	<input style="margin-left:20px" type="reset" id="resetTorte" value="Reset" />
+		<div id="preview"></div>
+      
+	</form>
+    <br><br>
+	<span id="dada"></span>
+	</div>
+</div>
+<div id="tabs-2">
+<table class="tabelaUnos">
+<form id="formCups" method="post" enctype="multipart/form-data" action='includes/ajaximage.php'>
+        <tr>
+        <td><label for="naziv">Naziv:</label></td>
+		<td><input type="text" name="naziv" id="naziv"/><br /></td>
+		</tr>
+        <tr>
+        <td><label for="kolicina">Kolicina:</label></td>
+		<td><input type="text" name="kolicina" id="kolicina" /><br /></td>
+        </tr>
+        <tr>
+        <td><label for="cena">Cena:</label></td>
+		<td><input type="text" name="cena" id="cena" /><br /></td>
+        </tr>
+		<tr>
+        <td><label for="slika">Slika:</label></td>
+		<td><input type="file" name="slika" id="slika" /><br /></td>
+        </tr>
+        </table>
+		<textarea id="opis" name="opis" placeholder="Opis proizvoda..."></textarea>
+		<input type="hidden" id="tip" name="tip" value="Cupcakes" />
+		<img class='slika' src="public/assets/img/insertCupcake.png" />
+		<div>
+	<input style="margin-left:20px;" type="button" id="submitCups" value="Unesi" />
+	<input style="margin-left:20px" type="reset" id="reset" value="Reset" />
+	<div id="previewCups"></div>
+    </form>
+    <br><br>
+	<span id="dada"></span>
+	</div>
+</div>
+<div id="tabs-3">
+<table class="tabelaUnos">
+	<form id="formFigurice" method="post" enctype="multipart/form-data" action='includes/ajaximage.php'>
+        <tr>
+        <td><label for="naziv">Naziv:</label></td>
+		<td><input type="text" name="naziv" id="naziv"/><br /></td>
+		</tr>
+        <tr>
+        <td><label for="kolicina">Komada:</label></td>
+		<td><input type="text" name="kolicina" id="kolicina" /><br /></td>
+        </tr>
+        <tr>
+        <td><label for="cena">Cena:</label></td>
+		<td><input type="text" name="cena" id="cena" /><br /></td>
+        </tr>
+		<tr>
+        <td><label for="slika">Slika:</label></td>
+		<td><input type="file" name="slika" id="slika" /><br /></td>
+        </tr>
+        </table>
+		<textarea id="opis" name="opis" placeholder="Opis proizvoda..."></textarea>
+		<input type="hidden" id="tip" name="tip" value="Figurice" />
+		<img class='slika' src="public/assets/img/insertFigurica.png" />
+		<div>
+	<input style="margin-left:20px;" type="button" id="submitFigurice" value="Unesi" />
+	<input style="margin-left:20px" type="reset" id="reset" value="Reset" />
+	<div id="previewFigurice"></div>
+    </form>
+    <br><br>
+	<span id="dada"></span>
+	</div>
+</div>
+<div id="tabs-4">
+<table class="tabelaUnos">
+	<form id="formMisc" method="post" enctype="multipart/form-data" action='includes/ajaximage.php'>
+        <tr>
+        <td><label for="naziv">Naziv:</label></td>
+		<td><input type="text" name="naziv" id="naziv"/><br /></td>
+		</tr>
+        <tr>
+        <td><label for="kolicina">Kolicina:</label></td>
+		<td><input type="text" name="kolicina" id="kolicina" /><br /></td>
+        </tr>
+        <tr>
+        <td><label for="cena">Cena:</label></td>
+		<td><input type="text" name="cena" id="cena" /><br /></td>
+        </tr>
+		<tr>
+        <td><label for="slika">Slika:</label></td>
+		<td><input type="file" name="slika" id="slika" /><br /></td>
+        </tr>
+        </table>
+		<textarea id="opis" name="opis" placeholder="Opis proizvoda..."></textarea>
+		<input type="hidden" id="tip" name="tip" value="Ostali Proizvodi" />
+		<img class='slika' src="public/assets/img/misc.png" />
+		<div>
+	<input style="margin-left:20px;" type="button" id="submitMisc" value="Unesi" />
+	<input style="margin-left:20px" type="reset" id="reset" value="Reset" />
+	<div id="previewMisc"></div>
+    </form>
+    <br><br>
+	<span id="dada"></span>
+	</div>
+</div>
+
+</div>
+</div>
+</div>
+</body>
+</html>
