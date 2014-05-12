@@ -26,5 +26,6 @@ class Database
 		return mysql_fetch_assoc($result);
 	}
 	
+	
 }
 ?>
