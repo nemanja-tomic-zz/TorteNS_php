@@ -10,11 +10,11 @@ try
 		$date = Date("Y/m/d");
 		$endDate = date('Y/m/d', strtotime("+7 days"));
 		
-		$query = "SELECT sve.ime, sve.prezime, sve.telefon, sve.telefon2,
+		$query = "SELECT sve.ime, sve.prezime,
 				sve.idPorudzbine, sve.idKlijenta, sve.idProizvoda, sve.napomena, sve.datumTransakcije,
 				sve.naziv AS nazivProizvoda, sve.cena, sve.idGrupe,
 				sli.naziv AS nazivSlike, sli.putanja, sli.idSlike
-				FROM (SELECT kli.ime, kli.prezime, kli.telefon, kli.telefon2,
+				FROM (SELECT kli.ime, kli.prezime, 
 				por.idPorudzbine, por.idKlijenta, por.idProizvoda, por.napomena, por.datumTransakcije,
 				pro.naziv, pro.cena, pro.idGrupe
 				FROM porudzbine AS por
@@ -37,8 +37,6 @@ try
 		{
 			$data['ime'] = $row['ime'];
 			$data['prezime'] = $row['prezime'];
-			$data['telefon'] = $row['telefon'];
-			$data['telefon2'] = $row['telefon2'];
 			$data['idPorudzbine'] = $row['idPorudzbine'];
 			$data['idKlijenta'] = $row['idKlijenta'];
 			$data['idProizvoda'] = $row['idProizvoda'];

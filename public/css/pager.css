@@ -4,7 +4,7 @@ table.tablesorter {
 	background-color:#eae8e8;
 	margin:10px auto;
 	font-size: 16px;
-	width: 1480px;
+	width: 1080px;
 	text-align: left;
 }
 table.tablesorter thead tr th, table.tablesorter tfoot tr th {
@@ -42,7 +42,7 @@ background-color: #8dbdd8;
 	width:100px;
 	}
 .klijentiPrezime {
-	width:140px;
+	width:100px;
 	
 	}
 .klijentiAdresa {

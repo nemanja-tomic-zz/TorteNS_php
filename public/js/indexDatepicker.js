@@ -28,6 +28,7 @@ function dobijDatume() {
 				holiDays.push(tempNiz);
 				tempNiz = [];
 			});
+			console.log(holiDays);
 		$("#datepicker").datepicker({
 			dateFormat: 'yy/mm/dd',
 			minDate: 0,

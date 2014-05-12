@@ -3,27 +3,26 @@ function getPorudzbine(){
 		try
 		{
 			var obj = $.parseJSON(response);
-			$("#indexTabela").append("<thead><tr><th>Ime</th><th>Prezime</th><th>Napomena</th><th>Za datum</th><th>Proizvod</th><th>Cena</th><th>Telefon</th><th>Slika</th></tr></thead><tbody>");
+			$("#indexTabela").append("<thead><tr><th>Ime</th><th>Prezime</th><th>Napomena</th><th>Za datum</th><th>Proizvod</th><th>Cena</th><th>Slika</th></tr></thead><tbody>");
 			var pom = 0;
 			$.each(obj, function(i, item){
 			var linija;
 			//if petlja koja povlaci liniju koja odvaja datume
 			if (item.datum > pom)
 			{
-				linija = "<tr><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td></tr>";
+				linija = "<tr><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td><td class='homeLinija'></td></tr>";
 				pom = item.datum;
 			}
 			else
 			{
 				linija = "";
 			}
-			if (item.nazivSlike == undefined || item.nazivSlike === null) {
-				img="<td></td>";		//ako nema sliku,ne ispisuje<img> tag ni <td> tag
+			if (item.nazivSlike == undefined ) {
+				img="<td></td>";
 			}
 			else
 				img = "<td class='indexSlikaTd'><a onclick=fancyBox('"+item.idProizvoda+"')><img class='indexSlika' src='"+"uploads/"+item.putanja+"/"+item.nazivSlike+"'/></a></td>";
-			$("#indexTabela").append(linija+"<tr><td class='indexIme'>"+item.ime+"</td><td class='indexPrezime'>"+item.prezime+"</td><td class='indexNapomena'>"+item.napomena+"</td><td class='indexZaDatum'>"+item.datumTransakcije+"</td><td class='indexProizvod'>"+item.nazivProizvoda+"</td><td class='indexCena'>"+item.cena+"</td><td class='indexTelefon'>"+item.telefon+telefon(item.telefon2)+"</td>"+img+"</tr>");
-			console.log(item.nazivSlike);
+			$("#indexTabela").append(linija+"<tr><td class='indexIme'>"+item.ime+"</td><td class='indexPrezime'>"+item.prezime+"</td><td class='indexNapomena'>"+item.napomena+"</td><td class='indexZaDatum'>"+item.datumTransakcije+"</td><td class='indexProizvod'>"+item.nazivProizvoda+"</td><td class='indexCena'>"+item.cena+"</td>"+img+"</tr>");
 			});
 			$("#indexTabela").append("</tbody>");
 		}
@@ -33,16 +32,6 @@ function getPorudzbine(){
 		}
 	});
 }
-
-//prima telefon2 iz phpa i ispisuje rezultat u zavisnosti da li je prazan (telefon2)
-function telefon(telefon2){
-	if (telefon2 != "")
-		return ", "+telefon2;
-	else
-		return "";
-}
-
-
 function fancyBox(id){
 var string = new Array();
 	$.post("includes/getProizvodSlike.php", {idProizvoda:id}, function(json){
