@@ -3,9 +3,9 @@
 //error_reporting(0);
 class Database
 {
-	private $server = "localhost";
-	private $username = "root";
-	private $password = "";
+	private $server = "localhost:3306";
+	private $username = "atila";
+	private $password = "penis";
 	public $con = null;
 	
 	public function connect()
