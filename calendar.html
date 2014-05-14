@@ -1,19 +1,30 @@
+<!DOCTYPE html>
 <html>
 <head>
+	<title>Pocetna </title>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<link type="text/css" href="public/css/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="public/css/style.css" media="all" />
-	<link rel="stylesheet" type="text/css" href="public/css/popup.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="public/css/tabs.css" media="all" />
     <link rel="stylesheet" type="text/css" href="public/css/menu-css.css" />
+	<link rel="stylesheet" type="text/css" href="public/css/datepicker.css" />
+	<link rel="stylesheet" type="text/css" href="public/fancybox/jquery.fancybox.css" media="all" />
 	<script type="text/javascript" src="public/js/jquery-1.8.1.min.js" ></script>
-	<script type="text/javascript" src="public/js/jquery.form.js" ></script>
-	<script type="text/javascript" src="public/js/KOK.js" ></script>
-	<script type="text/javascript" src="public/js/jquery-ui-1.8.23.custom.min.js"></script>
-	<script type="text/javascript" src="public/js/slikePorudzbine.js" ></script>
+	<script type="text/javascript" src="public/js/datepicker.js"></script>
+	<script type="text/javascript" src="public/js/getPorudzbine.js"></script>
+	<script type="text/javascript" src="public/js/indexDatepicker.js" ></script>
+    <script type="text/javascript" src="public/js/KOK.js" ></script>
+	<script type="text/javascript" src="public/fancybox/jquery.fancybox.js"></script>
 	
+	<style type="text/css">
+		.ui-datepicker td.holiday a, .ui-datepicker td.holiday a:hover {
+		background: none lightgray;
+		border: 1px solid gray;
+		}
+	</style>
 </head>
 <body>
-	<div class="wrapper">
+<div class="wrapper" style="height:0px;" >
     	<div class="meniwrapper">
 	        <div id='cssmenu'>
 				<ul>
@@ -43,26 +54,13 @@
 				   </li>
 				   <li><a href="calendar.html"><span>Calendar</span></a></li>
 				</ul>
-	</div>
+			</div>
+		</div>
+        
+		<div class="contentwrapper">
+			<h5>konj</h1>
         </div>
         
-<div class="contentwrapper">
-        
-       
-	<div class="unosForma" style="height:700px; width:1000px; padding-top:30px; padding-left:10px;">
-
-		<form id="uploadImg" method="post" enctype="multipart/form-data" action='includes/insertSlikePorudzbine.php'">
-			<input type="hidden" value="porudzbine" name='tipHidden' />
-			<input type="hidden" name='idPorudzbineHidden' />
-			<input type="file" id="imgFile" name="imgFile" />
-			<input type="button" value="Unesi Sliku" id="imgSubmit" />
-			<span id="preview"></span>
-		</form>
-		<div id="sveSlike" style="margin-left:10px;">
-		</div>
-		<button id="finishBtn">Finish</button>
-	</div>
-</div>
 </div>
 </body>
 </html>
