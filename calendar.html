@@ -1,66 +1,73 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-	<title>Pocetna </title>
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<link type="text/css" href="public/css/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
-	<link rel="stylesheet" type="text/css" href="public/css/style.css" media="all" />
-	<link rel="stylesheet" type="text/css" href="public/css/tabs.css" media="all" />
+    <title>Pocetna </title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link type="text/css" href="public/css/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="public/css/style.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="public/css/tabs.css" media="all" />
     <link rel="stylesheet" type="text/css" href="public/css/menu-css.css" />
-	<link rel="stylesheet" type="text/css" href="public/css/datepicker.css" />
-	<link rel="stylesheet" type="text/css" href="public/fancybox/jquery.fancybox.css" media="all" />
-	<script type="text/javascript" src="public/js/jquery-1.8.1.min.js" ></script>
-	<script type="text/javascript" src="public/js/datepicker.js"></script>
-	<script type="text/javascript" src="public/js/getPorudzbine.js"></script>
-	<script type="text/javascript" src="public/js/indexDatepicker.js" ></script>
-    <script type="text/javascript" src="public/js/KOK.js" ></script>
-	<script type="text/javascript" src="public/fancybox/jquery.fancybox.js"></script>
-	
-	<style type="text/css">
-		.ui-datepicker td.holiday a, .ui-datepicker td.holiday a:hover {
-		background: none lightgray;
-		border: 1px solid gray;
-		}
-	</style>
+    <link rel="stylesheet" type="text/css" href="public/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="public/fancybox/jquery.fancybox.css" media="all" />
+    <script type="text/javascript" src="public/js/jquery-1.8.1.min.js"></script>
+    <script type="text/javascript" src="public/js/datepicker.js"></script>
+    <script type="text/javascript" src="public/js/getPorudzbine.js"></script>
+    <script type="text/javascript" src="public/js/indexDatepicker.js"></script>
+    <script type="text/javascript" src="public/js/KOK.js"></script>
+    <script type="text/javascript" src="public/fancybox/jquery.fancybox.js"></script>
+
+    <style type="text/css">
+        .ui-datepicker td.holiday a, .ui-datepicker td.holiday a:hover {
+            background: none lightgray;
+            border: 1px solid gray;
+        }
+    </style>
 </head>
 <body>
-<div class="wrapper" style="height:0px;" >
-    	<div class="meniwrapper">
-	        <div id='cssmenu'>
-				<ul>
-				   <li><a href='index.html'><span>Home</span></a></li>
-				   <li class='has-sub '><a><span>Klijenti</span></a>
-		        		<ul>
-		         		<li><a href='unosKlijenta.html'><span>Unos Klijenata</span></a>
-	        		   	</li>
-    	   				<li ><a href='pregledKlijenata.html'><span>Pregled klijenata</span></a>
-        	    		</li>
-		    			</ul>
-				   </li>
-				   <li class='has-sub'><a><span>Porudžbine</span></a>
-						<ul>
-						<li><a href='unosPorudzbine.html'><span>Unos Porudžbine</span></a></li>
-						<li><a href='pregledPorudzbina.html'><span>Pregled Porudžbina</span></a></li>
-                        <li><a href='starePorudzbine.html'><span>Stare Porudžbine</span></a></li>
-						</ul>
-				   </li>
-				  <li class='has-sub '><a><span>Proizvodi</span></a>
-		      			<ul>
-        					<li><a href='unosProizvoda.html'><span>Unos Proizvoda</span></a>
+    <div class="wrapper" style="height:0px;">
+        <div class="meniwrapper">
+            <div id='cssmenu'>
+                <ul>
+                    <li><a href='index.html'><span>Home</span></a></li>
+                    <li class='has-sub '>
+                        <a><span>Klijenti</span></a>
+                        <ul>
+                            <li>
+                                <a href='unosKlijenta.html'><span>Unos Klijenata</span></a>
                             </li>
-   					        <li ><a href='pregledProizvoda.html'><span>Pregled Proizvoda</span></a>
-			       			</li>
-      					</ul>
-				   </li>
-				   <li><a href="calendar.html"><span>Calendar</span></a></li>
-				</ul>
-			</div>
-		</div>
-        
-		<div class="contentwrapper">
-			<h5>konj</h1>
+                            <li>
+                                <a href='pregledKlijenata.html'><span>Pregled klijenata</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class='has-sub'>
+                        <a><span>Porudžbine</span></a>
+                        <ul>
+                            <li><a href='unosPorudzbine.html'><span>Unos Porudžbine</span></a></li>
+                            <li><a href='pregledPorudzbina.html'><span>Pregled Porudžbina</span></a></li>
+                            <li><a href='starePorudzbine.html'><span>Stare Porudžbine</span></a></li>
+                        </ul>
+                    </li>
+                    <li class='has-sub '>
+                        <a><span>Proizvodi</span></a>
+                        <ul>
+                            <li>
+                                <a href='unosProizvoda.html'><span>Unos Proizvoda</span></a>
+                            </li>
+                            <li>
+                                <a href='pregledProizvoda.html'><span>Pregled Proizvoda</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="calendar.html"><span>Calendar</span></a></li>
+                </ul>
+            </div>
         </div>
-        
-</div>
+
+        <div class="contentwrapper">
+            <h5>konj</h5>
+        </div>
+
+    </div>
 </body>
 </html>
