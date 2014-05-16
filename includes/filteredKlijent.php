@@ -48,4 +48,3 @@ try
 		$response = $ex->getMessage();
 	}
 echo $response;
-?>
