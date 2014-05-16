@@ -1,13 +1,21 @@
 <?php
-
-//error_reporting(0);
 class Database
 {
-	private $server = "localhost:3306";
-	private $username = "root";
-	private $password = "root";
+	private $server;
+	private $username;
+	private $password;
+	private $port;
+
 	public $con = null;
-	
+
+	function __construct(ConfigManager $config) {
+		$this->server = $config->getDatabaseHost();
+		$this->username = $config->getDatabaseUsername();
+		$this->password = $config->getDatabasePassword();
+		$this->port = $config->getDatabasePort();
+	}
+
+
 	public function connect()
 	{
 			if (!$con = mysql_connect($this->server, $this->username, $this->password))
@@ -25,7 +33,4 @@ class Database
 	{
 		return mysql_fetch_assoc($result);
 	}
-	
-	
 }
-?>
