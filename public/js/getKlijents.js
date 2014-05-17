@@ -116,8 +116,13 @@ function getKlijents() {
     });
 }
 function getData(a) {
-    $.post("includes/getKlijent.php", {id: a}, function (data) {
-        var klijent = $.parseJSON(data);
+    var action = "getClient";
+    var data = {
+        id : a
+    };
+    $.post("includes/api.php", {action: action, data: JSON.stringify(data)}, function (data) {
+        var response = $.parseJSON(data);
+        var klijent = response.data;
         $("#ime").val(klijent.ime);
         $("#prezime").val(klijent.prezime);
         $("#telefon").val(klijent.telefon);

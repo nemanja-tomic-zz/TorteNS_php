@@ -21,8 +21,19 @@ class ClientController extends BaseController {
 		return true;
 	}
 
+	/**
+	 * @param $clientId
+	 * @return Client
+	 */
 	public function getClient($clientId) {
-		return true;
+		$clientData = new Client();
+		try {
+			$clientData = $this->db->getClient($clientId);
+			$clientData->statusText = ClientStatus::GetConstantName($clientData->status);
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
+		return $clientData;
 	}
 
 	public function getClients($fname, $lname, $email, $phone) {

@@ -50,4 +50,11 @@ class DbHandler
 	protected function fetchAsArray() {
 		return $this->statement->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	/**
+	 * @return int
+	 */
+	protected function getRowCount() {
+		return $this->statement->rowCount();
+	}
 }

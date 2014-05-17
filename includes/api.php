@@ -55,7 +55,7 @@ class Api {
 				$response->data = $this->clientController->getClients($this->data->imeF, $this->data->prezimeF, $this->data->emailF, $this->data->telefonF);
 				break;
 			case ApiActions::GetClient:
-				$response->data = $this->clientController->getClient($this->data->clientId);
+				$response->data = $this->clientController->getClient($this->data->id);
 				break;
 			case ApiActions::DeleteClient:
 				$this->clientController->deleteClient($this->data->id);
