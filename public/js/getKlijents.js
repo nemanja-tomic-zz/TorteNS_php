@@ -31,7 +31,7 @@ function popupInit(id) {
                 var klijentData = new Object();
                 klijentData.ime = $("#ime").val();
                 userData = new Object();
-                userData.id = id;
+                userData.idKlijenta = id;
                 userData.ime = $("#ime").val();
                 userData.prezime = $("#prezime").val();
                 userData.telefon = $("#telefon").val();
@@ -43,7 +43,7 @@ function popupInit(id) {
                 //userData.rating = $("#rating").val();
                 userData.status = $('input:radio[name=status]:checked').val();
 
-                $.post("includes/updateKlijent.php", {data: userData}, function (data) {
+                $.post("includes/api.php", {action: "updateClient", data: JSON.stringify(userData)}, function (data) {
                     $("#response").html(data);
                     getKlijents();
                 });

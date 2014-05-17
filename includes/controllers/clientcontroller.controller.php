@@ -17,10 +17,6 @@ class ClientController extends BaseController {
 		$this->db = new ClientDb($config);
 	}
 
-	public function insertClient() {
-		return true;
-	}
-
 	/**
 	 * @param $clientId
 	 * @return Client
@@ -36,6 +32,13 @@ class ClientController extends BaseController {
 		return $clientData;
 	}
 
+	/**
+	 * @param $fname
+	 * @param $lname
+	 * @param $email
+	 * @param $phone
+	 * @return array
+	 */
 	public function getClients($fname, $lname, $email, $phone) {
 		try {
 			$clientList = $this->db->fetchClients($fname, $lname, $email, $phone);
@@ -50,11 +53,42 @@ class ClientController extends BaseController {
 		return $clientList;
 	}
 
+	/**
+	 * @param $clientId
+	 */
 	public function deleteClient($clientId) {
 		try {
 			$this->db->deleteClient($clientId);
 		} catch (Exception $ex) {
 			$this->HandleException($ex);
 		}
+	}
+
+	public function insertClient($data) {
+		try {
+			$this->db->insertClient($this->prepareClientData($data));
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
+	}
+
+	public function updateClient($data) {
+		try {
+			$this->db->updateClient($this->prepareClientData($data));
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
+	}
+
+	/**
+	 * @param $data
+	 * @return Client
+	 */
+	private function prepareClientData($data) {
+		$client = new Client();
+		foreach ($data as $key => $value) {
+			$client->$key = trim($value);
+		}
+		return $client;
 	}
 }

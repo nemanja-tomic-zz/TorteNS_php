@@ -38,7 +38,8 @@ class DbHandler
 	protected function query($query, $params) {
 		$this->prepare($query);
 		if (!$this->execute($params)) {
-			throw new PDOException($this->statement->errorInfo());
+			$errorMessage = $this->statement->errorInfo();
+			throw new PDOException($errorMessage["2"]);
 		}
 	}
 

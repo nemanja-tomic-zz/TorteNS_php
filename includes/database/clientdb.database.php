@@ -54,4 +54,17 @@ class ClientDb extends DbHandler {
 		$result = $this->fetchResults(Client::GetClassName());
 		return $result[0];
 	}
+
+	public function insertClient(Client $client) {
+		$query = "INSERT INTO klijent (ime, prezime, telefon, telefon2, email, fblink, adresa, napomene, status)
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$this->query($query, array($client->ime, $client->prezime, $client->telefon, $client->telefon2, $client->email, $client->fblink, $client->adresa, $client->napomene, $client->status));
+	}
+
+	public function updateClient(Client $client) {
+		$query = "UPDATE klijent SET
+			ime = ?, prezime = ?, telefon = ?, telefon2 = ?, adresa = ?, email = ?, fblink = ?,	napomene = ?, status = ?
+			WHERE idKlijenta = ?";
+		$this->query($query, array($client->ime, $client->prezime, $client->telefon, $client->telefon2, $client->adresa, $client->email, $client->fblink, $client->napomene, $client->status, $client->idKlijenta));
+	}
 } 
