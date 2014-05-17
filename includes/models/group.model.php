@@ -2,7 +2,7 @@
 /**
  * Model which describes "grupa" table from database.
  */
-class Group {
+class Group extends BaseModel {
 	public $idGrupe;
 	public $naziv;
 } 

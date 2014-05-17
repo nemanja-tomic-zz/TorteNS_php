@@ -70,9 +70,13 @@ function popupInit(id) {
 function deleteKlijent(id) {
     var conf = confirm("Da li ste sigurni da zelite da obrisete klijenta?");
     if (conf == true) {
-        $.post("includes/deleteKlijent.php", {id: id}, function (data) {
+        var data = {
+            id: id
+        };
+        $.post("includes/api.php", {action: "deleteClient", data: JSON.stringify(data)}, function (data) {
             getKlijents();
-            $("#response").html(data);
+            var response = JSON.parse(data);
+            $("#response").html(response.message);
         });
     }
 }

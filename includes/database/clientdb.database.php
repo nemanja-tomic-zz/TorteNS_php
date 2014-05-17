@@ -31,4 +31,9 @@ class ClientDb extends DbHandler {
 		$this->query($query, array($fname."%", $lname."%", $email."%", $phone."%"));
 		return $this->fetchResults(Client::GetClassName());
 	}
+
+	public function deleteClient($clientId) {
+		$query = "DELETE FROM klijent WHERE idKlijenta = ?";
+		$this->query($query, array($clientId));
+	}
 } 

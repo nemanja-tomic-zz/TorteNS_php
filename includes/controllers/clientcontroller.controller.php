@@ -6,23 +6,14 @@
  * Time: 11:51 PM
  */
 
-class ClientController {
-
-	/**
-	 * @var DbHandler
-	 */
-	private $dbHandler;
-	/**
-	 * @var ConfigManager
-	 */
-	private $config;
+class ClientController extends BaseController {
 	/**
 	 * @var ClientDb
 	 */
 	private $db;
 
 	public function __construct(ConfigManager $config) {
-		$this->config = $config;
+		parent::__construct($config);
 		$this->db = new ClientDb($config);
 	}
 
@@ -35,13 +26,24 @@ class ClientController {
 	}
 
 	public function getClients($fname, $lname, $email, $phone) {
-		$clientList = $this->db->fetchClients($fname, $lname, $email, $phone);
+		try {
+			$clientList = $this->db->fetchClients($fname, $lname, $email, $phone);
 
-		/** @var $client Client */
-		foreach ($clientList as $client) {
-			$client->statusText = ClientStatus::GetConstantName($client->status);
+			/** @var $client Client */
+			foreach ($clientList as $client) {
+				$client->statusText = ClientStatus::GetConstantName($client->status);
+			}
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
 		}
-
 		return $clientList;
+	}
+
+	public function deleteClient($clientId) {
+		try {
+			$this->db->deleteClient($clientId);
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
 	}
 }

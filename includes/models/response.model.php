@@ -6,7 +6,7 @@
  * Time: 11:46 PM
  */
 
-class Response {
+class Response extends BaseModel {
 	public $data;
 	public $message;
 	public $success = true;

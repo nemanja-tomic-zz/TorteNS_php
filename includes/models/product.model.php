@@ -2,7 +2,7 @@
 /**
  * Model which describes "proizvod" table from database.
  */
-class Product {
+class Product extends BaseModel {
 	public $naziv;
 	public $cena;
 	public $tezina;

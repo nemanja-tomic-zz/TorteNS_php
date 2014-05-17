@@ -2,7 +2,7 @@
 /**
  * Model which describes "klijent" table from database.
  */
-class Client extends Base {
+class Client extends BaseModel {
 	public $idKlijenta;
 	public $ime;
 	public $prezime;

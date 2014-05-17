@@ -6,7 +6,7 @@
  * Time: 12:32 PM
  */
 
-class Base {
+class BaseModel {
 
 	public static function GetClassName() {
 		return __CLASS__;

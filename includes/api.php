@@ -57,6 +57,10 @@ class Api {
 			case ApiActions::GetClient:
 				$response->data = $this->clientController->getClient($this->data->clientId);
 				break;
+			case ApiActions::DeleteClient:
+				$this->clientController->deleteClient($this->data->id);
+				$response->message = "Client successfully deleted!";
+				break;
 			default:
 				throw new BadMethodCallException("Invalid API method called: ".$this->action);
 		}

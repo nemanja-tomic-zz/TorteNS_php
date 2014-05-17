@@ -32,12 +32,14 @@ class DbHandler
 		if (!is_array($params)) {
 			throw new InvalidArgumentException("Provided argument must be an array.");
 		}
-		$this->statement->execute($params);
+		return $this->statement->execute($params);
 	}
 
 	protected function query($query, $params) {
 		$this->prepare($query);
-		$this->execute($params);
+		if (!$this->execute($params)) {
+			throw new PDOException($this->statement->errorInfo());
+		}
 	}
 
 	protected function fetchResults($className) {

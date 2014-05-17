@@ -2,7 +2,7 @@
 /**
  * Model which describes "slike" table from database.
  */
-class Image {
+class Image extends BaseModel {
 	public $idSlike;
 	public $naziv;
 	public $velicina;

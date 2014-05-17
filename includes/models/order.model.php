@@ -2,7 +2,7 @@
 /**
  * Model which describes "porudzbine" table from database.
  */
-class Order {
+class Order extends BaseModel {
 	public $idPorudzbine;
 	public $napomena;
 	public $datumPorucivanja;
