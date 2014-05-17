@@ -5,7 +5,7 @@ try
 {
 	$idProizvoda = $_POST['id'];
 
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	
 	$query = "DELETE FROM proizvod WHERE idProizvoda = '".$idProizvoda."'";

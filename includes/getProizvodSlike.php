@@ -4,7 +4,7 @@ require_once 'dbClass.php';
 try
 {
 	$idProizvoda = $_POST['idProizvoda'];
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	
 	$query = "SELECT * FROM slikeproizvod INNER JOIN slike 

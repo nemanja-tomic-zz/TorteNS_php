@@ -4,7 +4,7 @@ function insertPorudzbina($data)
 {
 try
 {
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	
 	$now = date('Y-m-d');

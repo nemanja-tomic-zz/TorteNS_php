@@ -3,7 +3,7 @@
 require_once 'dbClass.php';
 function getGroup($naziv)
 {
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	
 	$query = "select * from grupa where naziv = '".$naziv."'";
@@ -36,7 +36,7 @@ try
 			
 		
 		
-		$db = new Database();
+		$db = new DbHandler();
 		$db->connect();
 			if(!$result = mysql_query($query))
 				throw new Exception("Neuspeli upit nad bazom: ".mysql_error());

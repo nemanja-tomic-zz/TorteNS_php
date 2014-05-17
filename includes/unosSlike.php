@@ -6,7 +6,7 @@ require_once 'insertProizvod.php';
 
 function uploadImg($image, $tip)
 {
-$dbObject = new Database();
+$dbObject = new DbHandler();
 
 
 	try

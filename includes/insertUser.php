@@ -5,7 +5,7 @@ if (!isset($userData['status']))
 		$userData['status'] = 0;
 try
 {
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	if (($userData['telefon']) <> "")
 	{	

@@ -7,7 +7,7 @@ try
 {
 	
 
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	
 	$select = "select * from slike where idSlike = '".$idImg."'";

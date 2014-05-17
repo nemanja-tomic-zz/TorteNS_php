@@ -9,7 +9,7 @@
 class ClientController {
 
 	/**
-	 * @var Database
+	 * @var DbHandler
 	 */
 	private $dbHandler;
 	/**

@@ -6,7 +6,7 @@
  * Time: 12:01 PM
  */
 
-class ClientDb extends Database {
+class ClientDb extends DbHandler {
 
 	/**
 	 * @var ConfigManager

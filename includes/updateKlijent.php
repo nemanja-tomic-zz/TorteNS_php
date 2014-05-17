@@ -3,7 +3,7 @@ require_once "dbClass.php";
 try
 {
 	$userData = $_POST['data'];
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	
 	if (!isset($userData['status']))

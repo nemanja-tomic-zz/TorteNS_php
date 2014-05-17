@@ -4,7 +4,7 @@ require_once 'dbClass.php';
 	try
 	{
 		$datum = $_POST['datum'];
-		$db = new Database();
+		$db = new DbHandler();
 		$db->connect();
 	
 		$query = "SELECT * FROM porudzbine INNER JOIN (proizvod, klijent)

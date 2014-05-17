@@ -4,7 +4,7 @@ function insertProizvod($product)
 {
 try
 {
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	//automatsko uzimanje vrednosti idgrupe iz tabele grupa
 	if (!isset($product['kolicina']))
@@ -56,7 +56,7 @@ function insertSlikeProizvod($a, $b)
 {
 	try
 	{	
-		$db = new Database();
+		$db = new DbHandler();
 		$db->connect();
 		
 		$query = "INSERT INTO slikeproizvod (idSlike, idProizvoda)

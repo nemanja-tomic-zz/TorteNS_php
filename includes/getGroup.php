@@ -2,7 +2,7 @@
 require_once "dbClass.php";
 try
 {
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	
 	$query = "SELECT * FROM grupa";

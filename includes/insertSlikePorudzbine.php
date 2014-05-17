@@ -3,7 +3,7 @@ include('dbClass.php');
 
 function uploadImg($image, $tip)
 {
-$dbObject = new Database();
+$dbObject = new DbHandler();
 
 
 	try
@@ -62,7 +62,7 @@ function insertSlikePorudzbine($a, $b)
 {
 	try
 	{	
-		$db = new Database();
+		$db = new DbHandler();
 		$db->connect();
 		
 		$query = "INSERT INTO slikeporudzbine (idSlike, idPorudzbine)

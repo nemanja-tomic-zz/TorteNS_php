@@ -4,7 +4,7 @@ require_once 'dbClass.php';
 	try
 	{
 		$id = $_POST['id'];
-		$db = new Database();
+		$db = new DbHandler();
 		$db->connect();
 	
 		$query = "SELECT * FROM klijent WHERE idklijenta = '".$id."'";

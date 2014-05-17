@@ -33,7 +33,7 @@ try
 				WHERE datumTransakcije < '".$datum."' 
 				ORDER BY datumTransakcije DESC";
 				
-		$db = new Database();
+		$db = new DbHandler();
 		$db->connect();
 			if(!$result = mysql_query($query))
 				throw new Exception("Neuspeli upit nad bazom: ".mysql_error());

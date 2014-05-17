@@ -4,7 +4,7 @@ require_once 'dbClass.php';
 try {
 	$idKlijenta = $_POST ['id'];
 	
-	$db = new Database ();
+	$db = new DbHandler ();
 	$db->connect ();
 	
 	$query = "DELETE FROM klijent WHERE idKlijenta = '" . $idKlijenta . "'";

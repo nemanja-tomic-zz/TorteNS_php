@@ -3,7 +3,7 @@ require_once "dbClass.php";
 try
 {
 	$porudzbinaData = $_POST['data'];
-	$db = new Database();
+	$db = new DbHandler();
 	$db->connect();
 	
 		$query = "UPDATE porudzbine SET
