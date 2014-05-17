@@ -1,5 +1,6 @@
 <?php
 require_once 'dbClass.php';
+
 try
 	{
 		if (isset($_POST['ime']))

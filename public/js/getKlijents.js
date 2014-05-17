@@ -85,6 +85,7 @@ function getKlijents()
 	var prezimeF = $("#filterPrezime").val();
 	var emailF = $("#filterEmail").val();
 	var telefonF = $("#filterTelefon").val();
+
 	$.post("includes/filteredKlijent.php",{ime:imeF, prezime:prezimeF, email:emailF, telefon:telefonF}, function(json){
 		try
 		{

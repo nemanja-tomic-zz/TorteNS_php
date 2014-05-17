@@ -1,20 +1,12 @@
 <?php
 class Database
 {
-	private $server;
-	private $username;
-	private $password;
-	private $port;
+	private $server = "localhost";
+	private $username = "root";
+	private $password = "root";
+	private $port = "3306";
 
 	public $con = null;
-
-	function __construct(ConfigManager $config) {
-		$this->server = $config->getDatabaseHost();
-		$this->username = $config->getDatabaseUsername();
-		$this->password = $config->getDatabasePassword();
-		$this->port = $config->getDatabasePort();
-	}
-
 
 	public function connect()
 	{
