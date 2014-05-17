@@ -189,38 +189,23 @@ function browseProizvod(){
 
 function getKlijents()
 {
-	var imeF = $("#filterIme").val();
-	var prezimeF = $("#filterPrezime").val();
-	var emailF = $("#filterEmail").val();
-	var telefonF = $("#filterTelefon").val();
-	$.post("includes/filteredKlijent.php",{ime:imeF, prezime:prezimeF, email:emailF, telefon:telefonF}, function(json){
+    var data = {
+        imeF: $("#filterIme").val(),
+        prezimeF: $("#filterPrezime").val(),
+        emailF: $("#filterEmail").val(),
+        telefonF: $("#filterTelefon").val()
+    };
+    var action = "getClients";
+
+    $.post("includes/api.php", {data: JSON.stringify(data), action: action}, function (json) {
 		try
 		{
 			var statusTd = "";
 			var obj = $.parseJSON(json);
 			$("#tabelaKlijent").empty();
 			$("#tabelaKlijent").append("<thead><tr><th>Ime:</th><th>Prezime:</th><th>Adresa:</th><th>Telefon:</th><th>Email:</th><th>Status:</th></tr></thead><tbody>");
-			$.each(obj, function(i, item){
-			switch (item.status)
-			{
-				case '0':
-					statusTd = "<td>Neocenjen</td>";
-					break;
-				case '1':
-					statusTd = "<td>Nikako</td>";
-					break;
-				case '2':
-					statusTd = "<td>Izbegavati</td>";
-					break;
-				case '3':
-					statusTd = "<td>OK</td>";
-					break;
-				case '4':
-					statusTd = "<td>Super</td>";
-					break;
-				default:
-					statusTd = "<td>No status defined</td>"
-			}
+			$.each(obj.data, function(i, item){
+
 			
 				$("#tabelaKlijent").append("<tr><td class='klijentiIme'>"+item.ime+"</td><td class='klijentiPrezime'>"+item.prezime+"</td><td class='klijentiAdresa'>"+item.adresa+"</td><td class='klijentiTelefon'>"+item.telefon+"</td><td class='klijentiEmail'>"+item.email+"</td>"+statusTd+"<td class='klijentiFB'><a target='_blank' href='"+item.fblink+"'><img src='public/assets/img/fbimg.png' /></a></td><td class='klijentiFB'><a onclick=selectKlijent('"+item.idKlijenta+"','"+item.prezime+"','"+item.ime+"')><img src='public/assets/img/forward.png' /></a></td></tr>");
 			});

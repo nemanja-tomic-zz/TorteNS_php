@@ -7,6 +7,7 @@ class Autoloader {
 		spl_autoload_register(array($this, 'Helper'));
 		spl_autoload_register(array($this, 'Controller'));
 		spl_autoload_register(array($this, 'Library'));
+		spl_autoload_register(array($this, 'Database'));
 		set_include_path(get_include_path() . PATH_SEPARATOR . 'includes/');
 	}
 
@@ -15,6 +16,12 @@ class Autoloader {
 			self::$loader = new self ();
 
 		return self::$loader;
+	}
+
+	public function Database($class) {
+		set_include_path(get_include_path() . PATH_SEPARATOR . 'database/');
+		spl_autoload_extensions('.database.php');
+		spl_autoload(strtolower($class));
 	}
 
 	public function Library($class) {

@@ -12,9 +12,18 @@ class ClientController {
 	 * @var Database
 	 */
 	private $dbHandler;
+	/**
+	 * @var ConfigManager
+	 */
+	private $config;
+	/**
+	 * @var ClientDb
+	 */
+	private $db;
 
-	public function __construct(Database $database) {
-		$this->dbHandler = $database;
+	public function __construct(ConfigManager $config) {
+		$this->config = $config;
+		$this->db = new ClientDb($config);
 	}
 
 	public function insertClient() {
@@ -25,7 +34,14 @@ class ClientController {
 		return true;
 	}
 
-	public function getClients() {
-		return true;
+	public function getClients($fname, $lname, $email, $phone) {
+		$clientList = $this->db->fetchClients($fname, $lname, $email, $phone);
+
+		/** @var $client Client */
+		foreach ($clientList as $client) {
+			$client->statusText = ClientStatus::GetConstantName($client->status);
+		}
+
+		return $clientList;
 	}
 }

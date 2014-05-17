@@ -22,16 +22,12 @@ class Api {
 	 * @var ClientController
 	 */
 	private $clientController;
-	/**
-	 * @var Database
-	 */
-	private $databaseHandler;
 
 	public function __construct($action, $data) {
 		require_once 'autoloader.php';
 		Autoloader::init();
 
-		$this->action = $action;
+		$this->action = strtolower($action);
 		$this->data = json_decode($data);
 
 		$this->Initialize();
@@ -39,8 +35,7 @@ class Api {
 
 	private function Initialize() {
 		$this->configManager = new ConfigManager();
-		$this->databaseHandler = new Database($this->configManager);
-		$this->clientController = new ClientController($this->databaseHandler);
+		$this->clientController = new ClientController($this->configManager);
 
 		if ($this->configManager->isDebugMode()) {
 			ini_set('display_startup_errors', 1);
@@ -57,7 +52,7 @@ class Api {
 		$response = new Response();
 		switch ($this->action) {
 			case ApiActions::GetClients:
-				$response->data = $this->clientController->getClients();
+				$response->data = $this->clientController->getClients($this->data->imeF, $this->data->prezimeF, $this->data->emailF, $this->data->telefonF);
 				break;
 			case ApiActions::GetClient:
 				$response->data = $this->clientController->getClient($this->data->clientId);

@@ -15,7 +15,7 @@ class Database
 	 */
 	private $statement;
 
-	function __construct(ConfigManager $config) {
+	protected function __construct(ConfigManager $config) {
 		$this->server = $config->getDatabaseHost();
 		$this->username = $config->getDatabaseUsername();
 		$this->password = $config->getDatabasePassword();
@@ -35,17 +35,17 @@ class Database
 		$this->statement->execute($params);
 	}
 
-	public function query($query, $params) {
+	protected function query($query, $params) {
 		$this->prepare($query);
 		$this->execute($params);
 	}
 
-	public function fetchResults($className) {
-		return $this->statement->fetchAll(PDO::FETCH_CLASS, $className);
+	protected function fetchResults($className) {
+		$result = $this->statement->fetchAll(PDO::FETCH_CLASS, $className);
+		return $result;
 	}
 
-	public function fetchAsArray()
-	{
+	protected function fetchAsArray() {
 		return $this->statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 }

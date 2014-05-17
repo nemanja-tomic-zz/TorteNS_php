@@ -1,12 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Nemanja
- * Date: 5/16/14
- * Time: 11:27 PM
- *
+ * Enumeration of all exposed API services.
  */
-class ApiActions extends SplEnum {
+class ApiActions {
 	const GetClients = "getclients";
 	const GetClient = "getclient";
 } 

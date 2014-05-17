@@ -2,7 +2,7 @@
 /**
  * Model which describes "klijent" table from database.
  */
-class Client {
+class Client extends Base {
 	public $idKlijenta;
 	public $ime;
 	public $prezime;
@@ -14,4 +14,5 @@ class Client {
 	public $adresa;
 	public $rating;
 	public $status;
+	public $statusText;
 } 
