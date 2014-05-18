@@ -1,4 +1,78 @@
 <?php
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+error_reporting(-1);
+class kurac implements SplObserver {
+
+    public $nesto;
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * Receive update from subject
+     * @link http://php.net/manual/en/splobserver.update.php
+     * @param SplSubject $subject <p>
+     * The <b>SplSubject</b> notifying the observer of an update.
+     * </p>
+     * @return void
+     */
+    public function update(SplSubject $subject)
+    {
+        var_dump("update ".$this->nesto);
+    }
+}
+class picka implements SplSubject {
+
+    private $observers = array();
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * Attach an SplObserver
+     * @link http://php.net/manual/en/splsubject.attach.php
+     * @param SplObserver $observer <p>
+     * The <b>SplObserver</b> to attach.
+     * </p>
+     * @return void
+     */
+    public function attach(SplObserver $observer)
+    {
+        $this->observers[] = $observer;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * Detach an observer
+     * @link http://php.net/manual/en/splsubject.detach.php
+     * @param SplObserver $observer <p>
+     * The <b>SplObserver</b> to detach.
+     * </p>
+     * @return void
+     */
+    public function detach(SplObserver $observer)
+    {
+        var_dump("detach");
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * Notify an observer
+     * @link http://php.net/manual/en/splsubject.notify.php
+     * @return void
+     */
+    public function notify()
+    {
+        /** @var $obs SplObserver */
+        foreach ($this->observers as $obs) {
+            $obs->update($this);
+        }
+    }
+}
+$a = new kurac();
+$a->nesto = "prvi";
+$drugi = new kurac();
+$drugi->nesto = "drugi";
+$b = new picka();
+$b->attach($a);
+$b->attach($drugi);
+$b->notify();
+die();
 $response = "Invalid request!";
 if (isset($_POST["action"]) && $_POST["action"] != "") {
 	try {
