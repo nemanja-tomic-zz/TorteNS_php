@@ -22,6 +22,14 @@ class Api {
 	 * @var ClientController
 	 */
 	private $clientController;
+	/**
+	 * @var ProductController
+	 */
+	private $productController;
+	/**
+	 * @var GroupController
+	 */
+	private $groupController;
 
 	public function __construct($action, $data) {
 		require_once 'autoloader.php';
@@ -36,6 +44,8 @@ class Api {
 	private function Initialize() {
 		$this->configManager = new ConfigManager();
 		$this->clientController = new ClientController($this->configManager);
+		$this->productController = new ProductController($this->configManager);
+//		$this->groupController = new GroupController($this->configManager);
 
 		if ($this->configManager->isDebugMode()) {
 			ini_set('display_startup_errors', 1);
@@ -52,7 +62,7 @@ class Api {
 		$response = new Response();
 		switch ($this->action) {
 			case ApiActions::GetClients:
-				$response->data = $this->clientController->getClients($this->data->imeF, $this->data->prezimeF, $this->data->emailF, $this->data->telefonF);
+				$response->data = $this->clientController->filterClients($this->data->imeF, $this->data->prezimeF, $this->data->emailF, $this->data->telefonF);
 				break;
 			case ApiActions::GetClient:
 				$response->data = $this->clientController->getClient($this->data->id);
@@ -68,6 +78,20 @@ class Api {
 			case ApiActions::UpdateCLient:
 				$this->clientController->updateClient($this->data);
 				$response->message = "Client successfully updated!";
+				break;
+			case ApiActions::DeleteProduct:
+				$this->productController->deleteProduct($this->data->id);
+				break;
+			case ApiActions::FilterProducts:
+				$groupId = $this->groupController->getGroupId($this->data->idGrupe);
+				$response->data = $this->productController->filterProducts($this->data->naziv, $this->data->cena, $this->data->opis, $groupId);
+				break;
+			case ApiActions::GetProduct:
+				$response->data = $this->productController->getProduct($this->data->id);
+				break;
+			case ApiActions::GetProducts:
+				$groupId = $this->groupController->getGroupId($this->data->idGrupe);
+				$response->data = $this->productController->filterProducts("", "", "", $groupId);
 				break;
 			default:
 				throw new BadMethodCallException("Invalid API method called: ".$this->action);

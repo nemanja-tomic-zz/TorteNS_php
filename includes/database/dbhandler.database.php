@@ -14,6 +14,10 @@ abstract class DbHandler implements IDbActions
 	 * @var PDOStatement
 	 */
 	private $statement;
+	/**
+	 * @var ConfigManager
+	 */
+	protected $config;
 
 	protected function __construct(ConfigManager $config) {
 		$this->server = $config->getDatabaseHost();
@@ -21,6 +25,7 @@ abstract class DbHandler implements IDbActions
 		$this->password = $config->getDatabasePassword();
 		$this->port = $config->getDatabasePort();
 		$this->dbName = $config->getDatabaseName();
+		$this->config = $config;
 		$this->db = new PDO("mysql:host={$this->server};dbname={$this->dbName}", $this->username, $this->password);
 	}
 

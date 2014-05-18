@@ -10,4 +10,5 @@ class Product extends BaseModel {
 	public $kolicina;
 	public $idGrupe;
 	public $idProizvoda;
+	public $images;
 } 

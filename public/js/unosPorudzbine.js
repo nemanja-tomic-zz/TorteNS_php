@@ -232,7 +232,8 @@ function getProizvod(tip){
 		th = "<th>Tezina</th>";
 	else
 		th = "<th>Kolicina</th>";
-	$.post("includes/getProizvod.php", {data:filter, grupa:type}, function(response){
+    //getProizvod.php
+	$.post("includes/api.php", {data:filter, grupa:type}, function(response){
 		try
 		{
 			var obj = $.parseJSON(response);
@@ -266,7 +267,8 @@ function selectKlijent(id, prezime, ime){
 function selectProizvod(id){
 	$( "#dialog-formP" ).dialog('close');
 	setCookie("idProizvoda", id);
-	$.post("includes/getProizvod.php", {id:id}, function(json){
+    //getProizvod.php
+	$.post("includes/api.php", {id:id}, function(json){
 		var da = $.parseJSON(json);
 		var proizvod = da[0].naziv;
 		$("#proizvod").html(proizvod);

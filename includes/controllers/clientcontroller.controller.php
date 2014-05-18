@@ -35,7 +35,8 @@ class ClientController extends BaseController {
 	 * @param $phone
 	 * @return array
 	 */
-	public function getClients($fname, $lname, $email, $phone) {
+	public function filterClients($fname, $lname, $email, $phone) {
+		$clientList = array();
 		try {
 			$clientList = $this->db->fetchClients($fname, $lname, $email, $phone);
 

@@ -73,7 +73,8 @@ function getProizvod(tip){
 		th = "<th>Tezina</th>";
 	else
 		th = "<th>Kolicina</th>";
-	$.post("includes/getProizvod.php", {data:filter, grupa:type}, function(response){
+    //getProizvod.php
+	$.post("includes/api.php", {data:filter, grupa:type}, function(response){
 		try
 		{
 			var obj = $.parseJSON(response);
@@ -97,7 +98,8 @@ function getProizvod(tip){
 	});
 }
 function getData(a){
-	$.post("includes/getProizvod.php", {id:a}, function(data){
+    //getProizvod.php
+	$.post("includes/api.php", {id:a}, function(data){
 	var proizvod = $.parseJSON(data);
 		$("#naziv1").val(proizvod[0].naziv);
 		$("#cena1").val(proizvod[0].cena);
@@ -113,7 +115,7 @@ function deleteProizvod(id){
 	var conf = confirm("Da li ste sigurni da zelite da obrisete ovaj proizvod? \n Brisanjem proizvoda nestace svi podaci iz porudzbina vezanim za njega.");
 	if (conf == true)
 	{
-		$.post("includes/deleteProizvod.php", {id:id}, function(data){
+		$.post("includes/api.php", {id:id}, function(data){
 			getProizvod(getCookie("tipKok"));
 			$("#response").html(data);
 		});

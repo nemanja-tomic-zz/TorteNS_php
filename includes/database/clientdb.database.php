@@ -8,14 +8,8 @@
 
 class ClientDb extends DbHandler {
 
-	/**
-	 * @var ConfigManager
-	 */
-	private $config;
-
 	public function __construct(ConfigManager $config) {
-		$this->config = $config;
-		parent::__construct($this->config);
+		parent::__construct($config);
 	}
 
 	/**
@@ -74,6 +68,8 @@ class ClientDb extends DbHandler {
 	}
 
 	public function getAllRecords() {
-		//to be implemented after server side pagination/filtering is finished.
+		$query = "SELECT * FROM klijent";
+		$this->query($query, array());
+		return $this->fetchResults(Client::GetClassName());
 	}
 }

@@ -8,4 +8,8 @@ class ApiActions {
 	const DeleteClient = "deleteclient";
 	const InsertClient = "insertclient";
 	const UpdateCLient = "updateclient";
+	const DeleteProduct = "deleteproduct";
+	const GetProducts = "getproducts";
+	const GetProduct = "getproduct";
+	const FilterProducts = "filterproducts";
 } 
