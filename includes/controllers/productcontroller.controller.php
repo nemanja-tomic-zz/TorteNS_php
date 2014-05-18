@@ -49,8 +49,8 @@ class ProductController extends BaseController {
 	public function insertProduct($post, $file, $groupName) {
 		try {
 			$productId = $this->db->insertRecord($this->prepareProductData($post));
-			if ($_FILES['slika']['name'] <> "") {
-				$imageId = $this->uploadImage($_FILES["slika"], $groupName);
+			if ($file['slika']['name'] <> "") {
+				$imageId = $this->uploadImage($file["slika"], $groupName);
 				$this->db->bindProductImage($productId, $imageId);
 			}
 		} catch (Exception $ex) {

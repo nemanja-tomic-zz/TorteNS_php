@@ -96,6 +96,7 @@ class Api {
 			case ApiActions::InsertProduct:
 				$groupName = $this->groupController->getGroupName($_POST["tip"]);
 				$this->productController->insertProduct($_POST, $_FILES, $groupName);
+				//TODO: implement it this way:
 				//$this->imageController->insertImage();
 				//$this->productController->bindProductImage();
 				$response->message = "Product successfully added!";
