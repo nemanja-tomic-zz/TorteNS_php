@@ -7,10 +7,6 @@
  */
 
 class ClientController extends BaseController {
-	/**
-	 * @var ClientDb
-	 */
-	private $db;
 
 	public function __construct(ConfigManager $config) {
 		parent::__construct($config);
@@ -24,7 +20,7 @@ class ClientController extends BaseController {
 	public function getClient($clientId) {
 		$clientData = new Client();
 		try {
-			$clientData = $this->db->getClient($clientId);
+			$clientData = $this->db->getRecord($clientId);
 			$clientData->statusText = ClientStatus::GetConstantName($clientData->status);
 		} catch (Exception $ex) {
 			$this->HandleException($ex);
@@ -58,7 +54,7 @@ class ClientController extends BaseController {
 	 */
 	public function deleteClient($clientId) {
 		try {
-			$this->db->deleteClient($clientId);
+			$this->db->deleteRecord($clientId);
 		} catch (Exception $ex) {
 			$this->HandleException($ex);
 		}
@@ -66,7 +62,7 @@ class ClientController extends BaseController {
 
 	public function insertClient($data) {
 		try {
-			$this->db->insertClient($this->prepareClientData($data));
+			$this->db->insertRecord($this->prepareClientData($data));
 		} catch (Exception $ex) {
 			$this->HandleException($ex);
 		}
@@ -74,7 +70,7 @@ class ClientController extends BaseController {
 
 	public function updateClient($data) {
 		try {
-			$this->db->updateClient($this->prepareClientData($data));
+			$this->db->updateRecord($this->prepareClientData($data));
 		} catch (Exception $ex) {
 			$this->HandleException($ex);
 		}

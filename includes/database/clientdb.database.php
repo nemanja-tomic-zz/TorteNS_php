@@ -19,10 +19,10 @@ class ClientDb extends DbHandler {
 	}
 
 	/**
-	 * @param $fname
-	 * @param $lname
-	 * @param $email
-	 * @param $phone
+	 * @param $fname string
+	 * @param $lname string
+	 * @param $email string
+	 * @param $phone string
 	 * @return array
 	 */
 	public function fetchClients($fname, $lname, $email, $phone) {
@@ -35,7 +35,7 @@ class ClientDb extends DbHandler {
 	/**
 	 * @param $clientId int
 	 */
-	public function deleteClient($clientId) {
+	public function deleteRecord($clientId) {
 		$query = "DELETE FROM klijent WHERE idKlijenta = ?";
 		$this->query($query, array($clientId));
 	}
@@ -45,7 +45,7 @@ class ClientDb extends DbHandler {
 	 * @throws PDOException
 	 * @return Client
 	 */
-	public function getClient($clientId) {
+	public function getRecord($clientId) {
 		$query = "SELECT * FROM klijent WHERE idklijenta = ?";
 		$this->query($query, array($clientId));
 		if ($this->getRowCount() == 0) {
@@ -55,16 +55,25 @@ class ClientDb extends DbHandler {
 		return $result[0];
 	}
 
-	public function insertClient(Client $client) {
+	public function insertRecord(BaseModel $model) {
 		$query = "INSERT INTO klijent (ime, prezime, telefon, telefon2, email, fblink, adresa, napomene, status)
 					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		/** @var $client Client */
+		$client = $model;
 		$this->query($query, array($client->ime, $client->prezime, $client->telefon, $client->telefon2, $client->email, $client->fblink, $client->adresa, $client->napomene, $client->status));
 	}
 
-	public function updateClient(Client $client) {
+	public function updateRecord(BaseModel $model) {
 		$query = "UPDATE klijent SET
 			ime = ?, prezime = ?, telefon = ?, telefon2 = ?, adresa = ?, email = ?, fblink = ?,	napomene = ?, status = ?
 			WHERE idKlijenta = ?";
+		/** @var $client Client */
+		$client = $model;
 		$this->query($query, array($client->ime, $client->prezime, $client->telefon, $client->telefon2, $client->adresa, $client->email, $client->fblink, $client->napomene, $client->status, $client->idKlijenta));
 	}
-} 
+
+	public function getAllRecords() {
+		//to be implemented after server side pagination/filtering is finished.
+	}
+}

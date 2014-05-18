@@ -1,5 +1,5 @@
 <?php
-class DbHandler
+abstract class DbHandler implements IDbActions
 {
 	private $server;
 	private $username;

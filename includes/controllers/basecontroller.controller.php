@@ -12,6 +12,11 @@ abstract class BaseController {
 	 */
 	protected $config;
 
+	/**
+	 * @var IDbActions
+	 */
+	protected $db;
+
 	protected function __construct(ConfigManager $config) {
 		$this->config = $config;
 	}

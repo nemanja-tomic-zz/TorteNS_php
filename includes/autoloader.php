@@ -8,6 +8,7 @@ class Autoloader {
 		spl_autoload_register(array($this, 'Controller'));
 		spl_autoload_register(array($this, 'Library'));
 		spl_autoload_register(array($this, 'Database'));
+		spl_autoload_register(array($this, 'Interfaces'));
 		set_include_path(get_include_path() . PATH_SEPARATOR . 'includes/');
 	}
 
@@ -16,6 +17,12 @@ class Autoloader {
 			self::$loader = new self ();
 
 		return self::$loader;
+	}
+
+	public function Interfaces($class) {
+		set_include_path(get_include_path() . PATH_SEPARATOR . 'interfaces/');
+		spl_autoload_extensions('.interface.php');
+		spl_autoload(strtolower($class));
 	}
 
 	public function Database($class) {
