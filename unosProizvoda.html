@@ -60,7 +60,8 @@
 	</ul>
 	<div id="tabs-1">
         <table class="tabelaUnos">
-        <form id="formTorte" method="post" enctype="multipart/form-data" action='includes/ajaximage.php'>
+        <form id="formTorte" method="post" enctype="multipart/form-data" action='includes/api.php'>
+            <input type="hidden" name="action" value="insertProduct" />
 		<tr>
         <td><label for="naziv">Naziv* :</label></td>
 		<td><input type="text" name="naziv" id="naziv"/><br /></td>
@@ -82,7 +83,7 @@
         <span class="demo" style="width:200px; margin-left:50px;">
         </span><br>
 		<textarea id="opis" name="opis" placeholder="Opis torte..."></textarea>
-		<input type="hidden" id="tip" name="tip" value="Torte" />
+		<input type="hidden" id="tip" name="tip" value="1" />
 <div>
 	<input style="margin-left:20px;" type="button" id="submitTorte" value="Unesi" />
 	<input style="margin-left:20px" type="reset" id="resetTorte" value="Reset" />

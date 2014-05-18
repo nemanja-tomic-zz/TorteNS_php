@@ -34,7 +34,12 @@ class ProductDb extends DbHandler {
 	}
 
 	public function insertRecord(BaseModel $model) {
-		// TODO: Implement insertRecord() method.
+		/** @var $product Product */
+		$product = $model;
+		$query = "INSERT INTO proizvod (naziv, cena, tezina, opis, kolicina, idGrupe)
+			VALUES (?, ?, ?, ?, ?, ?)";
+		$this->query($query, array($product->naziv, $product->cena, $product->tezina, $product->opis, $product->kolicina, $product->idGrupe));
+		return $this->lastInsertId();
 	}
 
 	public function updateRecord(BaseModel $model) {
@@ -55,6 +60,13 @@ class ProductDb extends DbHandler {
 		return $this->fetchResults(Product::GetClassName());
 	}
 
+	public function insertProductImage($name, $size, $fileType, $groupName) {
+		$query = "insert into slike (naziv, velicina, tip, putanja)
+				values (?, ?, ?, ?)";
+		$this->query($query, array($name, $size, $fileType, $groupName));
+		return $this->lastInsertId();
+	}
+
 	public function fetchProductImages($id) {
 		$productImages = array();
 		$query = "SELECT * FROM slikeproizvod AS slipro
@@ -66,6 +78,12 @@ class ProductDb extends DbHandler {
 			$productImages = $this->fetchResults(Image::GetClassName());
 		}
 		return $productImages;
+	}
+
+	public function bindProductImage($productId, $imageId) {
+		$query = "INSERT INTO slikeproizvod (idSlike, idProizvoda)
+				VALUES (?, ?)";
+		$this->query($query, array($imageId, $productId));
 	}
 
 }

@@ -12,4 +12,5 @@ class ApiActions {
 	const GetProducts = "getproducts";
 	const GetProduct = "getproduct";
 	const FilterProducts = "filterproducts";
+	const InsertProduct = "insertproduct";
 } 

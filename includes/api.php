@@ -2,7 +2,8 @@
 $response = "Invalid request!";
 if (isset($_POST["action"]) && $_POST["action"] != "") {
 	try {
-		$api = new Api($_POST["action"], $_POST["data"]);
+		$data = (isset($_POST["data"])) ? $_POST["data"] : "";
+		$api = new Api($_POST["action"], $data);
 		$response = $api->Execute();
 	} catch (Exception $ex) {
 		$response = $ex->getMessage();
@@ -83,8 +84,7 @@ class Api {
 				$this->productController->deleteProduct($this->data->id);
 				break;
 			case ApiActions::FilterProducts:
-				$groupId = $this->groupController->getGroupId($this->data->idGrupe);
-				$response->data = $this->productController->filterProducts($this->data->naziv, $this->data->cena, $this->data->opis, $groupId);
+				$response->data = $this->productController->filterProducts($this->data->naziv, $this->data->cena, $this->data->opis, $this->data->idGrupe);
 				break;
 			case ApiActions::GetProduct:
 				$response->data = $this->productController->getProduct($this->data->id);
@@ -92,6 +92,13 @@ class Api {
 			case ApiActions::GetProducts:
 				$groupId = $this->groupController->getGroupId($this->data->idGrupe);
 				$response->data = $this->productController->filterProducts("", "", "", $groupId);
+				break;
+			case ApiActions::InsertProduct:
+				$groupName = $this->groupController->getGroupName($_POST["tip"]);
+				$this->productController->insertProduct($_POST, $_FILES, $groupName);
+				//$this->imageController->insertImage();
+				//$this->productController->bindProductImage();
+				$response->message = "Product successfully added!";
 				break;
 			default:
 				throw new BadMethodCallException("Invalid API method called: ".$this->action);

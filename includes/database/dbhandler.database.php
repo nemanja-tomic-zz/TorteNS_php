@@ -57,6 +57,10 @@ abstract class DbHandler implements IDbActions
 		return $this->statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	protected function lastInsertId() {
+		return $this->db->lastInsertId();
+	}
+
 	/**
 	 * @return int
 	 */
