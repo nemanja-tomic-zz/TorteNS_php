@@ -7,19 +7,112 @@
     <link rel="stylesheet" type="text/css" href="public/css/style.css" media="all" />
     <link rel="stylesheet" type="text/css" href="public/css/tabs.css" media="all" />
     <link rel="stylesheet" type="text/css" href="public/css/menu-css.css" />
-    <link rel="stylesheet" type="text/css" href="public/css/datepicker.css" />
-    <link rel="stylesheet" type="text/css" href="public/fancybox/jquery.fancybox.css" media="all" />
+    <!--<link rel="stylesheet" type="text/css" href="public/css/datepicker.css" />-->
+    <!--<link rel="stylesheet" type="text/css" href="public/fancybox/jquery.fancybox.css" media="all" />-->
     <script type="text/javascript" src="public/js/jquery-1.8.1.min.js"></script>
-    <script type="text/javascript" src="public/js/datepicker.js"></script>
-    <script type="text/javascript" src="public/js/getPorudzbine.js"></script>
-    <script type="text/javascript" src="public/js/indexDatepicker.js"></script>
+    <!--<script type="text/javascript" src="public/js/datepicker.js"></script>-->
+    <!--<script type="text/javascript" src="public/js/getPorudzbine.js"></script>-->
+    <!--<script type="text/javascript" src="public/js/indexDatepicker.js"></script>-->
     <script type="text/javascript" src="public/js/KOK.js"></script>
-    <script type="text/javascript" src="public/fancybox/jquery.fancybox.js"></script>
+   <!-- <script type="text/javascript" src="public/fancybox/jquery.fancybox.js"></script>-->
+    <link  rel="stylesheet" type="text/css" href="public/fullcalendar/fullcalendar.css"/>
+    <link  rel="stylesheet" type="text/css" href="public/fullcalendar/fullcalendar.print.css"/>
+    <script type="text/javascript" src="public/fullcalendar/moment.min.js"></script>
+    <script type="text/javascript" src="public/fullcalendar/fullcalendar.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var d = new Date();
+            window.currentDate = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    //right: 'month,agendaWeek,agendaDay'
+                    right: 'month,agendaWeek'
+                },
+                defaultDate: window.currentDate,
+                firstDay: 1,
+                editable: true,
+                events: [
+                    {
+                        title: 'All Day Event',
+                        start: '2014-05-01'
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2014-05-01'
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2014-05-01'
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2014-05-01'
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2014-05-01'
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2014-05-01'
+                    },
+                    {
+                        title: 'Long Event',
+                        start: '2014-05-07',
+                        end: '2014-05-10'
+                    },
+                    {
+                        title: 'All Day Event',
+                        start: '2014-05-01'
+                    },
+                    {
+                        id: 999,
+                        title: 'Repeating Event',
+                        start: '2014-04-09T16:00:00'
+                    },
+                    {
+                        id: 999,
+                        title: 'Repeating Event',
+                        start: '2014-05-16T16:00:00'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2014-04-12T10:30:00',
+                        end: '2014-01-12T12:30:00'
+                    },
+                    {
+                        title: 'Lunch',
+                        start: '2014-01-12T12:00:00'
+                    },
+                    {
+                        title: 'Birthday Party',
+                        start: '2014-01-13T07:00:00'
+                    },
+                    {
+                        title: 'Click for Google',
+                        url: 'http://google.com/',
+                        start: '2014-01-28'
+                    }
+                ]
+            });
+            $('#calendar').fullCalendar('today');
+        });
+
+    </script>
+
 
     <style type="text/css">
-        .ui-datepicker td.holiday a, .ui-datepicker td.holiday a:hover {
-            background: none lightgray;
-            border: 1px solid gray;
+        #calendar {
+            width: 900px;
+            margin: 40px auto;
+            padding-bottom:40px;
+        }
+        .contentwrapper {
+            background-color: white;
         }
     </style>
 </head>
@@ -65,7 +158,9 @@
         </div>
 
         <div class="contentwrapper">
-            <h5>konj</h5>
+            <div id="calendar">
+
+            </div>
         </div>
 
     </div>
