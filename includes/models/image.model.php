@@ -8,4 +8,6 @@ class Image extends BaseModel {
 	public $velicina;
 	public $tip;
 	public $putanja;
+	public $tmpPath;
+	public $groupName;
 } 

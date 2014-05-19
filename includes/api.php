@@ -1,78 +1,4 @@
 <?php
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1);
-class kurac implements SplObserver {
-
-    public $nesto;
-    /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Receive update from subject
-     * @link http://php.net/manual/en/splobserver.update.php
-     * @param SplSubject $subject <p>
-     * The <b>SplSubject</b> notifying the observer of an update.
-     * </p>
-     * @return void
-     */
-    public function update(SplSubject $subject)
-    {
-        var_dump("update ".$this->nesto);
-    }
-}
-class picka implements SplSubject {
-
-    private $observers = array();
-    /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Attach an SplObserver
-     * @link http://php.net/manual/en/splsubject.attach.php
-     * @param SplObserver $observer <p>
-     * The <b>SplObserver</b> to attach.
-     * </p>
-     * @return void
-     */
-    public function attach(SplObserver $observer)
-    {
-        $this->observers[] = $observer;
-    }
-
-    /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Detach an observer
-     * @link http://php.net/manual/en/splsubject.detach.php
-     * @param SplObserver $observer <p>
-     * The <b>SplObserver</b> to detach.
-     * </p>
-     * @return void
-     */
-    public function detach(SplObserver $observer)
-    {
-        var_dump("detach");
-    }
-
-    /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Notify an observer
-     * @link http://php.net/manual/en/splsubject.notify.php
-     * @return void
-     */
-    public function notify()
-    {
-        /** @var $obs SplObserver */
-        foreach ($this->observers as $obs) {
-            $obs->update($this);
-        }
-    }
-}
-$a = new kurac();
-$a->nesto = "prvi";
-$drugi = new kurac();
-$drugi->nesto = "drugi";
-$b = new picka();
-$b->attach($a);
-$b->attach($drugi);
-$b->notify();
-die();
 $response = "Invalid request!";
 if (isset($_POST["action"]) && $_POST["action"] != "") {
 	try {
@@ -83,7 +9,8 @@ if (isset($_POST["action"]) && $_POST["action"] != "") {
 		$response = $ex->getMessage();
 	}
 }
-exit(json_encode($response));
+echo json_encode($response);
+exit();
 
 class Api {
 
@@ -105,6 +32,10 @@ class Api {
 	 * @var GroupController
 	 */
 	private $groupController;
+	/**
+	 * @var ImageController
+	 */
+	private $imageController;
 
 	public function __construct($action, $data) {
 		require_once 'autoloader.php';
@@ -120,7 +51,8 @@ class Api {
 		$this->configManager = new ConfigManager();
 		$this->clientController = new ClientController($this->configManager);
 		$this->productController = new ProductController($this->configManager);
-//		$this->groupController = new GroupController($this->configManager);
+		$this->groupController = new GroupController($this->configManager);
+		$this->imageController = new ImageController($this->configManager);
 
 		if ($this->configManager->isDebugMode()) {
 			ini_set('display_startup_errors', 1);
@@ -158,21 +90,22 @@ class Api {
 				$this->productController->deleteProduct($this->data->id);
 				break;
 			case ApiActions::FilterProducts:
-				$response->data = $this->productController->filterProducts($this->data->naziv, $this->data->cena, $this->data->opis, $this->data->idGrupe);
+				$filter = new ProductFilter($this->data->idGrupe, $this->data->cena, $this->data->naziv, $this->data->opis);
+				$response->data = $this->productController->filterProducts($filter);
 				break;
 			case ApiActions::GetProduct:
 				$response->data = $this->productController->getProduct($this->data->id);
 				break;
 			case ApiActions::GetProducts:
-				$groupId = $this->groupController->getGroupId($this->data->idGrupe);
-				$response->data = $this->productController->filterProducts("", "", "", $groupId);
+				$response->data = $this->productController->filterProducts(new ProductFilter($this->data->groupId));
 				break;
 			case ApiActions::InsertProduct:
-				$groupName = $this->groupController->getGroupName($_POST["tip"]);
-				$this->productController->insertProduct($_POST, $_FILES, $groupName);
-				//TODO: implement it this way:
-				//$this->imageController->insertImage();
-				//$this->productController->bindProductImage();
+				$group = $this->groupController->getGroupName($_POST["tip"]);
+				$productId = $this->productController->insertProduct($_POST);
+				if ($_FILES['slika']['name'] <> "") {
+					$imageId = $this->imageController->insertImage($_FILES['slika'], $group->naziv);
+					$this->productController->bindProductImage($productId, $imageId);
+				}
 				$response->message = "Product successfully added!";
 				break;
 			default:

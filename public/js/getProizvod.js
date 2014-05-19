@@ -5,21 +5,21 @@ $(document).ready(function(){
 		window.location.replace("unosPorudzbine.html");
 	});
 	$("#imgSubmit").bind("click", timeout);
-	$("#torteBtn").bind("click",{tip:"Torte"}, function(event){
+	$("#torteBtn").bind("click",{tip:"1"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Torte");
+		setCookie("tipKok", "1");
 	});
-	$("#cupsBtn").bind("click",{tip:"Cupcakes"}, function(event){
+	$("#cupsBtn").bind("click",{tip:"3"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Cupcakes");
+		setCookie("tipKok", "3");
 	});
-	$("#figuriceBtn").bind("click",{tip:"Figurice"}, function(event){
+	$("#figuriceBtn").bind("click",{tip:"4"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Figurice");
+		setCookie("tipKok", "4");
 	});
-	$("#miscBtn").bind("click",{tip:"Ostali Proizvodi"}, function(event){
+	$("#miscBtn").bind("click",{tip:"5"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Ostali Proizvodi");
+		setCookie("tipKok", "5");
 	});
 	$("#naziv").bind("keyup", function(){
 		getProizvod(getCookie("tipKok"));
@@ -66,22 +66,22 @@ function getProizvod(tip){
 	filter.naziv = $("#naziv").val();
 	filter.cena = $("#cena").val();
 	filter.opis = $("#opis").val();
-	type = tip;
+    filter.idGrupe = tip;
 	var td = "";
 	var th = "";
-	if(type == "Torte")
+	if(tip == "1")
 		th = "<th>Tezina</th>";
 	else
 		th = "<th>Kolicina</th>";
-    //getProizvod.php
-	$.post("includes/api.php", {data:filter, grupa:type}, function(response){
+
+	$.post("includes/api.php", {action: "filterProducts", data:JSON.stringify(filter)}, function(response){
 		try
 		{
 			var obj = $.parseJSON(response);
 			$("#tabelaProizvodi").empty();
 			$("#tabelaProizvodi").append("<thead><tr><th>Naziv</th>"+th+"<th>Opis</th><th>Cena</th></tr></thead><tbody>");
-			$.each(obj, function(i, item){
-			if (type == "Torte")
+			$.each(obj.data, function(i, item){
+			if (tip == "1")
 				td = "<td class='proizvodiTezina'>"+item.tezina+"</td>";
 			else
 				td = "<td class='proizvodiKolicina'>"+item.kolicina+"</td>";

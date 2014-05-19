@@ -51,20 +51,13 @@ class ProductDb extends DbHandler {
 		$this->query($query, array($id));
 	}
 
-	public function fetchProducts($naziv, $cena, $opis, $groupId) {
+	public function fetchProducts(ProductFilter $filter) {
 		$query = "SELECT * FROM proizvod WHERE idGrupe = ?
 				AND naziv LIKE ?
 				AND cena LIKE ?
 				AND opis LIKE ?";
-		$this->query($query, array($groupId, "%".$naziv."%", $cena."%", "%".$opis."%"));
+		$this->query($query, array($filter->groupId, "%".$filter->name."%", $filter->price."%", "%".$filter->description."%"));
 		return $this->fetchResults(Product::GetClassName());
-	}
-
-	public function insertProductImage($name, $size, $fileType, $groupName) {
-		$query = "insert into slike (naziv, velicina, tip, putanja)
-				values (?, ?, ?, ?)";
-		$this->query($query, array($name, $size, $fileType, $groupName));
-		return $this->lastInsertId();
 	}
 
 	public function fetchProductImages($id) {
