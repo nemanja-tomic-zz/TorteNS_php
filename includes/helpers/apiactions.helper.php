@@ -13,4 +13,9 @@ class ApiActions {
 	const GetProduct = "getproduct";
 	const FilterProducts = "filterproducts";
 	const InsertProduct = "insertproduct";
+	const UpdateProduct = "updateproduct";
+	const InsertProductImage = "insertproductimage";
+	const InsertImage = "insertimage";
+	const DeleteImage = "deleteimage";
+	const GetImages = "getimages";
 } 

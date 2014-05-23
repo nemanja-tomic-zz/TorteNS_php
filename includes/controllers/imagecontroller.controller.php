@@ -8,6 +8,8 @@
 
 class ImageController extends BaseController {
 
+	const UPLOAD_ROOT = "../uploads/";
+
 	public function __construct(ConfigManager $config) {
 		parent::__construct($config);
 		$this->db = new ImageDb($config);
@@ -16,7 +18,7 @@ class ImageController extends BaseController {
 	/**
 	 * Uploads the file and stores image to database.
 	 *
-	 * @param $file $_FILES
+	 * @param $file array $_FILES
 	 * @param $groupName string
 	 * @return int
 	 */
@@ -29,7 +31,7 @@ class ImageController extends BaseController {
 			$name = (string)$time;								//dodeljujemo timestamp imenu fajla
 			$niz = explode('.', $file['name']);				//parsiramo extenziju iz imena postovane slike
 			$name .= ".".end($niz);								//dodajemo extenziju na kraj imena
-			$TARGET_PATH = "../uploads/".$groupName."/";				//kompletiramo putanju i naziv fajla
+			$TARGET_PATH = $this::UPLOAD_ROOT.$groupName."/";				//kompletiramo putanju i naziv fajla
 			$TARGET_PATH .= $name;
 			$size = $file['size'];
 
@@ -47,6 +49,19 @@ class ImageController extends BaseController {
 			$this->HandleException($ex);
 		}
 		return $imageId;
+	}
+
+	public function deleteImage($imageId) {
+		try {
+			$image = $this->db->getRecord($imageId);
+			$path = $this::UPLOAD_ROOT.$image->putanja.DIRECTORY_SEPARATOR.$image->naziv;
+			if (file_exists($path) && !unlink($path)) {
+				throw new Exception("Image could not be deleted from file system: ");
+			}
+			$this->db->deleteRecord($imageId);
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
 	}
 
 	private function uploadFile(Image $file) {

@@ -104,8 +104,9 @@
 	     <tr><td>Cena</td><td><input type="text" id="cena1"/></td></tr>
          <tr><td>Opis</td><td><textarea id="opis1"></textarea></td></tr>
          <tr>
-		 <form id="uploadImg" method="post" enctype="multipart/form-data" action='includes/unosSlike.php'>
+		 <form id="uploadImg" method="post" enctype="multipart/form-data" action='includes/api.php'>
 		 <td><input type="hidden" name='idProizvodaHidden' />
+         <input type="hidden" name="action" value="insertProductImage" />
 		 <input type="hidden" name='tipHidden' /><input type="file" id="imgFile" name="imgFile" /></td>
 		 <td><input type="button" value="Unesi Sliku" id="imgSubmit" /></td></form></tr>
      </table>

@@ -12,8 +12,15 @@ class ImageDb extends DbHandler {
 		parent::__construct($config);
 	}
 
+	/**
+	 * @param $id int
+	 * @return Image
+	 */
 	public function getRecord($id) {
-		// TODO: Implement getRecord() method.
+		$query = "SELECT * FROM slike WHERE idSlike = ?";
+		$this->query($query, array($id));
+		$result = $this->fetchResults(Image::GetClassName());
+		return $result[0];
 	}
 
 	public function getAllRecords() {
@@ -34,6 +41,7 @@ class ImageDb extends DbHandler {
 	}
 
 	public function deleteRecord($id) {
-		// TODO: Implement deleteRecord() method.
+		$query = "DELETE FROM slike WHERE idSlike = ?";
+		$this->query($query, array($id));
 	}
 }

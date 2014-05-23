@@ -43,7 +43,12 @@ class ProductDb extends DbHandler {
 	}
 
 	public function updateRecord(BaseModel $model) {
-		// TODO: Implement updateRecord() method.
+		/** @var $product Product */
+		$product = $model;
+		$query = "UPDATE proizvod SET
+			naziv = ?, cena = ?, opis = ?, kolicina = ?, tezina = ?
+			WHERE idProizvoda = ?";
+		$this->query($query, array($product->naziv, $product->cena, $product->opis, $product->kolicina, $product->tezina, $product->idProizvoda));
 	}
 
 	public function deleteRecord($id) {

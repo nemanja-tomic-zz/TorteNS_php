@@ -46,6 +46,15 @@ class ProductController extends BaseController {
 		return $product;
 	}
 
+	public function updateProduct($productData) {
+		try {
+			$product = $this->prepareProductData($productData);
+			$this->db->updateRecord($product);
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
+	}
+
 	public function insertProduct($post) {
 		$productId = 0;
 		try {
@@ -54,6 +63,20 @@ class ProductController extends BaseController {
 			$this->HandleException($ex);
 		}
 		return $productId;
+	}
+
+	/**
+	 * Inserts record into SlikeProizvod table in database.
+	 *
+	 * @param $productId
+	 * @param $imageId
+	 */
+	public function bindProductImage($productId, $imageId) {
+		try {
+			$this->db->bindProductImage($productId, $imageId);
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
 	}
 
 	/**
@@ -67,17 +90,16 @@ class ProductController extends BaseController {
 			$product->kolicina = $post['kolicina'];
 		if (isset($post['tezina']))
 			$product->tezina = $post['tezina'];
+		if (isset($post['idProizvoda'])) {
+			$product->idProizvoda = $post['idProizvoda'];
+		}
 		$product->cena = $post['cena'];
 		$product->opis = $post['opis'];
-		$product->idGrupe = $post['tip'];
+		if (isset($post['tip'])) {
+			$product->idGrupe = $post['tip'];
+		}
 		return $product;
 	}
 
-	public function bindProductImage($productId, $imageId) {
-		try {
-			$this->db->bindProductImage($productId, $imageId);
-		} catch (Exception $ex) {
-			$this->HandleException($ex);
-		}
-	}
+
 } 

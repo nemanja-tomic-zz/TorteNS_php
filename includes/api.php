@@ -1,12 +1,13 @@
 <?php
-$response = "Invalid request!";
+$response->message = "Invalid request!";
 if (isset($_POST["action"]) && $_POST["action"] != "") {
 	try {
 		$data = (isset($_POST["data"])) ? $_POST["data"] : "";
 		$api = new Api($_POST["action"], $data);
 		$response = $api->Execute();
 	} catch (Exception $ex) {
-		$response = $ex->getMessage();
+		$response->message = $ex->getMessage();
+		$response->success = false;
 	}
 }
 echo json_encode($response);
@@ -62,8 +63,10 @@ class Api {
 	}
 
 	/**
-	 * @return Response
-	 * @throws BadMethodCallException
+	 * Executes the API method as provided in request "action" parameter.
+	 *
+	 * @return Response Response object containing execution results in Message, Success and Data properties.
+	 * @throws BadMethodCallException Thrown if invalid or unknown method is called.
 	 */
 	public function Execute() {
 		$response = new Response();
@@ -107,6 +110,23 @@ class Api {
 					$this->productController->bindProductImage($productId, $imageId);
 				}
 				$response->message = "Product successfully added!";
+				break;
+			case ApiActions::UpdateProduct:
+				$this->productController->updateProduct((array)$this->data);
+				$response->message = "Product successfully updated!";
+				break;
+			case ApiActions::InsertProductImage:
+				$group = $this->groupController->getGroupName($_POST["tipHidden"]);
+				$imageId = $this->imageController->insertImage($_FILES['imgFile'], $group->naziv);
+				$this->productController->bindProductImage($_POST['idProizvodaHidden'], $imageId);
+				break;
+			case ApiActions::DeleteImage:
+				$this->imageController->deleteImage($this->data->id);
+				$response->message = "Image successfully deleted!";
+				break;
+			case ApiActions::GetImages:
+				$product = $this->productController->getProduct($this->data->id);
+				$response->data = $product->images;
 				break;
 			default:
 				throw new BadMethodCallException("Invalid API method called: ".$this->action);
