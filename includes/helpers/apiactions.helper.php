@@ -18,4 +18,11 @@ class ApiActions {
 	const InsertImage = "insertimage";
 	const DeleteImage = "deleteimage";
 	const GetImages = "getimages";
+	const FilterOrders = "filterorders";
+	const FilterOldOrders = "filteroldorders";
+	const GetOrder = "getorder";
+	const GetAllOrderDates = "getallorderdates";
+	const UpdateOrder = "updateorder";
+	const GetOrderImages = "getorderimages";
+	const DeleteOrder = "deleteorder";
 } 

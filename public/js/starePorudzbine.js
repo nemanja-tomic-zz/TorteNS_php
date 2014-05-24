@@ -20,28 +20,26 @@ $(document).ready(function(){
 	
 });
 
-
-
 function fancyBox(id){
-var string = new Array();
-	$.post("includes/getProizvodSlike.php", {idProizvoda:id}, function(json){
-		try
-		{
-			var obj = $.parseJSON(json);
-		
-			$.each(obj, function(i, data){
-				string.push("uploads/"+data.putanja+"/"+data.naziv);
-			});
-	
-			$.fancybox.open(string);
-		}
-		catch(e)
-		{
-			alert(json);
-		}
-	});
-	
-	
+    var string = new Array();
+    var data = {
+        id : id
+    };
+    $.post("includes/api.php", {action: "getOrderImages", data: JSON.stringify(data)}, function(json){
+        var obj = $.parseJSON(json);
+        if (obj.success) {
+            $.each(obj.data, function(i, data){
+                string.push("uploads/"+data.putanja+"/"+data.naziv);
+            });
+            if (string != "") {
+                $.fancybox.open(string);
+            } else {
+                alert("Nema slika za izabranu porudzbinu.");
+            }
+        } else {
+            $("#response").html(obj.message);
+        }
+    });
 }
 
 function getPorudzbina(){
@@ -50,106 +48,90 @@ function getPorudzbina(){
 	filter.cena = $("#cena").val();
 	filter.ime = $("#ime").val();
 	filter.napomena = $("#napomena").val();
-	$.post("includes/starePorudzbine.php", {data:filter}, function(response){
-		try
-		{
-			var obj = $.parseJSON(response);
-			var img = "";
-			$("#tabelaPorudzbine").empty();
-			$("#tabelaPorudzbine").append("<thead><tr><th>Ime i prezime</th><th>Proizvod</th><th>Napomena</th><th>Cena</th><th>Za datum</th></tr></thead><tbody>");
-			$.each(obj, function(i, item){
-				
-				$("#tabelaPorudzbine").append("<tr><td class='porudzbineIme'>"+item.ime+" "+item.prezime+"</td><td class='porudzbineNaziv'>"+item.naziv+"</td><td class='porudzbineNapomena'><pre class='kurchevPre' readonly='readonly'>"+item.napomena+"</pre></td><td class='porudzbineCena'>"+item.cena+"</td><td class='porudzbineDatum'>"+item.datum+"</td><td class='porudzbineDelete'><a onclick=fancyBox('"+item.idProizvoda+"')><img src='public/assets/img/picture.png' /></a></td><td class='porudzbineDelete'><a onclick=popupInit('"+item.idPorudzbine+"')><img src='public/assets/img/details.png' /></a></td></tr>");
-			});
-			$("#tabelaPorudzbine").append("</tbody>");
-			$("#tabelaPorudzbine").tablesorter().tablesorterPager({container: $("#pager")}); 
-		}
-		catch(e)
-		{
-			$("#tabelaPorudzbine").html("<tr><th>Error occurred:</th></tr><tr><td>"+response+"</td></tr>");
-		}
+	$.post("includes/api.php", {action: "filterOldOrders", data:JSON.stringify(filter)}, function(response){
+        var obj = $.parseJSON(response);
+        var img = "";
+        var table = $("#tabelaPorudzbine");
+        var content = "";
+        table.empty();
+		content += "<thead><tr><th>Ime i prezime</th><th>Proizvod</th><th>Napomena</th><th>Cena</th><th>Za datum</th></tr></thead><tbody>";
+        $.each(obj.data, function(i, item){
+            content += "<tr><td class='porudzbineIme'>"+item.ime+" "+item.prezime+"</td>";
+            content += "<td class='porudzbineNaziv'>"+item.naziv+"</td>";
+            content += "<td class='porudzbineNapomena'><pre class='kurchevPre' readonly='readonly'>"+item.napomena+"</pre></td>";
+            content += "<td class='porudzbineCena'>"+item.cena+"</td>";
+            content += "<td class='porudzbineDatum'>"+item.datumTransakcije+"</td>";
+            content += "<td class='porudzbineDelete'><a onclick=fancyBox('"+item.idProizvoda+"')><img src='public/assets/img/picture.png' /></a></td>";
+            content += "<td class='porudzbineDelete'><a onclick=popupInit('"+item.idPorudzbine+"')><img src='public/assets/img/details.png' /></a></td></tr>";
+        });
+        content += "</tbody>";
+        table.append(content);
+        $("#tabelaPorudzbine").tablesorter().tablesorterPager({container: $("#pager")});
 	});
 }
 
-
-
-function getData(a){
-	
-	$.post("includes/pregledPorudzbina.php", {id:a}, function(data){
+function getData(orderId){
+	var data = {
+        id: orderId
+    };
+	$.post("includes/api.php", {action: "getOrder", data: JSON.stringify(data)}, function(response){
 	$('input[name="idProizvodaHidden"]').val('');
 	$('input[name="tipHidden"]').val('');
-	var porudzbina = $.parseJSON(data);
-		$("#proizvod").html(porudzbina[0].naziv);
-		$("#klijent").html(porudzbina[0].ime+" "+porudzbina[0].prezime);
-		$("#datepicker").html(porudzbina[0].datum);
-		$("#opis").val(porudzbina[0].napomena);
-		$('input[name="idProizvodaHidden"]').val(porudzbina[0].idProizvoda);
-		$('input[name="tipHidden"]').val(porudzbina[0].nazivGrupe);
-		imgRequest(porudzbina[0].idProizvoda, $("#sveSlike"));
+	var porudzbina = $.parseJSON(response);
+    var order = porudzbina.data;
+		$("#proizvod").html(order.naziv);
+		$("#klijent").html(order.ime+" "+order.prezime);
+		$("#datepicker").html(order.datumTransakcije);
+		$("#opis").val(order.napomena);
+		$('input[name="idProizvodaHidden"]').val(order.idProizvoda);
+		$('input[name="tipHidden"]').val(order.nazivGrupe);
+        setCookie("idPorudzbine", order.idPorudzbine);
+		imgRequest(order.images, $("#sveSlike"));
 	});
 }
 
-function popupInit(id)
-{
-$("#preview").html('');
-$("#imgFile").val('');
-$(".fieldset").show();
-getData(id);
-$( "#dialog-form" ).dialog({
-			autoOpen: true,
-			height: 700,
-			width: 850,
-			modal: true,	//da se zatamni ostatak stranice
-			buttons: {
-				"Izmeni podatke": function() {
-					porudzbinaData=new Object();
-					porudzbinaData.idPorudzbine = id;
-					porudzbinaData.napomena = $("#opis").val();
-					porudzbinaData.datum = $("#datepicker").html();
-					
-					$.post("includes/updatePorudzbina.php", {data:porudzbinaData}, function(data){
-						$("#response").html(data);
-						getPorudzbina();
-					});
-					 
-					
-					$(this).dialog("close");
-				},
-				Cancel: function() {
-					$( this ).dialog( "close" );
-				}
-			},
-			close: function() {
-				getPorudzbina();
-			}
-			
-		});
-		
+function popupInit(id) {
+    $("#preview").html('');
+    $("#imgFile").val('');
+    $(".fieldset").show();
+    getData(id);
+    $( "#dialog-form" ).dialog({
+        autoOpen: true,
+        height: 700,
+        width: 850,
+        modal: true,	//da se zatamni ostatak stranice
+        buttons: {
+            "Izmeni podatke": function() {
+                var porudzbinaData = new Object();
+                porudzbinaData.idPorudzbine = id;
+                porudzbinaData.napomena = $("#opis").val();
+                porudzbinaData.datumTransakcije = $("#datepicker").html();
+
+                $.post("includes/api.php", {action: "updateOrder", data:JSON.stringify(porudzbinaData)}, function(data){
+                    var response = JSON.parse(data);
+                    $("#response").html(response.message);
+                    getPorudzbina();
+                });
+
+                $(this).dialog("close");
+            },
+            Cancel: function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        close: function() {
+            getPorudzbina();
+        }
+    });
 }
 
-
-
-
-function imgRequest(id, div){
-$.post("includes/getProizvodSlike.php", {idProizvoda:id}, function(json){
-	try
-		{
-		div.empty();
-			var obj = $.parseJSON(json);
-			if(typeof obj =='object')
-			{		
-				$.each(obj, function(i, item){
-					div.append("<div class='slika'><img src='uploads/"+item.putanja+"/"+item.naziv+"' /></div>");
-				});
-			}
-			else
-			{
-				div.html(obj);
-			}
-		}
-		catch(e)
-		{
-			$("#validateTips").html("Error occurred:"+json);
-		}
-});
+function imgRequest(orderImages, div){
+    div.empty();
+    if(orderImages.length > 0) {
+        $.each(orderImages, function(i, item){
+            div.append("<div class='slika'><img src='uploads/"+item.putanja+"/"+item.naziv+"' /><a onclick=deleteImg('"+item.idSlike+"')><img src='public/assets/img/delete.png' /></a></div>");
+        });
+    } else {
+        div.html("There are no images for selected order.");
+    }
 }

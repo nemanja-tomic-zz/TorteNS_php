@@ -9,4 +9,5 @@ class Order extends BaseModel {
 	public $datumTransakcije;
 	public $idKlijenta;
 	public $idProizvoda;
+	public $images;
 } 

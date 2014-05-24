@@ -118,8 +118,9 @@ function deleteProizvod(id) {
             id: id
         };
 		$.post("includes/api.php", {action: "deleteProduct", data: JSON.stringify(data)}, function(data){
+            var response = JSON.parse(data);
 			getProizvod(getCookie("tipKok"));
-			$("#response").html(data);
+			$("#response").html(response.message);
 		});
 	}
 }
@@ -213,7 +214,6 @@ function upload(){
                 $("#preview").html(obj.message);
             }
 	}).submit();
-	
 }
 
 function imgRequest(productImages, div){

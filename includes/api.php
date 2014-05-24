@@ -37,6 +37,10 @@ class Api {
 	 * @var ImageController
 	 */
 	private $imageController;
+	/**
+	 * @var OrderController
+	 */
+	private $orderController;
 
 	public function __construct($action, $data) {
 		require_once 'autoloader.php';
@@ -54,6 +58,7 @@ class Api {
 		$this->productController = new ProductController($this->configManager);
 		$this->groupController = new GroupController($this->configManager);
 		$this->imageController = new ImageController($this->configManager);
+		$this->orderController = new OrderController($this->configManager);
 
 		if ($this->configManager->isDebugMode()) {
 			ini_set('display_startup_errors', 1);
@@ -90,7 +95,12 @@ class Api {
 				$response->message = "Client successfully updated!";
 				break;
 			case ApiActions::DeleteProduct:
-				$this->productController->deleteProduct($this->data->id);
+				$product = $this->productController->getProduct($this->data->id);
+				/** @var $image Image */
+				foreach ($product->images as $image) {
+					try {$this->imageController->deleteImage($image->idSlike);} catch (Exception $ex) {}
+				}
+				$this->productController->deleteProduct($product->idProizvoda);
 				break;
 			case ApiActions::FilterProducts:
 				$filter = new ProductFilter($this->data->idGrupe, $this->data->cena, $this->data->naziv, $this->data->opis);
@@ -127,6 +137,35 @@ class Api {
 			case ApiActions::GetImages:
 				$product = $this->productController->getProduct($this->data->id);
 				$response->data = $product->images;
+				break;
+			case ApiActions::FilterOrders:
+				$response->data = $this->orderController->filterOrders(new OrderFilter($this->data->ime, $this->data->naziv, $this->data->cena, $this->data->napomena));
+				break;
+			case ApiActions::FilterOldOrders:
+				$response->data = $this->orderController->filterOrders(new OrderFilter($this->data->ime, $this->data->naziv, $this->data->cena, $this->data->napomena), false);
+				break;
+			case ApiActions::GetOrder:
+				$response->data = $this->orderController->getOrder($this->data->id);
+				break;
+			case ApiActions::GetAllOrderDates:
+				$response->data = $this->orderController->getAllOrderDates();
+				break;
+			case ApiActions::UpdateOrder:
+				$this->orderController->updateOrder($this->data);
+				$response->message = "Order successfully updated!";
+				break;
+			case ApiActions::GetOrderImages:
+				$order = $this->orderController->getOrder($this->data->id);
+				$response->data = $order->images;
+				break;
+			case ApiActions::DeleteOrder:
+				$order = $this->orderController->getOrder($this->data->id);
+				/** @var $image Image */
+				foreach ($order->images as $image) {
+					try {$this->imageController->deleteImage($image->idSlike);} catch(Exception $ex) {}
+				}
+				$this->orderController->deleteOrder($this->data->id);
+				$response->message = "Order successfully deleted!";
 				break;
 			default:
 				throw new BadMethodCallException("Invalid API method called: ".$this->action);

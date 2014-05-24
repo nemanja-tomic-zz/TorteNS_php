@@ -15,13 +15,13 @@ class ProductDb extends DbHandler {
 	/**
 	 * @param $id
 	 * @return Product
-	 * @throws PDOException
+	 * @throws Exception
 	 */
 	public function getRecord($id) {
 		$query = "SELECT * FROM proizvod WHERE idProizvoda = ?";
 		$this->query($query, array($id));
 		if ($this->getRowCount() == 0) {
-			throw new PDOException("Product with id = {$id} not found!");
+			throw new Exception("Product with id = {$id} not found!");
 		}
 		$products = $this->fetchResults(Product::GetClassName());
 		return $products[0];
