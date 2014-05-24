@@ -73,6 +73,16 @@ class OrderController extends BaseController {
 		}
 	}
 
+	public function insertOrder($data) {
+		$insertId = 0;
+		try {
+			$insertId = $this->db->insertRecord($this->prepareOrderData($data));
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
+		return $insertId;
+	}
+
 	/**
 	 * @param $data
 	 * @return Order
@@ -83,6 +93,8 @@ class OrderController extends BaseController {
 		$order->datumTransakcije = isset($data->datumTransakcije) ? $data->datumTransakcije : "";
 		$order->idPorudzbine = isset($data->idPorudzbine) ? $data->idPorudzbine : "";
 		$order->napomena = isset($data->napomena) ? $data->napomena : "";
+		$order->idProizvoda = isset($data->idProizvoda) ? $data->idProizvoda : "";
+		$order->idKlijenta = isset($data->idKlijenta) ? $data->idKlijenta : "";
 		return $order;
 	}
 } 

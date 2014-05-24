@@ -167,6 +167,10 @@ class Api {
 				$this->orderController->deleteOrder($this->data->id);
 				$response->message = "Order successfully deleted!";
 				break;
+			case ApiActions::InsertOrder:
+				$this->orderController->insertOrder($this->data);
+				$response->message = "Order successfully created!";
+				break;
 			default:
 				throw new BadMethodCallException("Invalid API method called: ".$this->action);
 		}

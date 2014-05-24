@@ -34,11 +34,22 @@ class OrderDb extends DbHandler {
 	}
 
 	public function getAllRecords() {
-		// TODO: Implement getAllRecords() method.
+		$query = "SELECT * FROM porudzbine";
+		$this->query($query, array());
+		return $this->fetchResults(Order::GetClassName());
 	}
 
+	/**
+	 * @param BaseModel $model
+	 * @return int
+	 */
 	public function insertRecord(BaseModel $model) {
-		// TODO: Implement insertRecord() method.
+		/** @var $order Order */
+		$order = $model;
+		$query = "INSERT INTO porudzbine (datumPorucivanja, idKlijenta, idProizvoda, napomena, datumTransakcije)
+			VALUES (?, ?, ?, ?, ?)";
+		$this->query($query, array(Date("Y-m-d"), $order->idKlijenta, $order->idProizvoda, $order->napomena, $order->datumTransakcije));
+		return $this->lastInsertId();
 	}
 
 	public function updateRecord(BaseModel $model) {

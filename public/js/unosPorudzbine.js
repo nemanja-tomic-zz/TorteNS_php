@@ -124,35 +124,32 @@ function schedule(date){
 function insertPorudzbina(){
 	var a = $("#klijent").html();
 	var b = $("#proizvod").html();
-	if ((a != "") && (b != "") && ($("#datepicker").val() != ""))
-	{
-	data = new Object();
-	data.idKlijenta = getCookie("idKlijenta");
-	data.idProizvoda = getCookie("idProizvoda");
-	data.napomena = $("#napomena").val();
-	data.datumTransakcije = $("#datepicker").val();	
-	$.post("includes/insertPorudzbina.php", {data:data}, function(response){
-		var a = String(response);
-		if (a.length > 29)
-			alert(a);
-		else
-		{
-			//setCookie("idPorudzbine", a);		ukinuli smo slike za porudzbine
-			window.location.replace("index.html");
-			$("#klijent").empty();
-			$("#proizvod").empty();
-			$("#datepicker").val("");
-			$("#napomena").val("");
-			deleteCookie("idKlijenta");
-			deleteCookie("idProizvoda");
-			deleteCookie("nazivProizvoda");
-		}
-	});
-	}
-	else
-	{
-		alert("Morate popuniti sva polja.");
-	}
+    var data;
+    if ((a != "") && (b != "") && ($("#datepicker").val() != "")) {
+        data = {};
+        data.idKlijenta = getCookie("idKlijenta");
+        data.idProizvoda = getCookie("idProizvoda");
+        data.napomena = $("#napomena").val();
+        data.datumTransakcije = $("#datepicker").val();
+        $.post("includes/api.php", {action: "insertOrder", data: JSON.stringify(data)}, function (response) {
+            var a = String(response);
+            if (a.length > 29) {
+                alert(a);
+            } else {
+                //setCookie("idPorudzbine", a);		ukinuli smo slike za porudzbine
+                window.location.replace("index.html");
+                $("#klijent").empty();
+                $("#proizvod").empty();
+                $("#datepicker").val("");
+                $("#napomena").val("");
+                deleteCookie("idKlijenta");
+                deleteCookie("idProizvoda");
+                deleteCookie("nazivProizvoda");
+            }
+        });
+    } else {
+        alert("Morate popuniti sva polja.");
+    }
 }
 
 
@@ -187,8 +184,7 @@ function browseProizvod(){
 }
 
 
-function getKlijents()
-{
+function getKlijents() {
     var data = {
         imeF: $("#filterIme").val(),
         prezimeF: $("#filterPrezime").val(),
@@ -198,24 +194,24 @@ function getKlijents()
     var action = "getClients";
 
     $.post("includes/api.php", {data: JSON.stringify(data), action: action}, function (json) {
-		try
-		{
-			var statusTd = "";
-			var obj = $.parseJSON(json);
-			$("#tabelaKlijent").empty();
-			$("#tabelaKlijent").append("<thead><tr><th>Ime:</th><th>Prezime:</th><th>Adresa:</th><th>Telefon:</th><th>Email:</th><th>Status:</th></tr></thead><tbody>");
-			$.each(obj.data, function(i, item){
-
-			
-				$("#tabelaKlijent").append("<tr><td class='klijentiIme'>"+item.ime+"</td><td class='klijentiPrezime'>"+item.prezime+"</td><td class='klijentiAdresa'>"+item.adresa+"</td><td class='klijentiTelefon'>"+item.telefon+"</td><td class='klijentiEmail'>"+item.email+"</td>"+statusTd+"<td class='klijentiFB'><a target='_blank' href='"+item.fblink+"'><img src='public/assets/img/fbimg.png' /></a></td><td class='klijentiFB'><a onclick=selectKlijent('"+item.idKlijenta+"','"+item.prezime+"','"+item.ime+"')><img src='public/assets/img/forward.png' /></a></td></tr>");
-			});
-			$("#tabelaKlijent").append("</tbody>");
-			$("#tabelaKlijent").tablesorter().tablesorterPager({container: $("#pager")}); 
-		}
-		catch(e)
-		{
-			$("#tabelaKlijent").html("<tr><th>Error occurred:</th></tr><tr><td>"+json+"</td></tr>");
-		}
+        var obj = $.parseJSON(json);
+        var table = $("#tabelaKlijent");
+        var content = "";
+        table.empty();
+        content += "<thead><tr><th>Ime:</th><th>Prezime:</th><th>Adresa:</th><th>Telefon:</th><th>Email:</th><th>Status:</th></tr></thead><tbody>";
+        $.each(obj.data, function(i, item){
+            content += "<tr><td class='klijentiIme'>"+item.ime+"</td>";
+            content += "<td class='klijentiPrezime'>"+item.prezime+"</td>";
+            content += "<td class='klijentiAdresa'>"+item.adresa+"</td>";
+            content += "<td class='klijentiTelefon'>"+item.telefon+"</td>";
+            content += "<td class='klijentiEmail'>"+item.email+"</td>";
+            content += "<td class='klijentiStatus'>"+item.statusText+"</td>";
+            content += "<td class='klijentiFB'><a target='_blank' href='"+item.fblink+"'><img src='public/assets/img/fbimg.png' /></a></td>";
+            content += "<td class='klijentiFB'><a onclick=selectKlijent('"+item.idKlijenta+"','"+item.prezime+"','"+item.ime+"')><img src='public/assets/img/forward.png' /></a></td></tr>";
+        });
+        content += "</tbody>";
+        table.append(content);
+        table.tablesorter().tablesorterPager({container: $("#pager")});
 	});
 }
 
@@ -268,26 +264,21 @@ function selectProizvod(id){
 	$( "#dialog-formP" ).dialog('close');
 	setCookie("idProizvoda", id);
     //getProizvod.php
-	$.post("includes/api.php", {id:id}, function(json){
+    var data = {
+        id: id
+    };
+	$.post("includes/api.php", {action: "getProduct" data: JSON.stringify(data)}, function(json){
 		var da = $.parseJSON(json);
-		var proizvod = da[0].naziv;
+		var proizvod = da.data.naziv;
 		$("#proizvod").html(proizvod);
 	});
-	
-	$.post("includes/getProizvodSlike.php", {idProizvoda:id}, function(json){
-		try
-		{
+
+	$.post("includes/api.php", {action: "getImages", data: JSON.stringify(data)}, function(json){
 		var obj = $.parseJSON(json);
 		var string = "";
 		$("#image").empty();
-			string = "uploads/"+obj[0].putanja+"/"+obj[0].naziv;
-			$("#image").html("<img class='image' src='"+string+"' alt='' title='' />");
-			
-		}
-		catch(e)
-		{
-			$("#image").html(json);
-		}
+        string = "uploads/"+obj.data[0].putanja+"/"+obj.data[0].naziv;
+        $("#image").html("<img class='image' src='"+string+"' alt='' title='' />");
 	});
 }
 
