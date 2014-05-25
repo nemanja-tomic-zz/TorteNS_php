@@ -44,21 +44,21 @@ $(document).ready(function(){
 	$("#browseKlijent").bind('click', browseKlijent);
 	$("#browseProizvod").bind('click', browseProizvod);
 	$("#btnNext").bind('click', insertPorudzbina);
-	$("#torteBtn").bind("click",{tip:"Torte"}, function(event){
+	$("#torteBtn").bind("click",{tip:"1"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Torte");
+		setCookie("tipKok", "1");
 	});
-	$("#cupsBtn").bind("click",{tip:"Cupcakes"}, function(event){
+	$("#cupsBtn").bind("click",{tip:"3"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Cupcakes");
+		setCookie("tipKok", "3");
 	});
-	$("#figuriceBtn").bind("click",{tip:"Figurice"}, function(event){
+	$("#figuriceBtn").bind("click",{tip:"4"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Figurice");
+		setCookie("tipKok", "4");
 	});
-	$("#miscBtn").bind("click",{tip:"Ostali Proizvodi"}, function(event){
+	$("#miscBtn").bind("click",{tip:"5"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Ostali Proizvodi");
+		setCookie("tipKok", "5");
 	});
 	$("#naziv").bind("keyup", function(){
 		getProizvod(getCookie("tipKok"));
@@ -122,22 +122,21 @@ function schedule(date){
 }
 
 function insertPorudzbina(){
-	var a = $("#klijent").html();
-	var b = $("#proizvod").html();
+	var clientName = $("#klijent").html();
+	var productName = $("#proizvod").html();
     var data;
-    if ((a != "") && (b != "") && ($("#datepicker").val() != "")) {
+    if ((clientName != "") && (productName != "") && ($("#datepicker").val() != "")) {
         data = {};
         data.idKlijenta = getCookie("idKlijenta");
         data.idProizvoda = getCookie("idProizvoda");
         data.napomena = $("#napomena").val();
         data.datumTransakcije = $("#datepicker").val();
         $.post("includes/api.php", {action: "insertOrder", data: JSON.stringify(data)}, function (response) {
-            var a = String(response);
-            if (a.length > 29) {
-                alert(a);
+            var obj = JSON.parse(response);
+            if (obj.success == false) {
+                alert(obj.message);
             } else {
                 //setCookie("idPorudzbine", a);		ukinuli smo slike za porudzbine
-                window.location.replace("index.html");
                 $("#klijent").empty();
                 $("#proizvod").empty();
                 $("#datepicker").val("");
@@ -145,6 +144,7 @@ function insertPorudzbina(){
                 deleteCookie("idKlijenta");
                 deleteCookie("idProizvoda");
                 deleteCookie("nazivProizvoda");
+                window.location.replace("index.html");
             }
         });
     } else {
@@ -221,6 +221,7 @@ function getProizvod(tip){
 	filter.naziv = $("#naziv").val();
 	filter.cena = $("#cena").val();
 	filter.opis = $("#opis").val();
+    filter.idGrupe = tip;
 	type = tip;
 	var td = "";
 	var th = "";
@@ -229,28 +230,21 @@ function getProizvod(tip){
 	else
 		th = "<th>Kolicina</th>";
     //getProizvod.php
-	$.post("includes/api.php", {data:filter, grupa:type}, function(response){
-		try
-		{
-			var obj = $.parseJSON(response);
-			var naziv = "";
-			$("#tabelaProizvodi").empty();
-			$("#tabelaProizvodi").append("<thead><tr><th>Naziv</th>"+th+"<th>Opis</th><th>Cena</th></tr></thead><tbody>");
-			$.each(obj, function(i, item){
-			if (type == "Torte")
-				td = "<td class='proizvodiTezina'>"+item.tezina+"</td>";
-			else
-				td = "<td class='proizvodiKolicina'>"+item.kolicina+"</td>";
-			
-			$("#tabelaProizvodi").append("<tr><td class='proizvodiNaziv'>"+item.naziv+"</td>"+td+"<td class='proizvodiOpis'>"+item.opis+"</td><td class='proizvodiCena'>"+item.cena+"</td><td class='proizvodiDelete'><a onclick=fancyBox('"+item.idProizvoda+"')><img src='public/assets/img/picture.png' /></a></td><td class='proizvodiDelete'><a onclick=selectProizvod('"+item.idProizvoda+"')><img src='public/assets/img/forward.png' /></a></td></tr>");
-			});
-			$("#tabelaProizvodi").append("</tbody>");
-			$("#tabelaProizvodi").tablesorter().tablesorterPager({container: $("#pager")}); 
-		}
-		catch(e)
-		{
-			$("#tabelaProizvodi").html("<tr><th>Error occurred:</th></tr><tr><td>"+response+"</td></tr>");
-		}
+	$.post("includes/api.php", {action: "filterProducts", data:JSON.stringify(filter)}, function(response){
+        var obj = $.parseJSON(response);
+        var naziv = "";
+        $("#tabelaProizvodi").empty();
+        $("#tabelaProizvodi").append("<thead><tr><th>Naziv</th>"+th+"<th>Opis</th><th>Cena</th></tr></thead><tbody>");
+        $.each(obj.data, function(i, item){
+        if (type == "Torte")
+            td = "<td class='proizvodiTezina'>"+item.tezina+"</td>";
+        else
+            td = "<td class='proizvodiKolicina'>"+item.kolicina+"</td>";
+
+        $("#tabelaProizvodi").append("<tr><td class='proizvodiNaziv'>"+item.naziv+"</td>"+td+"<td class='proizvodiOpis'>"+item.opis+"</td><td class='proizvodiCena'>"+item.cena+"</td><td class='proizvodiDelete'><a onclick=fancyBox('"+item.idProizvoda+"')><img src='public/assets/img/picture.png' /></a></td><td class='proizvodiDelete'><a onclick=selectProizvod('"+item.idProizvoda+"')><img src='public/assets/img/forward.png' /></a></td></tr>");
+        });
+        $("#tabelaProizvodi").append("</tbody>");
+        $("#tabelaProizvodi").tablesorter().tablesorterPager({container: $("#pager")});
 	});
 }
 
@@ -267,7 +261,7 @@ function selectProizvod(id){
     var data = {
         id: id
     };
-	$.post("includes/api.php", {action: "getProduct" data: JSON.stringify(data)}, function(json){
+	$.post("includes/api.php", {action: "getProduct", data: JSON.stringify(data)}, function(json){
 		var da = $.parseJSON(json);
 		var proizvod = da.data.naziv;
 		$("#proizvod").html(proizvod);
