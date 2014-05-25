@@ -90,7 +90,7 @@ class Api {
 				$this->clientController->insertClient($this->data);
 				$response->message = "Client successfully added!";
 				break;
-			case ApiActions::UpdateCLient:
+			case ApiActions::UpdateClient:
 				$this->clientController->updateClient($this->data);
 				$response->message = "Client successfully updated!";
 				break;
@@ -137,6 +137,7 @@ class Api {
 			case ApiActions::GetImages:
 				$product = $this->productController->getProduct($this->data->id);
 				$response->data = $product->images;
+				$response->hasData = count($response->data) > 0;
 				break;
 			case ApiActions::FilterOrders:
 				$response->data = $this->orderController->filterOrders(new OrderFilter($this->data->ime, $this->data->naziv, $this->data->cena, $this->data->napomena));
@@ -145,10 +146,16 @@ class Api {
 				$response->data = $this->orderController->filterOrders(new OrderFilter($this->data->ime, $this->data->naziv, $this->data->cena, $this->data->napomena), false);
 				break;
 			case ApiActions::GetOrder:
-				$response->data = $this->orderController->getOrder($this->data->id);
+				$order = $this->orderController->getOrder($this->data->id);
+				$order->images = $this->productController->getProduct($order->idProizvoda)->images;
+				$response->data = $order;
 				break;
 			case ApiActions::GetOrdersByDate:
 				$response->data = $this->orderController->getOrdersByDate($this->data->datum);
+				$response->hasData = count($response->data) > 0;
+				break;
+			case ApiActions::GetOrdersByClient:
+				$response->data = $this->orderController->getOrdersByClient($this->data->id);
 				$response->hasData = count($response->data) > 0;
 				break;
 			case ApiActions::GetAllOrderDates:

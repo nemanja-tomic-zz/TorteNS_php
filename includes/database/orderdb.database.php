@@ -18,7 +18,7 @@ class OrderDb extends DbHandler {
 	 * @throws Exception
 	 */
 	public function getRecord($id) {
-		$query = "SELECT proizvod.naziv, proizvod.cena, porudzbine.napomena, porudzbine.idKlijenta, porudzbine.idProizvoda, porudzbine.idPorudzbine, klijent.ime, klijent.prezime, porudzbine.datumTransakcije, grupa.naziv AS nazivGrupe
+		$query = "SELECT proizvod.naziv, proizvod.cena, porudzbine.napomena, porudzbine.idKlijenta, porudzbine.idProizvoda, porudzbine.idPorudzbine, klijent.ime, klijent.prezime, porudzbine.datumTransakcije, grupa.naziv AS nazivGrupe, grupa.idGrupe
 			FROM porudzbine AS porudzbine
 			INNER JOIN (proizvod AS proizvod, klijent AS klijent, grupa AS grupa)
 				ON (porudzbine.idProizvoda = proizvod.idProizvoda
@@ -113,6 +113,14 @@ class OrderDb extends DbHandler {
 				ON (porudzbine.idProizvoda = proizvod.idProizvoda AND porudzbine.idKlijenta = klijent.idKlijenta)
 				WHERE porudzbine.datumTransakcije = ?";
 		$this->query($query, array($date));
+		return $this->fetchResults(Order::GetClassName());
+	}
+
+	public function getOrdersByClient($id) {
+		$query = "SELECT * FROM porudzbine INNER JOIN (proizvod, klijent)
+				ON (porudzbine.idProizvoda = proizvod.idProizvoda AND porudzbine.idKlijenta = klijent.idKlijenta)
+				WHERE porudzbine.idKlijenta = ?";
+		$this->query($query, array($id));
 		return $this->fetchResults(Order::GetClassName());
 	}
 }

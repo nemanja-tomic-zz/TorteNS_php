@@ -7,7 +7,7 @@ class ApiActions {
 	const GetClient = "getclient";
 	const DeleteClient = "deleteclient";
 	const InsertClient = "insertclient";
-	const UpdateCLient = "updateclient";
+	const UpdateClient = "updateclient";
 	const DeleteProduct = "deleteproduct";
 	const GetProducts = "getproducts";
 	const GetProduct = "getproduct";
@@ -27,4 +27,5 @@ class ApiActions {
 	const DeleteOrder = "deleteorder";
 	const InsertOrder = "insertorder";
 	const GetOrdersByDate = "getordersbydate";
+	const GetOrdersByClient = "getordersbyclient";
 } 

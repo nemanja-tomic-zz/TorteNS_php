@@ -65,6 +65,23 @@ class OrderController extends BaseController {
 		}
 	}
 
+	/**
+	 * Maps provided data into Order model.
+	 *
+	 * @param $data
+	 * @return Order
+	 */
+	private function prepareOrderData($data) {
+		$order = new Order();
+		$order->datumPorucivanja = isset($data->datumPorucivanja) ? $data->datumPorucivanja : "";
+		$order->datumTransakcije = isset($data->datumTransakcije) ? $data->datumTransakcije : "";
+		$order->idPorudzbine = isset($data->idPorudzbine) ? $data->idPorudzbine : "";
+		$order->napomena = isset($data->napomena) ? $data->napomena : "";
+		$order->idProizvoda = isset($data->idProizvoda) ? $data->idProizvoda : "";
+		$order->idKlijenta = isset($data->idKlijenta) ? $data->idKlijenta : "";
+		return $order;
+	}
+
 	public function deleteOrder($id) {
 		try {
 			$this->db->deleteRecord($id);
@@ -99,20 +116,13 @@ class OrderController extends BaseController {
 		return $orderList;
 	}
 
-	/**
-	 * Maps provided data into Order model.
-	 *
-	 * @param $data
-	 * @return Order
-	 */
-	private function prepareOrderData($data) {
-		$order = new Order();
-		$order->datumPorucivanja = isset($data->datumPorucivanja) ? $data->datumPorucivanja : "";
-		$order->datumTransakcije = isset($data->datumTransakcije) ? $data->datumTransakcije : "";
-		$order->idPorudzbine = isset($data->idPorudzbine) ? $data->idPorudzbine : "";
-		$order->napomena = isset($data->napomena) ? $data->napomena : "";
-		$order->idProizvoda = isset($data->idProizvoda) ? $data->idProizvoda : "";
-		$order->idKlijenta = isset($data->idKlijenta) ? $data->idKlijenta : "";
-		return $order;
+	public function getOrdersByClient($id) {
+		$orderList = array();
+		try {
+			$orderList = $this->db->getOrdersByClient($id);
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
+		return $orderList;
 	}
 } 
