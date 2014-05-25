@@ -155,7 +155,7 @@ class Api {
 				$response->hasData = count($response->data) > 0;
 				break;
 			case ApiActions::GetOrdersByClient:
-				$response->data = $this->orderController->getOrdersByClient($this->data->id);
+				$response->data = $this->orderController->getOrdersByClient($this->data->id, $this->data->newOrders);
 				$response->hasData = count($response->data) > 0;
 				break;
 			case ApiActions::GetAllOrderDates:

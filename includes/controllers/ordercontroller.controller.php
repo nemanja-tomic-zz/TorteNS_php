@@ -116,13 +116,27 @@ class OrderController extends BaseController {
 		return $orderList;
 	}
 
-	public function getOrdersByClient($id) {
-		$orderList = array();
+	public function getOrdersByClient($id, $newOrders = true) {
+		$returnList = array();
 		try {
 			$orderList = $this->db->getOrdersByClient($id);
+
+			if ($newOrders) {
+				for ($i = 0; $i < count($orderList); $i++) {
+					if (strtotime($orderList[$i]->datumTransakcije) >= strtotime(Date('Y-m-d'))) {
+						$returnList[] = $orderList[$i];
+					}
+				}
+			} else {
+				for ($i = 0; $i < count($orderList); $i++) {
+					if (strtotime($orderList[$i]->datumTransakcije) < strtotime(Date('Y/m/d'))) {
+						$returnList[] = $orderList[$i];
+					}
+				}
+			}
 		} catch (Exception $ex) {
 			$this->HandleException($ex);
 		}
-		return $orderList;
+		return $returnList;
 	}
 } 

@@ -45,7 +45,7 @@ function setHoliDays(date) {
 }
 
 function fancyBox(id){
-var string = new Array();
+    var string = [];
     var data = {
         id: id
     };
@@ -63,14 +63,13 @@ var string = new Array();
 
         $.fancybox.open(string);
 	});
-	
-	
 }
 
 function getPorudzbina(){
 	var idKlijenta = getCookie('idKlijenta');
     var data = {
-        id: idKlijenta
+        id: idKlijenta,
+        newOrders: true
     };
 	$.post("includes/api.php", {action: "getOrdersByClient", data:JSON.stringify(data)}, function(response){
         var obj = $.parseJSON(response);
@@ -205,5 +204,5 @@ function imgRequest(imagesList, div){
     }
 }
 $(window).unload(function() {
-  //deleteCookie("idKlijenta");
+  deleteCookie("idKlijenta");
 });
