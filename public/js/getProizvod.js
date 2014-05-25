@@ -4,22 +4,22 @@ $(document).ready(function(){
 	$("#poruci").bind("click", function(){
 		window.location.replace("unosPorudzbine.html");
 	});
-	$("#imgSubmit").bind("click", timeout);
-	$("#torteBtn").bind("click",{tip:"Torte"}, function(event){
+	$("#imgSubmit").bind("click", upload);
+	$("#torteBtn").bind("click",{tip:"1"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Torte");
+		setCookie("tipKok", "1");
 	});
-	$("#cupsBtn").bind("click",{tip:"Cupcakes"}, function(event){
+	$("#cupsBtn").bind("click",{tip:"3"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Cupcakes");
+		setCookie("tipKok", "3");
 	});
-	$("#figuriceBtn").bind("click",{tip:"Figurice"}, function(event){
+	$("#figuriceBtn").bind("click",{tip:"4"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Figurice");
+		setCookie("tipKok", "4");
 	});
-	$("#miscBtn").bind("click",{tip:"Ostali Proizvodi"}, function(event){
+	$("#miscBtn").bind("click",{tip:"5"}, function(event){
 		getProizvod(event.data.tip);
-		setCookie("tipKok", "Ostali Proizvodi");
+		setCookie("tipKok", "5");
 	});
 	$("#naziv").bind("keyup", function(){
 		getProizvod(getCookie("tipKok"));
@@ -32,32 +32,27 @@ $(document).ready(function(){
 	});
 
 });
+
 function fancyBox(id){
-var string = new Array();
-	$.post("includes/getProizvodSlike.php", {idProizvoda:id}, function(json){
+    var string = [];
+    var data = {
+        id : id
+    };
+	$.post("includes/api.php", {action: "getImages", data: JSON.stringify(data)}, function(json){
 		var obj = $.parseJSON(json);
-		
-		$.each(obj, function(i, data){
-			string.push("uploads/"+data.putanja+"/"+data.naziv);
-		});
-		if (string != "")
-		{
-		$.fancybox.open(string);
-		}
-		else
-		{
-			alert("Nema slika za izabrani proizvod.");
-		}
+        if (obj.success) {
+            $.each(obj.data, function(i, data){
+                string.push("uploads/"+data.putanja+"/"+data.naziv);
+            });
+            if (string != "") {
+                $.fancybox.open(string);
+            } else {
+                alert("Nema slika za izabrani proizvod.");
+            }
+        } else {
+            $("#response").html(obj.message);
+        }
 	});
-	
-	//
-	
-}
-function timeout(){
-	upload();
-	setTimeout(function(){
-		imgRequest($('input[name="idProizvodaHidden"]').val(), $("#sveSlike"));
-	}, 500);
 }
 
 function getProizvod(tip){
@@ -66,21 +61,22 @@ function getProizvod(tip){
 	filter.naziv = $("#naziv").val();
 	filter.cena = $("#cena").val();
 	filter.opis = $("#opis").val();
-	type = tip;
+    filter.idGrupe = tip;
 	var td = "";
 	var th = "";
-	if(type == "Torte")
+	if(tip == "1")
 		th = "<th>Tezina</th>";
 	else
 		th = "<th>Kolicina</th>";
-	$.post("includes/getProizvod.php", {data:filter, grupa:type}, function(response){
+
+	$.post("includes/api.php", {action: "filterProducts", data:JSON.stringify(filter)}, function(response){
 		try
 		{
 			var obj = $.parseJSON(response);
 			$("#tabelaProizvodi").empty();
 			$("#tabelaProizvodi").append("<thead><tr><th>Naziv</th>"+th+"<th>Opis</th><th>Cena</th></tr></thead><tbody>");
-			$.each(obj, function(i, item){
-			if (type == "Torte")
+			$.each(obj.data, function(i, item){
+			if (tip == "1")
 				td = "<td class='proizvodiTezina'>"+item.tezina+"</td>";
 			else
 				td = "<td class='proizvodiKolicina'>"+item.kolicina+"</td>";
@@ -96,139 +92,143 @@ function getProizvod(tip){
 		}
 	});
 }
-function getData(a){
-	$.post("includes/getProizvod.php", {id:a}, function(data){
-	var proizvod = $.parseJSON(data);
-		$("#naziv1").val(proizvod[0].naziv);
-		$("#cena1").val(proizvod[0].cena);
-		$("#tezina1").val(proizvod[0].tezina);
-		$("#opis1").val(proizvod[0].opis);
-		$("#kolicina1").val(proizvod[0].kolicina);
-		setCookie("nazivProizvoda", proizvod[0].naziv);
-		setCookie("idProizvoda", a);
+
+function getData(productId){
+    var data = {
+        id: productId
+    };
+	$.post("includes/api.php", {action: "getProduct", data:JSON.stringify(data)}, function(json){
+	    var response = $.parseJSON(json);
+		$("#naziv1").val(response.data.naziv);
+		$("#cena1").val(response.data.cena);
+		$("#tezina1").val(response.data.tezina);
+		$("#opis1").val(response.data.opis);
+		$("#kolicina1").val(response.data.kolicina);
+		setCookie("nazivProizvoda", response.data.naziv);
+		setCookie("idProizvoda", productId);
+
+        imgRequest(response.data.images, $("#sveSlike"));
 	});
 }
 
-function deleteProizvod(id){
+function deleteProizvod(id) {
 	var conf = confirm("Da li ste sigurni da zelite da obrisete ovaj proizvod? \n Brisanjem proizvoda nestace svi podaci iz porudzbina vezanim za njega.");
-	if (conf == true)
-	{
-		$.post("includes/deleteProizvod.php", {id:id}, function(data){
+	if (conf == true) {
+        var data = {
+            id: id
+        };
+		$.post("includes/api.php", {action: "deleteProduct", data: JSON.stringify(data)}, function(data){
+            var response = JSON.parse(data);
 			getProizvod(getCookie("tipKok"));
-			$("#response").html(data);
+			$("#response").html(response.message);
 		});
-	}
-}
-function deleteImg(id){
-	var conf = confirm("Da li ste sigurni da zelite da obrisete ovu sliku?");
-	if (conf == true)
-	{
-		$.post("includes/deleteImg.php", {id:id}, function(data){
-			$("#preview").html(data);
-		});
-		setTimeout(function(){
-			imgRequest($('input[name="idProizvodaHidden"]').val(), $("#sveSlike"));
-		}, 500);
 	}
 }
 
-function popupInit(id)
-{
-$("#preview").html('');
-$("#imgFile").val('');
-$(".fieldset").show();
-$('input[name="idProizvodaHidden"]').val(id);
-$('input[name="tipHidden"]').val(getCookie("tipKok"));
-getData(id);
-if (getCookie("tipKok") == 'Torte')
-{
-	$("#tezina1").show();
-	$("#tdTezina").show();
-	$("#kolicina1").hide();
-	$("#tdKolicina").hide();
-}
-else
-{
-	$("#tezina1").hide();
-	$("#tdTezina").hide();
-	$("#kolicina1").show();
-	$("#tdKolicina").show();
-}
-imgRequest(id, $("#sveSlike"));
-$( "#dialog-form" ).dialog({
-			autoOpen: true,
-			height: 700,
-			width: 700,
-			modal: true,	//da se zatamni ostatak stranice
-			buttons: {
-				"Izmeni podatke": function() {
-					proizvodData=new Object();
-					proizvodData.idProizvoda = id;
-					proizvodData.naziv = $("#naziv1").val();
-					proizvodData.cena = $("#cena1").val();
-					proizvodData.tezina = $("#tezina1").val();
-					proizvodData.opis = $("#opis1").val();
-					proizvodData.kolicina = $("#kolicina1").val();
-					
-					$.post("includes/updateProizvod.php", {data:proizvodData}, function(data){
-						$("#response").html(data);
-						getProizvod(getCookie("tipKok"));
-					});
-					 
-					
-					$(this).dialog("close");
-				},
-				Cancel: function() {
-					$( this ).dialog( "close" );
-					deleteCookie("idProizvoda");
-					deleteCookie("nazivProizvoda");
-				}
-			},
-			close: function() {
-				getProizvod(getCookie("tipKok"));
-					deleteCookie("idProizvoda");
-					deleteCookie("nazivProizvoda");
-			}
-			
+function deleteImg(imageId){
+	var conf = confirm("Da li ste sigurni da zelite da obrisete ovu sliku?");
+	if (conf == true) {
+        var data = {
+            id: imageId
+        };
+		$.post("includes/api.php", {action: "deleteImage", data: JSON.stringify(data)}, function(json){
+            var response = JSON.parse(json);
+			$("#preview").html(response.message);
+            if (response.success) {
+                getData(getCookie("idProizvoda"));
+            }
 		});
-		
+	}
 }
+
+function popupInit(productId) {
+    $("#preview").html('');
+    $("#imgFile").val('');
+    $(".fieldset").show();
+    $('input[name="idProizvodaHidden"]').val(productId);
+    $('input[name="tipHidden"]').val(getCookie("tipKok"));
+
+    getData(productId);
+
+    if (getCookie("tipKok") == '1') {
+        $("#tezina1").show();
+        $("#tdTezina").show();
+        $("#kolicina1").hide();
+        $("#tdKolicina").hide();
+    } else {
+        $("#tezina1").hide();
+        $("#tdTezina").hide();
+        $("#kolicina1").show();
+        $("#tdKolicina").show();
+    }
+
+    $( "#dialog-form" ).dialog({
+                autoOpen: true,
+                height: 700,
+                width: 700,
+                modal: true,
+                buttons: {
+                    "Izmeni podatke": function() {
+                        var proizvodData = new Object();
+                        proizvodData.idProizvoda = productId;
+                        proizvodData.naziv = $("#naziv1").val();
+                        proizvodData.cena = $("#cena1").val();
+                        proizvodData.tezina = $("#tezina1").val();
+                        proizvodData.opis = $("#opis1").val();
+                        proizvodData.kolicina = $("#kolicina1").val();
+
+                        $.post("includes/api.php", {action: "updateProduct", data:JSON.stringify(proizvodData)}, function(jsonResponse){
+                            var response = JSON.parse(jsonResponse);
+                            $("#response").html(response.message);
+                            getProizvod(getCookie("tipKok"));
+                        });
+
+
+                        $(this).dialog("close");
+                    },
+                    Cancel: function() {
+                        $( this ).dialog( "close" );
+                        deleteCookie("idProizvoda");
+                        deleteCookie("nazivProizvoda");
+                    }
+                },
+                close: function() {
+                    getProizvod(getCookie("tipKok"));
+                        deleteCookie("idProizvoda");
+                        deleteCookie("nazivProizvoda");
+                }
+
+            });
+
+}
+
 function upload(){
 	$("#preview").html('');
 	$("#preview").html('<img src="public/assets/img/loader.gif" alt="Uploading...."/>');
 	$("#uploadImg").ajaxForm({
-			target: '#preview'
+            complete: function (data) {
+                var obj = JSON.parse(data.responseText);
+                if (obj.success) {
+                    getData(getCookie("idProizvoda"));
+                }
+                $("#preview").html(obj.message);
+            }
 	}).submit();
-	
 }
-function imgSenka(id){
-	$.post("includes/getProizvodSlike.php", {idProizvoda:id}, function(json){
-		return json;
-	});
+
+function imgRequest(productImages, div){
+    div.empty();
+    if(productImages.length > 0) {
+        var imagesContent = "";
+        $.each(productImages, function(i, item){
+            imagesContent += "<div class='slika'><img src='uploads/"+item.putanja+"/"+item.naziv+"' /><a onclick=deleteImg('"+item.idSlike+"')><img src='public/assets/img/delete.png' /></a></div>";
+        });
+        div.append(imagesContent);
+    } else {
+        div.html("There are no images attached to this product.");
+    }
 }
-function imgRequest(id, div){
-$.post("includes/getProizvodSlike.php", {idProizvoda:id}, function(json){
-	try
-		{
-		div.empty();
-			var obj = $.parseJSON(json);
-			if(typeof obj =='object')
-			{		
-				$.each(obj, function(i, item){
-					div.append("<div class='slika'><img src='uploads/"+item.putanja+"/"+item.naziv+"' /><a onclick=deleteImg('"+item.idSlike+"')><img src='public/assets/img/delete.png' /></a></div>");
-				});
-			}
-			else
-			{
-				div.html(obj);
-			}
-		}
-		catch(e)
-		{
-			$("#validateTips").html("Error occurred:"+json);
-		}
-});
-}
+
 $(window).unload(function() {
   deleteCookie("tipKok");
 });

@@ -109,8 +109,9 @@
 	     <tr><td>Napomena:</td><td><textarea cols="34" rows="5" id="opis"></textarea></td></tr>
          <tr><td>Datum :</td><td><input id="datepicker" type="text"></td></tr>
          <tr>
-		 <form id="uploadImg" method="post" enctype="multipart/form-data" action='includes/unosSlike.php'>
+		 <form id="uploadImg" method="post" enctype="multipart/form-data" action='includes/api.php'>
 		 <td><input type="hidden" name='idProizvodaHidden' />
+             <input type="hidden" name="action" value="insertProductImage" />
 		 <input type="file" id="imgFile" name="imgFile" />
          <input type="hidden" name="tipHidden" /></td>
 		 <td><input type="button" value="Unesi Sliku" id="imgSubmit" /></td></form></tr>

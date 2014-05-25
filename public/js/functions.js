@@ -6,21 +6,24 @@ function insertUser(){
 var conf = confirm("Da li ste sigurni da zelite da registrujete klijenta?");
 	if (conf == true)
 	{
-		userData=new Object();
-		userData.ime = $("#ime").val();
-		userData.prezime = $("#prezime").val();
-		userData.telefon = $("#telefon").val();
-		userData.telefon2 = $("#telefon2").val();
-		userData.email = $("#email").val();
-		userData.fblink = $("#fblink").val();
-		userData.adresa = $("#adresa").val();
-		userData.napomene = $("#napomena").val();
-		userData.status = $('input:radio[name=status]:checked').val();
-	
+		userData = {
+            ime : $("#ime").val(),
+            prezime : $("#prezime").val(),
+            telefon : $("#telefon").val(),
+            telefon2 : $("#telefon2").val(),
+            email : $("#email").val(),
+            fblink : $("#fblink").val(),
+            adresa : $("#adresa").val(),
+            napomene : $("#napomena").val(),
+            status : $('input:radio[name=status]:checked').val()
+        };
+
+
 		if(userData.ime != '')
 		{
-			$.post("includes/insertUser.php", {data:userData}, function(data){
-				$("#dada").html(data);
+			$.post("includes/api.php", {action: "insertClient", data: JSON.stringify(userData)}, function(data){
+                var response = JSON.parse(data);
+				$("#dada").html(response.message);
 			});
 		}
 		else

@@ -60,7 +60,8 @@
 	</ul>
 	<div id="tabs-1">
         <table class="tabelaUnos">
-        <form id="formTorte" method="post" enctype="multipart/form-data" action='includes/ajaximage.php'>
+        <form id="formTorte" method="post" enctype="multipart/form-data" action='includes/api.php'>
+            <input type="hidden" name="action" value="insertProduct" />
 		<tr>
         <td><label for="naziv">Naziv* :</label></td>
 		<td><input type="text" name="naziv" id="naziv"/><br /></td>
@@ -82,7 +83,7 @@
         <span class="demo" style="width:200px; margin-left:50px;">
         </span><br>
 		<textarea id="opis" name="opis" placeholder="Opis torte..."></textarea>
-		<input type="hidden" id="tip" name="tip" value="Torte" />
+		<input type="hidden" id="tip" name="tip" value="1" />
 <div>
 	<input style="margin-left:20px;" type="button" id="submitTorte" value="Unesi" />
 	<input style="margin-left:20px" type="reset" id="resetTorte" value="Reset" />
@@ -95,7 +96,8 @@
 </div>
 <div id="tabs-2">
 <table class="tabelaUnos">
-<form id="formCups" method="post" enctype="multipart/form-data" action='includes/ajaximage.php'>
+<form id="formCups" method="post" enctype="multipart/form-data" action='includes/api.php'>
+    <input type="hidden" name="action" value="insertProduct" />
         <tr>
         <td><label for="naziv">Naziv:</label></td>
 		<td><input type="text" name="naziv" id="naziv"/><br /></td>
@@ -114,7 +116,7 @@
         </tr>
         </table>
 		<textarea id="opis" name="opis" placeholder="Opis proizvoda..."></textarea>
-		<input type="hidden" id="tip" name="tip" value="Cupcakes" />
+		<input type="hidden" id="tip" name="tip" value="3" />
 		<img class='slika' src="public/assets/img/insertCupcake.png" />
 		<div>
 	<input style="margin-left:20px;" type="button" id="submitCups" value="Unesi" />
@@ -127,7 +129,8 @@
 </div>
 <div id="tabs-3">
 <table class="tabelaUnos">
-	<form id="formFigurice" method="post" enctype="multipart/form-data" action='includes/ajaximage.php'>
+	<form id="formFigurice" method="post" enctype="multipart/form-data" action='includes/api.php'>
+        <input type="hidden" name="action" value="insertProduct" />
         <tr>
         <td><label for="naziv">Naziv:</label></td>
 		<td><input type="text" name="naziv" id="naziv"/><br /></td>
@@ -146,7 +149,7 @@
         </tr>
         </table>
 		<textarea id="opis" name="opis" placeholder="Opis proizvoda..."></textarea>
-		<input type="hidden" id="tip" name="tip" value="Figurice" />
+		<input type="hidden" id="tip" name="tip" value="4" />
 		<img class='slika' src="public/assets/img/insertFigurica.png" />
 		<div>
 	<input style="margin-left:20px;" type="button" id="submitFigurice" value="Unesi" />
@@ -159,7 +162,8 @@
 </div>
 <div id="tabs-4">
 <table class="tabelaUnos">
-	<form id="formMisc" method="post" enctype="multipart/form-data" action='includes/ajaximage.php'>
+	<form id="formMisc" method="post" enctype="multipart/form-data" action='includes/api.php'>
+        <input name="action" type="hidden" value="insertProduct" />
         <tr>
         <td><label for="naziv">Naziv:</label></td>
 		<td><input type="text" name="naziv" id="naziv"/><br /></td>
@@ -178,7 +182,7 @@
         </tr>
         </table>
 		<textarea id="opis" name="opis" placeholder="Opis proizvoda..."></textarea>
-		<input type="hidden" id="tip" name="tip" value="Ostali Proizvodi" />
+		<input type="hidden" id="tip" name="tip" value="5" />
 		<img class='slika' src="public/assets/img/misc.png" />
 		<div>
 	<input style="margin-left:20px;" type="button" id="submitMisc" value="Unesi" />

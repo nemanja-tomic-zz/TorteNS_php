@@ -4,7 +4,7 @@ $(document).ready(function(){
 	$(".fieldset").hide();	
 	$("#opis").focus();
 	getPorudzbina();
-	$("#imgSubmit").bind("click", timeout);
+	$("#imgSubmit").bind("click", upload);
 	$("#naziv").bind("keyup", function(){
 		getPorudzbina();
 	});
@@ -25,29 +25,22 @@ $(document).ready(function(){
 });
 
 function dobijDatume() {
-	$.post("includes/getDates.php", function(json){
-	 try
-		{
-			var obj = $.parseJSON(json);
-			$.each(obj, function(i, item){
-				tempNiz.push(item.godina);
-				tempNiz.push(item.mesec);
-				tempNiz.push(item.dan);
-				holiDays.push(tempNiz);
-				tempNiz = [];
-			});
-			$("#datepicker").datepicker({
-		dateFormat: 'yy/mm/dd',
-		minDate: 0,
-		firstDay: 1,
-		dayNamesMin: ["Ne", "Po", "Ut", "Sr", "Ce", "Pe", "Su"],
-		beforeShowDay: setHoliDays
-	});
-		}
-		catch(e)
-		{
-			$("#image").html(e.message);
-		}
+	$.post("includes/api.php", {action: "getAllOrderDates"}, function(json){
+        var obj = $.parseJSON(json);
+        $.each(obj.data, function(i, item){
+            tempNiz.push(item.godina);
+            tempNiz.push(item.mesec);
+            tempNiz.push(item.dan);
+            holiDays.push(tempNiz);
+            tempNiz = [];
+        });
+        $("#datepicker").datepicker({
+            dateFormat: 'yy/mm/dd',
+            minDate: 0,
+            firstDay: 1,
+            dayNamesMin: ["Ne", "Po", "Ut", "Sr", "Ce", "Pe", "Su"],
+            beforeShowDay: setHoliDays
+	    });
 	});
 }
 
@@ -64,122 +57,127 @@ function setHoliDays(date) {
 
 
 function fancyBox(id){
-var string = new Array();
-	$.post("includes/getSlikePorudzbine.php", {idPorudzbine:id}, function(json){
+    var string = new Array();
+    var data = {
+       id : id
+    };
+	$.post("includes/api.php", {action: "getOrderImages", data: JSON.stringify(data)}, function(json){
 		var obj = $.parseJSON(json);
-		
-		$.each(obj, function(i, data){
-			string.push("uploads/"+data.putanja+"/"+data.naziv);
-		});
-		if (string != "")
-		{
-		$.fancybox.open(string);
-		}
-		else
-		{
-			alert("Nema slika za izabranu porudzbinu.");
-		}
+		if (obj.success) {
+            $.each(obj.data, function(i, data){
+                string.push("uploads/"+data.putanja+"/"+data.naziv);
+            });
+            if (string != "") {
+                $.fancybox.open(string);
+            } else {
+                alert("Nema slika za izabranu porudzbinu.");
+            }
+        } else {
+            $("#response").html(obj.message);
+        }
 	});
 	
 	
 }
-function timeout(){
-	upload();
-	setTimeout(function(){
-		imgRequest($('input[name="idPorudzbineHidden"]').val(), $("#sveSlike"));
-	}, 500);
-}
 
 function getPorudzbina(){
-	filter = new Object();
+	var filter = {};
 	filter.naziv = $("#naziv").val();
 	filter.cena = $("#cena").val();
 	filter.ime = $("#ime").val();
 	filter.napomena = $("#napomena").val();
-	$.post("includes/pregledPorudzbina.php", {data:filter}, function(response){
-		try
-		{
-			var obj = $.parseJSON(response);
-			var img = "";
-			$("#tabelaPorudzbine").empty();
-			$("#tabelaPorudzbine").append("<thead><tr><th>Ime i prezime</th><th>porudzbina</th><th>Napomena</th><th>Cena</th><th>Za datum</th></tr></thead><tbody>");
-			$.each(obj, function(i, item){
-				
-				$("#tabelaPorudzbine").append("<tr><td class='porudzbineIme'>"+item.ime+" "+item.prezime+"</td><td class='porudzbineNaziv'>"+item.naziv+"</td><td class='porudzbineNapomena'><pre class='kurchevPre' readonly='readonly'>"+item.napomena+"</pre></td><td class='porudzbineCena'>"+item.cena+"</td><td class='porudzbineDatum'>"+item.datum+"</td><td class='porudzbineDelete'><a onclick=fancyBox('"+item.idPorudzbine+"')><img src='public/assets/img/picture.png' /></a></td><td class='porudzbineDelete'><a onclick=popupInit('"+item.idPorudzbine+"')><img src='public/assets/img/details.png' /></a></td><td class='porudzbineDelete'><a onclick=deletePorudzbina('"+item.idPorudzbine+"')><img src='public/assets/img/delete.png' /></a></td></tr>");
-			});
-			$("#tabelaPorudzbine").append("</tbody>");
-			$("#tabelaPorudzbine").tablesorter().tablesorterPager({container: $("#pager")}); 
-		}
-		catch(e)
-		{
-			$("#tabelaPorudzbine").html("<tr><th>Error occurred:</th></tr><tr><td>"+response+"</td></tr>");
-		}
+	$.post("includes/api.php", {action: "filterOrders", data: JSON.stringify(filter)}, function(response){
+        var obj = $.parseJSON(response);
+        var img = "";
+        var table = $("#tabelaPorudzbine");
+        var tableContent = "<thead><tr><th>Ime i prezime</th><th>porudzbina</th><th>Napomena</th><th>Cena</th><th>Za datum</th></tr></thead><tbody>";
+        table.empty();
+        $.each(obj.data, function(i, item) {
+            tableContent += "<tr><td class='porudzbineIme'>"+item.ime+" "+item.prezime+"</td>";
+            tableContent += "<td class='porudzbineNaziv'>"+item.naziv+"</td>";
+            tableContent += "<td class='porudzbineNapomena'><pre class='kurchevPre' readonly='readonly'>"+item.napomena+"</pre></td>";
+            tableContent += "<td class='porudzbineCena'>"+item.cena+"</td>";
+            tableContent += "<td class='porudzbineDatum'>"+item.datumTransakcije+"</td>";
+            tableContent += "<td class='porudzbineDelete'><a onclick=fancyBox('"+item.idPorudzbine+"')><img src='public/assets/img/picture.png' /></a></td>";
+            tableContent += "<td class='porudzbineDelete'><a onclick=popupInit('"+item.idPorudzbine+"')><img src='public/assets/img/details.png' /></a></td>";
+            tableContent += "<td class='porudzbineDelete'><a onclick=deletePorudzbina('"+item.idPorudzbine+"')><img src='public/assets/img/delete.png' /></a></td></tr>";
+        });
+        tableContent += "</tbody>";
+        table.append(tableContent);
+        table.tablesorter().tablesorterPager({container: $("#pager")});
 	});
 }
 
 function deletePorudzbina(id){
 	var conf = confirm("Da li ste sigurni da zelite da obrisete ovu porudzbinu?");
-	if (conf == true)
-	{
-		$.post("includes/deletePorudzbina.php", {id:id}, function(data){
+	if (conf == true) {
+        var data = {
+            id: id
+        };
+		$.post("includes/api.php", {action: "deleteOrder", data: JSON.stringify(data)}, function(response){
 			getPorudzbina();
-			$("#response").html(data);
-			
+            var obj = JSON.parse(response);
+			$("#response").html(obj.message);
 		});
 	}
 }
 
 
-function getData(a){
-	
-	$.post("includes/pregledPorudzbina.php", {id:a}, function(data){
-	var porudzbina = $.parseJSON(data);
-		$("#proizvod").html(porudzbina[0].naziv);
-		$("#klijent").html(porudzbina[0].ime+" "+porudzbina[0].prezime);
-		$("#datepicker").val(porudzbina[0].datum);
-		$("#opis").val(porudzbina[0].napomena);
+function getData(orderId){
+	var data = {
+        id : orderId
+    };
+	$.post("includes/api.php", {action: "getOrder", data: JSON.stringify(data)}, function(jsonResponse){
+        var response = $.parseJSON(jsonResponse);
+        var porudzbina = response.data;
+		$("#proizvod").html(porudzbina.naziv);
+		$("#klijent").html(porudzbina.ime+" "+porudzbina.prezime);
+		$("#datepicker").val(porudzbina.datumTransakcije);
+		$("#opis").val(porudzbina.napomena);
+        setCookie("idPorudzbine", porudzbina.idPorudzbine);
+
+        imgRequest(porudzbina.images, $("#sveSlike"))
 	});
 }
 
-function popupInit(id)
-{
-$("#preview").html('');
-$("#imgFile").val('');
-$(".fieldset").show();
-$('input[name="idPorudzbineHidden"]').val(id);
-getData(id);
-dobijDatume();
-imgRequest(id, $("#sveSlike"));
-$( "#dialog-form" ).dialog({
-			autoOpen: true,
-			height: 700,
-			width: 850,
-			modal: true,	//da se zatamni ostatak stranice
-			buttons: {
-				"Izmeni podatke": function() {
-					porudzbinaData=new Object();
-					porudzbinaData.idPorudzbine = id;
-					porudzbinaData.napomena = $("#opis").val();
-					porudzbinaData.datum = $("#datepicker").val();
-					
-					$.post("includes/updatePorudzbina.php", {data:porudzbinaData}, function(data){
-						$("#response").html(data);
-						getPorudzbina();
-					});
-					 
-					
-					$(this).dialog("close");
-				},
-				Cancel: function() {
-					$( this ).dialog( "close" );
-				}
-			},
-			close: function() {
-				getPorudzbina();
-			}
-			
-		});
-		
+function popupInit(orderId) {
+    $("#preview").html('');
+    $("#imgFile").val('');
+    $(".fieldset").show();
+    $('input[name="idPorudzbineHidden"]').val(orderId);
+    getData(orderId);
+    dobijDatume();
+
+    $( "#dialog-form" ).dialog({
+        autoOpen: true,
+        height: 700,
+        width: 850,
+        modal: true,	//da se zatamni ostatak stranice
+        buttons: {
+            "Izmeni podatke": function() {
+                var porudzbinaData = new Object();
+                porudzbinaData.idPorudzbine = orderId;
+                porudzbinaData.napomena = $("#opis").val();
+                porudzbinaData.datumTransakcije = $("#datepicker").val();
+
+                $.post("includes/api.php", {action: "updateOrder", data: JSON.stringify(porudzbinaData)}, function(data){
+                    var response = JSON.parse(data);
+                    $("#response").html(response.message);
+                    getPorudzbina();
+                });
+
+
+                $(this).dialog("close");
+            },
+            Cancel: function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        close: function() {
+            getPorudzbina();
+        }
+    });
+
 }
 
 function deleteImg(id){
@@ -195,36 +193,27 @@ function deleteImg(id){
 	}
 }
 
-
 function upload(){
-	$("#preview").html('');
-	$("#preview").html('<img src="public/assets/img/loader.gif" alt="Uploading...."/>');
-	$("#uploadImg").ajaxForm({
-			target: '#preview'
-	}).submit();
-	
+    $("#preview").html('');
+    $("#preview").html('<img src="public/assets/img/loader.gif" alt="Uploading...."/>');
+    $("#uploadImg").ajaxForm({
+        complete: function (data) {
+            var obj = JSON.parse(data.responseText);
+            if (obj.success) {
+                getData(getCookie("idPorudzbine"));
+            }
+            $("#preview").html(obj.message);
+        }
+    }).submit();
 }
 
-function imgRequest(id, div){
-$.post("includes/getSlikePorudzbine.php", {idPorudzbine:id}, function(json){
-	try
-		{
-		div.empty();
-			var obj = $.parseJSON(json);
-			if(typeof obj =='object')
-			{		
-				$.each(obj, function(i, item){
-					div.append("<div class='slika'><img src='uploads/"+item.putanja+"/"+item.naziv+"' /><a onclick=deleteImg('"+item.idSlike+"')><img src='public/assets/img/delete.png' /></a></div>");
-				});
-			}
-			else
-			{
-				div.html(obj);
-			}
-		}
-		catch(e)
-		{
-			$("#validateTips").html("Error occurred:"+json);
-		}
-});
+function imgRequest(orderImages, div){
+	div.empty();
+    if(orderImages.length > 0) {
+        $.each(orderImages, function(i, item){
+            div.append("<div class='slika'><img src='uploads/"+item.putanja+"/"+item.naziv+"' /><a onclick=deleteImg('"+item.idSlike+"')><img src='public/assets/img/delete.png' /></a></div>");
+        });
+    } else {
+        div.html("There are no images for selected order.");
+    }
 }

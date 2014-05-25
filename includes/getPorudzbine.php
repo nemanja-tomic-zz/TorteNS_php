@@ -5,7 +5,7 @@ require_once 'dbClass.php';
 
 try
 	{
-		$db = new Database();
+		$db = new DbHandler();
 		$db->connect();
 		$date = Date("Y/m/d");
 		$endDate = date('Y/m/d', strtotime("+7 days"));
