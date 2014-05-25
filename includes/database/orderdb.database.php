@@ -123,4 +123,27 @@ class OrderDb extends DbHandler {
 		$this->query($query, array($id));
 		return $this->fetchResults(Order::GetClassName());
 	}
+
+    public function getIncomingOrders() {
+        $result = array();
+        $query = "SELECT sve.ime, sve.prezime,
+				sve.idPorudzbine, sve.idKlijenta, sve.idProizvoda, sve.napomena, sve.datumTransakcije,
+				sve.naziv AS nazivProizvoda, sve.cena, sve.idGrupe,
+				sli.naziv AS nazivSlike, sli.putanja, sli.idSlike
+				FROM (SELECT kli.ime, kli.prezime,
+				por.idPorudzbine, por.idKlijenta, por.idProizvoda, por.napomena, por.datumTransakcije,
+				pro.naziv, pro.cena, pro.idGrupe
+				FROM porudzbine AS por
+				INNER JOIN (proizvod AS pro, klijent AS kli)
+				ON (por.idProizvoda = pro.idProizvoda AND por.idKlijenta = kli.idKlijenta)
+				WHERE por.datumTransakcije BETWEEN ? AND ?) AS sve
+				LEFT JOIN (slikeproizvod AS slipro, slike AS sli)
+				ON (sve.idProizvoda = slipro.idProizvoda AND slipro.idSlike = sli.idSlike)
+				GROUP BY sve.idPorudzbine ORDER BY sve.datumTransakcije ASC";
+        $this->query($query, array(Date("Y/m/d"), date('Y/m/d', strtotime("+7 days"))));
+        if ($this->getRowCount() > 0) {
+            $result = $this->fetchAsArray();
+        }
+        return $result;
+    }
 }

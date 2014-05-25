@@ -17,37 +17,28 @@ function setHoliDays(date) {
 }
 
 function dobijDatume() {
-	$.post("includes/getDates.php", function(json){
-	 try
-		{
-			var obj = $.parseJSON(json);
-			$.each(obj, function(i, item){
-				tempNiz.push(item.godina);
-				tempNiz.push(item.mesec);
-				tempNiz.push(item.dan);
-				holiDays.push(tempNiz);
-				tempNiz = [];
-			});
-			console.log(holiDays);
-		$("#datepicker").datepicker({
-			dateFormat: 'yy/mm/dd',
-			minDate: 0,
-			firstDay: 1,
-			dayNamesMin: ["Ne", "Po", "Ut", "Sr", "Ce", "Pe", "Su"],
-			monthNames: ["Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"],
-			beforeShowDay: setHoliDays,
-			onSelect: function(date) {
-					var url = "unosPorudzbine.html";
-					setCookie("datum", date)
-					window.location.href = url;
-				},
-			numberOfMonths: [3, 1]
-		});
-		
-		}
-		catch(e)
-		{
-			$("#msg").html(e.message);
-		}
-	});
+    $.post("includes/api.php", {action: "getAllOrderDates"}, function(json){
+        var obj = $.parseJSON(json);
+        $.each(obj.data, function(i, item){
+            tempNiz.push(item.godina);
+            tempNiz.push(item.mesec);
+            tempNiz.push(item.dan);
+            holiDays.push(tempNiz);
+            tempNiz = [];
+        });
+        $("#datepicker").datepicker({
+            dateFormat: 'yy/mm/dd',
+            minDate: 0,
+            firstDay: 1,
+            dayNamesMin: ["Ne", "Po", "Ut", "Sr", "Ce", "Pe", "Su"],
+            monthNames: ["Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"],
+            beforeShowDay: setHoliDays,
+            onSelect: function(date) {
+                var url = "unosPorudzbine.html";
+                setCookie("datum", date)
+                window.location.href = url;
+            },
+            numberOfMonths: [3, 1]
+        });
+    });
 }

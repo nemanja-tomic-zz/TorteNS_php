@@ -28,4 +28,5 @@ class ApiActions {
 	const InsertOrder = "insertorder";
 	const GetOrdersByDate = "getordersbydate";
 	const GetOrdersByClient = "getordersbyclient";
+    const GetIncomingOrders = "getincomingorders";
 } 

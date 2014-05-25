@@ -150,6 +150,9 @@ class Api {
 				$order->images = $this->productController->getProduct($order->idProizvoda)->images;
 				$response->data = $order;
 				break;
+            case ApiActions::GetIncomingOrders:
+                $response->data = $this->orderController->getIncomingOrders();
+                break;
 			case ApiActions::GetOrdersByDate:
 				$response->data = $this->orderController->getOrdersByDate($this->data->datum);
 				$response->hasData = count($response->data) > 0;
