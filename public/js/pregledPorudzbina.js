@@ -93,7 +93,6 @@ function getPorudzbina(){
         var tableContent = "<thead><tr><th>Ime i prezime</th><th>porudzbina</th><th>Napomena</th><th>Cena</th><th>Za datum</th></tr></thead><tbody>";
         table.empty();
         $.each(obj.data, function(i, item) {
-            console.log(item);
             tableContent += "<tr><td class='porudzbineIme'>"+item.ime+" "+item.prezime+"</td>";
             tableContent += "<td class='porudzbineNaziv'>"+item.naziv+"</td>";
             tableContent += "<td class='porudzbineNapomena'><pre class='kurchevPre' readonly='readonly'>"+item.napomena+"</pre></td>";

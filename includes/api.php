@@ -147,6 +147,10 @@ class Api {
 			case ApiActions::GetOrder:
 				$response->data = $this->orderController->getOrder($this->data->id);
 				break;
+			case ApiActions::GetOrdersByDate:
+				$response->data = $this->orderController->getOrdersByDate($this->data->datum);
+				$response->hasData = count($response->data) > 0;
+				break;
 			case ApiActions::GetAllOrderDates:
 				$response->data = $this->orderController->getAllOrderDates();
 				break;

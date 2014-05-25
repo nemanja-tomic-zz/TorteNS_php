@@ -107,4 +107,12 @@ class OrderDb extends DbHandler {
 		}
 		return $images;
 	}
+
+	public function getOrdersByDate($date) {
+		$query = "SELECT * FROM porudzbine INNER JOIN (proizvod, klijent)
+				ON (porudzbine.idProizvoda = proizvod.idProizvoda AND porudzbine.idKlijenta = klijent.idKlijenta)
+				WHERE porudzbine.datumTransakcije = ?";
+		$this->query($query, array($date));
+		return $this->fetchResults(Order::GetClassName());
+	}
 }

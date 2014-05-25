@@ -84,6 +84,24 @@ class OrderController extends BaseController {
 	}
 
 	/**
+	 * Searches for all orders by transaction date and returns the results.
+	 *
+	 * @param $date string Desired transaction date.
+	 * @return array List of Order objects.
+	 */
+	public function getOrdersByDate($date) {
+		$orderList = array();
+		try {
+			$orderList = $this->db->getOrdersByDate($date);
+		} catch (Exception $ex) {
+			$this->HandleException($ex);
+		}
+		return $orderList;
+	}
+
+	/**
+	 * Maps provided data into Order model.
+	 *
 	 * @param $data
 	 * @return Order
 	 */

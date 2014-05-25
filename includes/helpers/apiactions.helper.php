@@ -26,4 +26,5 @@ class ApiActions {
 	const GetOrderImages = "getorderimages";
 	const DeleteOrder = "deleteorder";
 	const InsertOrder = "insertorder";
+	const GetOrdersByDate = "getordersbydate";
 } 

@@ -9,6 +9,7 @@
 class Response extends BaseModel {
 	public $data;
 	public $message;
+	public $hasData = true;
 	public $success = true;
 	public $exceptionData;
 }

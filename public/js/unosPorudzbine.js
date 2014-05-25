@@ -17,18 +17,15 @@ $(document).ready(function(){
 					schedule(date);
 				}
 	});
-	if (getCookie("idKlijenta") != "")
-	{
+	if (getCookie("idKlijenta") != "") {
 		$("#klijent").html(getCookie("imeKlijenta"));
 		deleteCookie("imeKlijenta");
 	}
-	if (getCookie("idProizvoda") != "")
-	{
+	if (getCookie("idProizvoda") != "")	{
 		$("#proizvod").html(getCookie("nazivProizvoda"));
 		deleteCookie("nazivProizvoda");
 	}
-	if (getCookie("datum") != "")
-	{
+	if (getCookie("datum") != "")	{
 		$("#datepicker").val(getCookie("datum"));
 		schedule(getCookie("datum"));
 		deleteCookie("datum");
@@ -69,22 +66,15 @@ $(document).ready(function(){
 });
 
 function dobijDatume() {
-	$.post("includes/getDates.php", function(json){
-	 try
-		{
-			var obj = $.parseJSON(json);
-			$.each(obj, function(i, item){
-				tempNiz.push(item.godina);
-				tempNiz.push(item.mesec);
-				tempNiz.push(item.dan);
-				holiDays.push(tempNiz);
-				tempNiz = [];
-			});
-		}
-		catch(e)
-		{
-			$("#image").html(e.message);
-		}
+	$.post("includes/api.php", {action: "getAllOrderDates"}, function(json){
+        var obj = $.parseJSON(json);
+        $.each(obj.data, function(i, item){
+            tempNiz.push(item.godina);
+            tempNiz.push(item.mesec);
+            tempNiz.push(item.dan);
+            holiDays.push(tempNiz);
+            tempNiz = [];
+        });
 	});
 }
 
@@ -99,28 +89,47 @@ function setHoliDays(date) {
   return [true, ''];
 }
 
+/**
+ * Gets all previously scheduled orders for provided date.
+ *
+ * @param date
+ */
 function schedule(date){
-	$.post("includes/schedule.php", {datum:date}, function(response){
-		try
-		{
-		if ($("#datepicker").val() != "")
+    var data = {
+        datum: date
+    };
+    var jsDate = new Date(date);
+	$.post("includes/api.php", {action: "getOrdersByDate", data:JSON.stringify(data)}, function(response){
+		if ($("#datepicker").val() != "") {
 			$("#kurchina").show("slow");
-			var obj = $.parseJSON(response);
-			$("#schedule").empty();
-			$("#schedule").append("<thead><th class='scheduleImeH'>Ime</th><th class='schedulePrezimeH'>Prezime</th><th class='scheduleNapomenaH'>Napomena</th><th class='scheduleProizvodH'>Proizvod</th><th class='scheduleCenaH'>Cena</th></thead><tbody>");
-			$.each(obj, function(i, item){
-				$("#schedule").append("<tr><td class='scheduleIme'>"+item.ime+"</td><td class='schedulePrezime'>"+item.prezime+"</td><td class='scheduleNapomena'>"+item.napomena+"</td><td class='scheduleProizvod'>"+item.naziv+"</td><td class='scheduleCena'>"+item.cena+"</td></tr>");
-			});
-			$("#schedule").append("</tbody>");
-		}
-		catch(e)
-		{
-			$("#schedule").empty();
-			$("#schedule").append(response);
-		}
+        }
+        var obj = $.parseJSON(response);
+        var table = $("#schedule");
+        var content = "";
+        table.empty();
+        if (obj.hasData == false) {
+            $("#prescheduledOrdersTxt").text("There are no scheduled orders for "+jsDate.toDateString()+".");
+            return;
+        } else {
+            $("#prescheduledOrdersTxt").text("Scheduled orders for "+jsDate.toDateString()+":");
+        }
+        content += "<thead><th class='scheduleImeH'>Ime</th><th class='schedulePrezimeH'>Prezime</th><th class='scheduleNapomenaH'>Napomena</th><th class='scheduleProizvodH'>Proizvod</th><th class='scheduleCenaH'>Cena</th></thead><tbody>";
+        $.each(obj.data, function(i, item){
+            content += "<tr><td class='scheduleIme'>"+item.ime+"</td>";
+            content += "<td class='schedulePrezime'>"+item.prezime+"</td>";
+            content += "<td class='scheduleNapomena'>"+item.napomena+"</td>";
+            content += "<td class='scheduleProizvod'>"+item.naziv+"</td>";
+            content += "<td class='scheduleCena'>"+item.cena+"</td></tr>";
+        });
+        content += "</tbody>";
+        table.append(content);
 	});
 }
 
+/**
+ * Creates new order and redirects to homepage.
+ * Makes AJAX call to "insertOrder" API method.
+ */
 function insertPorudzbina(){
 	var clientName = $("#klijent").html();
 	var productName = $("#proizvod").html();
@@ -152,7 +161,9 @@ function insertPorudzbina(){
     }
 }
 
-
+/**
+ * Opens a modal dialog for client browsing and selection.
+ */
 function browseKlijent(){
 	$(".fieldset").show();
 	getKlijents();
@@ -164,13 +175,14 @@ function browseKlijent(){
 			close: function() {
 				$(".fieldset").hide();
 			}
-			
 	});
 }
 
+/**
+ * Opens a modal dialog for product browsing and selection.
+ */
 function browseProizvod(){
 	$(".fieldsetP").show();
-	//getProizvod('Torte');
 	$( "#dialog-formP" ).dialog({
 			autoOpen: true,
 			height: 700,
@@ -179,11 +191,14 @@ function browseProizvod(){
 			close: function() {
 				$(".filedsetP").hide();
 			}
-			
 	});
 }
 
-
+/**
+ * Generates and fills the table with clients data by provided filter.
+ * Called every time on keyUp event for any of the filter fields.
+ * Makes AJAX call to "getClients" API method.
+ */
 function getKlijents() {
     var data = {
         imeF: $("#filterIme").val(),
@@ -215,6 +230,13 @@ function getKlijents() {
 	});
 }
 
+/**
+ * Generates and fills the table with products data belonging to the desired group.
+ * Called every time on keyUp event for any of the filter fields.
+ * Makes AJAX call to "filterProducts" API method.
+ *
+ * @param tip Product group ID needs to be provided.
+ */
 function getProizvod(tip){
 	$("#torteMain").show('medium');
 	filter = new Object();
@@ -222,78 +244,99 @@ function getProizvod(tip){
 	filter.cena = $("#cena").val();
 	filter.opis = $("#opis").val();
     filter.idGrupe = tip;
-	type = tip;
+    var type = tip;
 	var td = "";
 	var th = "";
-	if(type == "Torte")
+	if(type == "1")
 		th = "<th>Tezina</th>";
 	else
 		th = "<th>Kolicina</th>";
-    //getProizvod.php
+
 	$.post("includes/api.php", {action: "filterProducts", data:JSON.stringify(filter)}, function(response){
         var obj = $.parseJSON(response);
-        var naziv = "";
-        $("#tabelaProizvodi").empty();
-        $("#tabelaProizvodi").append("<thead><tr><th>Naziv</th>"+th+"<th>Opis</th><th>Cena</th></tr></thead><tbody>");
+        var table = $("#tabelaProizvodi");
+        var content = "";
+        table.empty();
+        content += "<thead><tr><th>Naziv</th>"+th+"<th>Opis</th><th>Cena</th></tr></thead><tbody>";
         $.each(obj.data, function(i, item){
-        if (type == "Torte")
-            td = "<td class='proizvodiTezina'>"+item.tezina+"</td>";
-        else
-            td = "<td class='proizvodiKolicina'>"+item.kolicina+"</td>";
+            if (type == "1")
+                td = "<td class='proizvodiTezina'>"+item.tezina+"</td>";
+            else
+                td = "<td class='proizvodiKolicina'>"+item.kolicina+"</td>";
 
-        $("#tabelaProizvodi").append("<tr><td class='proizvodiNaziv'>"+item.naziv+"</td>"+td+"<td class='proizvodiOpis'>"+item.opis+"</td><td class='proizvodiCena'>"+item.cena+"</td><td class='proizvodiDelete'><a onclick=fancyBox('"+item.idProizvoda+"')><img src='public/assets/img/picture.png' /></a></td><td class='proizvodiDelete'><a onclick=selectProizvod('"+item.idProizvoda+"')><img src='public/assets/img/forward.png' /></a></td></tr>");
+            content += "<tr><td class='proizvodiNaziv'>"+item.naziv+"</td>";
+            content += td;
+            content += "<td class='proizvodiOpis'>"+item.opis+"</td>";
+            content += "<td class='proizvodiCena'>"+item.cena+"</td>";
+            content += "<td class='proizvodiDelete'><a onclick=fancyBox('"+item.idProizvoda+"')><img src='public/assets/img/picture.png' /></a></td>";
+            content += "<td class='proizvodiDelete'><a onclick=selectProizvod('"+item.idProizvoda+"')><img src='public/assets/img/forward.png' /></a></td></tr>";
         });
-        $("#tabelaProizvodi").append("</tbody>");
-        $("#tabelaProizvodi").tablesorter().tablesorterPager({container: $("#pager")});
+        content += "</tbody>";
+        table.append(content);
+        table.tablesorter().tablesorterPager({container: $("#pager")});
 	});
 }
 
+/**
+ * Called when user selects desired client for creating new order.
+ *
+ * @param id Selected client's ID, further stored into idKlijenta cookie.
+ * @param prezime Selected client's last name, used only for displaying on "Klijent" label.
+ * @param ime Selected client's first name, used only for displaying on "Klijent" label.
+ */
 function selectKlijent(id, prezime, ime){
 	$( "#dialog-form" ).dialog('close');
 	setCookie("idKlijenta", id);
 	$("#klijent").html(ime+" "+prezime);
 }
 
+/**
+ * Called when user selects desired product for creating new order.
+ * Makes AJAX calls to "getProduct" and "getImages" API methods.
+ *
+ * @param id Selected product's id, further stored into "idProizvoda" cookie.
+ */
 function selectProizvod(id){
 	$( "#dialog-formP" ).dialog('close');
 	setCookie("idProizvoda", id);
-    //getProizvod.php
     var data = {
         id: id
     };
 	$.post("includes/api.php", {action: "getProduct", data: JSON.stringify(data)}, function(json){
-		var da = $.parseJSON(json);
-		var proizvod = da.data.naziv;
+		var response = $.parseJSON(json);
+		var proizvod = response.data.naziv;
 		$("#proizvod").html(proizvod);
 	});
 
 	$.post("includes/api.php", {action: "getImages", data: JSON.stringify(data)}, function(json){
 		var obj = $.parseJSON(json);
-		var string = "";
 		$("#image").empty();
-        string = "uploads/"+obj.data[0].putanja+"/"+obj.data[0].naziv;
+        var string = "uploads/"+obj.data[0].putanja+"/"+obj.data[0].naziv;
         $("#image").html("<img class='image' src='"+string+"' alt='' title='' />");
 	});
 }
 
+/**
+ * Fires up FancyBox image gallery for displaying all images for product with provided ID.
+ * Makes AJAX call to "getImages" API method.
+ *
+ * @param id Product id for which to display images.
+ */
 function fancyBox(id){
-var string = new Array();
-	$.post("includes/getProizvodSlike.php", {idProizvoda:id}, function(json){
-		var obj = $.parseJSON(json);
+    var string = new Array();
+    var data = {
+        id: id
+    };
+	$.post("includes/api.php", {action: "getImages", data:JSON.stringify(data)}, function(json){
+		var response = $.parseJSON(json);
 		
-		$.each(obj, function(i, data){
-			string.push("uploads/"+data.putanja+"/"+data.naziv);
+		$.each(response.data, function(i, item){
+			string.push("uploads/"+item.putanja+"/"+item.naziv);
 		});
-		if (string != "")
-		{
-		$.fancybox.open(string);
-		}
-		else
-		{
+		if (string != "") {
+		    $.fancybox.open(string);
+		} else {
 			alert("Nema slika za izabrani proizvod.");
 		}
 	});
-	
-	//
-	
 }
