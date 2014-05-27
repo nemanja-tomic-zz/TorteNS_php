@@ -15,10 +15,21 @@ class ConfigManager {
 	}
 
 	/**
+	 * Indicates whether the application is set to run in debug mode or not.
+	 *
 	 * @return bool
 	 */
 	public function isDebugMode() {
 		return $this->parseBoolean($this->generalConfig["debug"]);
+	}
+
+	/**
+	 * Returns current version of the application.
+	 *
+	 * @return string
+	 */
+	public function getVersion() {
+		return $this->parseString($this->generalConfig["version"]);
 	}
 
 	/**
