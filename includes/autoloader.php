@@ -33,7 +33,7 @@ class Autoloader {
 
 	public function Library($class) {
 		set_include_path(get_include_path() . PATH_SEPARATOR . 'libraries/');
-		spl_autoload_extensions('.library.php');
+		spl_autoload_extensions('.class.php,.interface.php,.library.php');
 		spl_autoload(strtolower($class));
 	}
 
