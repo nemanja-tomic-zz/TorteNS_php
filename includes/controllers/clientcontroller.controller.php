@@ -8,9 +8,9 @@
 
 class ClientController extends BaseController {
 
-	public function __construct(ConfigManager $config) {
+	public function __construct(ConfigManager $config, PDO $db) {
 		parent::__construct($config);
-		$this->db = new ClientDb($config);
+		$this->db = new ClientDb($config, $db);
 	}
 
 	/**

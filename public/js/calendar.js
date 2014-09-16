@@ -5,15 +5,13 @@ var ordersList = [];
     $.post("includes/api.php", {action: "filterorders", data: JSON.stringify(data)}, function(json){
         var obj = $.parseJSON(json);
         for (var i= 0; i<obj.data.length; i++) {
-            //setuj pocetni dan - od datuma transakcije oduzeti dane spremanja
-            var datumTransakcije = new Date (obj.data[i].datumTransakcije);
             var imeklase = "calendarClass"+(obj.data[i].idGrupe);
 
             var newObject = {
-                id : obj.data[i].id,
+                id : obj.data[i].idPorudzbine,
                 title: obj.data[i].naziv,
-                start: datumTransakcije,
-                end: datumTransakcije,
+                start: obj.data[i].startDate + "T00:00:00",
+                end: obj.data[i].datumTransakcije+"T23:59:00",
                 className : imeklase
             }
             ordersList.push(newObject);
@@ -35,10 +33,16 @@ var ordersList = [];
             editable: false,
             events: ordersList,
             eventClick: function(event) {
-                console.log(event);
+                console.log(event.id);
+                var data = {
+                    id: event.id
+                };
+                $.post("includes/api.php", {action: "getOrder", data: JSON.stringify(data)}, function(response){
+                    console.log(response);
+                });
             },
-            dayClick: function() {
-                alert('a day has been clicked!');
+            dayClick: function(e) {
+                alert("KLIKNI NA EVENT USTA TE JEBEM");
             },
             eventMouseOver:function() {
 

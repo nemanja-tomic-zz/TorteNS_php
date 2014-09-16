@@ -8,8 +8,8 @@
 
 class OrderDb extends DbHandler {
 
-	public function __construct(ConfigManager $config) {
-		parent::__construct($config);
+	public function __construct(ConfigManager $config, PDO $db) {
+		parent::__construct($config, $db);
 	}
 
 	/**
@@ -67,7 +67,11 @@ class OrderDb extends DbHandler {
 		$this->query($query, array($id));
 	}
 
-	public function fetchOrders(OrderFilter $filter) {
+    /**
+     * @param OrderFilter $filter
+     * @return Order[]
+     */
+    public function fetchOrders(OrderFilter $filter) {
 		$query = "SELECT * FROM porudzbine INNER JOIN (proizvod, klijent)
 				ON (porudzbine.idProizvoda = proizvod.idProizvoda AND porudzbine.idKlijenta = klijent.idKlijenta)
 				WHERE naziv LIKE ?

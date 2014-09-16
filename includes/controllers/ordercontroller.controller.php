@@ -8,10 +8,10 @@
 
 class OrderController extends BaseController
 {
-    public function __construct(ConfigManager $config)
+    public function __construct(ConfigManager $config, PDO $db)
     {
         parent::__construct($config);
-        $this->db = new OrderDb($config);
+        $this->db = new OrderDb($config, $db);
     }
 
     public function filterOrders(OrderFilter $filter, $newOrders = true)
@@ -22,6 +22,8 @@ class OrderController extends BaseController
             if ($newOrders) {
                 for ($i = 0; $i < count($orderList); $i++) {
                     if (strtotime($orderList[$i]->datumTransakcije) >= strtotime(Date('Y-m-d'))) {
+                        $offset = date("d-m-Y", strtotime($orderList[$i]->datumTransakcije." -".$orderList[$i]->danispremanja." days"));
+                        $orderList[$i]->startDate = date("Y-m-d", strtotime($offset . "+1 days"));
                         $returnList[] = $orderList[$i];
                     }
                 }

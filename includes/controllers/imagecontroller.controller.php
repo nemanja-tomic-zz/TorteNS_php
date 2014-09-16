@@ -10,9 +10,9 @@ class ImageController extends BaseController {
 
 	const UPLOAD_ROOT = "../uploads/";
 
-	public function __construct(ConfigManager $config) {
+	public function __construct(ConfigManager $config, PDO $db) {
 		parent::__construct($config);
-		$this->db = new ImageDb($config);
+		$this->db = new ImageDb($config, $db);
 	}
 
 	/**

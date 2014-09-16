@@ -8,8 +8,8 @@
 
 class ImageDb extends DbHandler {
 
-	public function __construct(ConfigManager $config) {
-		parent::__construct($config);
+	public function __construct(ConfigManager $config, PDO $db) {
+		parent::__construct($config, $db);
 	}
 
 	/**

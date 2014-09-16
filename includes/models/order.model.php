@@ -10,4 +10,9 @@ class Order extends BaseModel {
 	public $idKlijenta;
 	public $idProizvoda;
 	public $images;
+    public $danispremanja;
+    /**
+     * @var DateTime represents start date of product preparation (cooking skillz)
+     */
+    public $startDate;
 } 

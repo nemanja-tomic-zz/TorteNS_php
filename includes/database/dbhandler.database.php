@@ -9,7 +9,7 @@ abstract class DbHandler implements IDbActions
 	/**
 	 * @var PDO
 	 */
-	private $db;
+	private static $db;
 	/**
 	 * @var PDOStatement
 	 */
@@ -19,18 +19,18 @@ abstract class DbHandler implements IDbActions
 	 */
 	protected $config;
 
-	protected function __construct(ConfigManager $config) {
+	protected function __construct(ConfigManager $config, PDO $dbConnection) {
 		$this->server = $config->getDatabaseHost();
 		$this->username = $config->getDatabaseUsername();
 		$this->password = $config->getDatabasePassword();
 		$this->port = $config->getDatabasePort();
 		$this->dbName = $config->getDatabaseName();
 		$this->config = $config;
-		$this->db = new PDO("mysql:host={$this->server};dbname={$this->dbName}", $this->username, $this->password);
+        self::$db = $dbConnection;
 	}
 
 	private function prepare($query) {
-		$this->statement = $this->db->prepare($query);
+		$this->statement = self::$db->prepare($query);
 	}
 
 	private function execute($params) {
@@ -58,7 +58,7 @@ abstract class DbHandler implements IDbActions
 	}
 
 	protected function lastInsertId() {
-		return $this->db->lastInsertId();
+		return self::$db->lastInsertId();
 	}
 
 	/**

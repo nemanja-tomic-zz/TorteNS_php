@@ -7,9 +7,9 @@
  */
 
 class ProductController extends BaseController {
-	public function __construct(ConfigManager $config) {
+	public function __construct(ConfigManager $config, PDO $db) {
 		parent::__construct($config);
-			$this->db = new ProductDb($config);
+			$this->db = new ProductDb($config, $db);
 	}
 
 	public function deleteProduct($id) {

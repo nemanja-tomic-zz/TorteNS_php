@@ -54,17 +54,27 @@ class Api {
 
 	private function Initialize() {
 		$this->configManager = new ConfigManager();
-		$this->clientController = new ClientController($this->configManager);
-		$this->productController = new ProductController($this->configManager);
-		$this->groupController = new GroupController($this->configManager);
-		$this->imageController = new ImageController($this->configManager);
-		$this->orderController = new OrderController($this->configManager);
+
+        //quick 'fix' - create pdo object, and pass it in controllers constructors
+        //TODO: refactor to more decent dependency injection
+        $server = $this->configManager->getDatabaseHost();
+        $username = $this->configManager->getDatabaseUsername();
+        $password = $this->configManager->getDatabasePassword();
+        $dbName = $this->configManager->getDatabaseName();
+        $db = new PDO("mysql:host={$server};dbname={$dbName}", $username, $password);
+
+		$this->clientController = new ClientController($this->configManager, $db);
+		$this->productController = new ProductController($this->configManager, $db);
+        $this->groupController = new GroupController($this->configManager, $db);
+		$this->imageController = new ImageController($this->configManager, $db);
+		$this->orderController = new OrderController($this->configManager, $db);
 
 		if ($this->configManager->isDebugMode()) {
 			ini_set('display_startup_errors', 1);
 			ini_set('display_errors', 1);
 			error_reporting(-1);
 		}
+        
 	}
 
 	/**
