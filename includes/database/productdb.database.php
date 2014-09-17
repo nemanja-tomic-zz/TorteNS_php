@@ -36,9 +36,10 @@ class ProductDb extends DbHandler {
 	public function insertRecord(BaseModel $model) {
 		/** @var $product Product */
 		$product = $model;
-		$query = "INSERT INTO proizvod (naziv, cena, tezina, opis, kolicina, idGrupe)
-			VALUES (?, ?, ?, ?, ?, ?)";
-		$this->query($query, array($product->naziv, $product->cena, $product->tezina, $product->opis, $product->kolicina, $product->idGrupe));
+        $daniSpremanja = $product->idGrupe == 1 ? 3 : 2;
+		$query = "INSERT INTO proizvod (naziv, cena, tezina, opis, kolicina, idGrupe, danispremanja)
+			VALUES (?, ?, ?, ?, ?, ?, ?)";
+		$this->query($query, array($product->naziv, $product->cena, $product->tezina, $product->opis, $product->kolicina, $product->idGrupe, $daniSpremanja));
 		return $this->lastInsertId();
 	}
 
