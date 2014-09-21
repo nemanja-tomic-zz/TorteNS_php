@@ -25,10 +25,13 @@ class ProductController extends BaseController {
 		try {
 			$productList = $this->db->fetchProducts($filter);
 
-			/** @var $product Product */
+            /** @var $product Product */
+            /*
 			foreach ($productList as $product) {
 				$product->images = $this->db->fetchProductImages($product->idProizvoda);
 			}
+            */
+
 		} catch (Exception $ex) {
 			$this->HandleException($ex);
 		}
